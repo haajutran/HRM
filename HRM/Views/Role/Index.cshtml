@@ -1,0 +1,52 @@
+﻿@model IEnumerable<IdentityRole>
+
+<div style="margin: 2em 0 0 4em;">
+    <div class=""><h2>ROLES</h2></div>
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+    <table class="table table-bordered" style="max-width: 60em;">
+        <tr><th style="text-align: center; width: 45em;">Role</th><th></th></tr>
+        @if (Model.Count() == 0)
+        {
+            <tr><td colspan="4" class="text-center">There is no role!</td></tr>
+        }
+        else
+        {
+            foreach (var role in Model)
+            {
+                <tr>
+                    <td>@role.Name</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12 col-xs-12">
+                                <form asp-action="Delete" asp-route-id="@role.Id" method="post">
+                                    <a class="btn btn-primary" asp-action="Edit"
+                                       asp-route-id="@role.Id">Edit</a>
+                                    <div id="myModal" class="modal" style="padding-left: 25em;">
+                                        <!-- Modal content -->
+                                        <div class="modal-content">
+                                            <span class="close">&times;</span>
+                                            <div class="container">
+                                                <h4>Bạn có chắc muốn xóa phân quyền này?</h4>
+                                                <div class="row">
+                                                    <div class="col-4 offset-4">
+                                                        <button role="button" type="submit" style="width: 100%"
+                                                                class="btn btn-danger">
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-6 col-sm-12 col-xs-12" style="float: right;">  <button role="button" class="btn btn-danger" id="myBtn">Delete</button></div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    <a class="btn btn-success" asp-action="Create">Create</a>
+</div>

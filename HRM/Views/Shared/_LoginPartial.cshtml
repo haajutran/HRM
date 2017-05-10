@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using HRM.Models
+
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-area="" asp-controller="Account" asp-action="LogOut" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Xin chào @UserManager.GetUserName(User)!</a>
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Đăng xuất</a></li>
+        </ul>
+    </form>
+}
+else if (User.Identity.IsAuthenticated)
+{
+    //This code block necessary only for NTLM authentication
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <p class="nav navbar-text navbar-right">Xin chào, @UserManager.GetUserName(User)!</p>
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li><a id="registerLink" asp-controller="Account" asp-action="Register">Đăng ký</a></li>
+        <li><a id="loginLink" asp-controller="Account" asp-action="Login">Đăng nhập</a></li>
+    </ul>
+}

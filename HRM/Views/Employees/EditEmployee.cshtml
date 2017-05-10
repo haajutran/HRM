@@ -1,0 +1,123 @@
+﻿@model Employee
+
+@{
+    ViewBag.Title = "Thêm nhân viên";
+}
+
+<h2>Thêm nhân viên</h2>
+
+<div class="account" style="margin-left: 25em;">
+    <form asp-action="EditEmployee" method="post">
+        <input type="hidden" asp-for="EmployeeID" />
+
+        <div class="form-group">
+            <label>Mã số nhân viên</label>
+            <div><span asp-validation-for="EmployeeCode" class="text-danger"></span></div>
+            <input asp-for="EmployeeCode" class="form-control" readonly/>
+        </div>
+
+        <div class="form-group">
+            <label>Họ & Tên</label>
+            <div><span asp-validation-for="FullName" class="text-danger"></span></div>
+            <input asp-for="FullName" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Ngày sinh</label>
+            <div><span asp-validation-for="DateOfBirth" class="text-danger"></span></div>
+            <input type="datetime" asp-for="DateOfBirth" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Nơi sinh</label>
+            <div><span asp-validation-for="PlaceOfBirth" class="text-danger"></span></div>
+            <input type="text" asp-for="PlaceOfBirth" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Giới tính</label>
+            <div><span asp-validation-for="Gender" class="text-danger"></span></div>
+            <div class="btn-group btn-group-vertical" data-toggle="buttons">
+                <label class="btn active">
+                    <input type="radio" value="Nam" id="nam" name="gender" checked><span>  Nam</span>
+                </label>
+                <label class="btn">
+                    <input type="radio" value="Nữ" id="nu" name="gender"><span> Nữ</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Gia đình</label>
+            <div><span asp-validation-for="Family" class="text-danger"></span></div>
+            <input asp-for="Family" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Điện thoại</label>
+            <div><span asp-validation-for="PhoneNumber" class="text-danger"></span></div>
+            <input asp-for="PhoneNumber" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <div><span asp-validation-for="Email" class="text-danger"></span></div>
+            <input asp-for="Email" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Quê quán</label>
+            <div><span asp-validation-for="HomeTown" class="text-danger"></span></div>
+            <input asp-for="HomeTown" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Thành phố</label>
+            <div><span asp-validation-for="City" class="text-danger"></span></div>
+            <input asp-for="City" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>CMND</label>
+            <div><span asp-validation-for="CitizenID" class="text-danger"></span></div>
+            <input asp-for="CitizenID" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Nơi cấp</label>
+            <div><span asp-validation-for="PlaceOfProvide" class="text-danger"></span></div>
+            <input asp-for="PlaceOfProvide" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Tạm trú</label>
+            <div><span asp-validation-for="TempAddress" class="text-danger"></span></div>
+            <input asp-for="TempAddress" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Hình ảnh</label>
+            <div><span asp-validation-for="Avatar" class="text-danger"></span></div>
+            <input asp-for="Avatar" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Phòng ban</label>
+            <div><span asp-validation-for="DepartmentID" class="text-danger"></span></div>
+            <input asp-for="DepartmentID" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Nghỉ việc</label>
+            <div><span asp-validation-for="OutOfWork" class="text-danger"></span></div>
+            <input asp-for="OutOfWork" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <div class="">
+                <button class="btn btn-primary" role="button" title="Save" type="submit"><i style="font-size: 20px;" class="fa fa-save"></i></button>
+                <a asp-controller="Home" asp-action="Employees" class="btn btn-primary" title="Back"><i style="font-size: 20px;" class="fa fa-undo"></i></a>
+            </div>
+        </div>
+    </form>
+</div>

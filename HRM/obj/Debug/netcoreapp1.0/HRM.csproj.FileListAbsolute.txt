@@ -1,0 +1,27 @@
+C:\Users\Haaju\documents\visual studio 2017\Projects\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.deps.json
+C:\Users\Haaju\documents\visual studio 2017\Projects\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.runtimeconfig.json
+C:\Users\Haaju\documents\visual studio 2017\Projects\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.runtimeconfig.dev.json
+C:\Users\Haaju\documents\visual studio 2017\Projects\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.csprojResolveAssemblyReference.cache
+C:\Users\Haaju\documents\visual studio 2017\Projects\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.AssemblyInfo.cs
+C:\Users\Haaju\documents\visual studio 2017\Projects\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.dll
+C:\Users\Haaju\documents\visual studio 2017\Projects\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.pdb
+C:\Users\Haaju\documents\visual studio 2017\Projects\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.dll
+C:\Users\Haaju\documents\visual studio 2017\Projects\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.pdb
+D:\Workstation\asp.net\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.deps.json
+D:\Workstation\asp.net\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.runtimeconfig.json
+D:\Workstation\asp.net\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.runtimeconfig.dev.json
+D:\Workstation\asp.net\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.dll
+D:\Workstation\asp.net\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.pdb
+D:\Workstation\asp.net\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.csprojResolveAssemblyReference.cache
+D:\Workstation\asp.net\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.AssemblyInfo.cs
+D:\Workstation\asp.net\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.dll
+D:\Workstation\asp.net\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.pdb
+C:\Users\Haaju\Desktop\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.deps.json
+C:\Users\Haaju\Desktop\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.runtimeconfig.json
+C:\Users\Haaju\Desktop\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.runtimeconfig.dev.json
+C:\Users\Haaju\Desktop\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.csprojResolveAssemblyReference.cache
+C:\Users\Haaju\Desktop\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.AssemblyInfo.cs
+C:\Users\Haaju\Desktop\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.dll
+C:\Users\Haaju\Desktop\HRM\HRM\obj\Debug\netcoreapp1.0\HRM.pdb
+C:\Users\Haaju\Desktop\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.dll
+C:\Users\Haaju\Desktop\HRM\HRM\bin\Debug\netcoreapp1.0\HRM.pdb

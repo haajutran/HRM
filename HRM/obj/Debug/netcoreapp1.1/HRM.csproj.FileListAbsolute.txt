@@ -1,0 +1,10 @@
+c:\users\haaju\documents\visual studio 2017\Projects\HRM\HRM\bin\Debug\netcoreapp1.1\HRM.deps.json
+c:\users\haaju\documents\visual studio 2017\Projects\HRM\HRM\bin\Debug\netcoreapp1.1\HRM.runtimeconfig.json
+c:\users\haaju\documents\visual studio 2017\Projects\HRM\HRM\bin\Debug\netcoreapp1.1\HRM.runtimeconfig.dev.json
+c:\users\haaju\documents\visual studio 2017\Projects\HRM\HRM\obj\Debug\netcoreapp1.1\HRM.csprojResolveAssemblyReference.cache
+c:\users\haaju\documents\visual studio 2017\Projects\HRM\HRM\obj\Debug\netcoreapp1.1\UserSecretsAssemblyInfo.cs
+c:\users\haaju\documents\visual studio 2017\Projects\HRM\HRM\obj\Debug\netcoreapp1.1\HRM.AssemblyInfo.cs
+c:\users\haaju\documents\visual studio 2017\Projects\HRM\HRM\bin\Debug\netcoreapp1.1\HRM.dll
+c:\users\haaju\documents\visual studio 2017\Projects\HRM\HRM\bin\Debug\netcoreapp1.1\HRM.pdb
+c:\users\haaju\documents\visual studio 2017\Projects\HRM\HRM\obj\Debug\netcoreapp1.1\HRM.dll
+c:\users\haaju\documents\visual studio 2017\Projects\HRM\HRM\obj\Debug\netcoreapp1.1\HRM.pdb

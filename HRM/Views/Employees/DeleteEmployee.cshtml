@@ -1,0 +1,149 @@
+﻿@model Student
+
+<h2>XÓA SINH VIÊN</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row detailTable">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Mã số sinh viên:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.StudentCode
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Tên:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Name
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Giới tính:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Gender
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Địa chỉ:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Address
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Nơi sinh:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.PlaceOfBirth
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Ngày sinh:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.DateOfBirth
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Lớp:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Class
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Ngành:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Department
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Khoa:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Faculty
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Hệ đào tạo:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.TrainingSystem
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Khóa học:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.Course
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Cố vấn học tập:
+                        </div>
+                        <div class="col-md-9">
+                            @Model.AcademicAdvisor
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form asp-route-studentID="@Model.StudentID" asp-action="DeleteConfirmed">
+        <div class="form-actions no-color">
+            <button type="submit" class="btn btn-danger"><i style="font-size: 25px" class="pe-7s-delete-user"></i></button>
+            <a class="btn btn-primary" asp-action="StudentsManagement" asp-controller="Main"><i class="pe-7s-back" style="font-size: 25px" ></i></a>
+        </div>
+    </form>
+</div>
