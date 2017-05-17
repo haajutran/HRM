@@ -14,10 +14,16 @@ namespace HRM.Models
 
             context.Database.EnsureCreated();
 
-            if (context.Employees.Any())
+            if (context.Departments.Any())
             {
                 return;
             }
+                    
+            context.Departments.AddRange(
+                new Department { DepartmentCode = 1, DepartmentName = "Phòng nhân sự" },
+                new Department { DepartmentCode = 2, DepartmentName = "Phòng tài chính" },
+                new Department { DepartmentCode = 3, DepartmentName = "Phòng kỹ thuật" }
+                );
 
             context.SaveChanges();
         }

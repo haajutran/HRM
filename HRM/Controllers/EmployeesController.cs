@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using HRM.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -52,8 +54,12 @@ namespace HRM.Controllers
         //[Authorize(Roles = "Manager")]
         public IActionResult AddEmployee()
         {
+            DepartmentsDropDownList();
+
             return View();
         }
+
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -65,10 +71,17 @@ namespace HRM.Controllers
             {
                 employee.Gender = gender;
                 employee.FamilyRelations = _context.FamilyRelations.Select(f => f).Where(x => x.EmployeeId == employee.EmployeeID);
+                Department department = await _context.Departments
+                    .Include(d => d.Employees)
+                    .SingleOrDefaultAsync(m => m.DepartmentCode == employee.DepartmentCode);
+                employee.Department = department;
+                department.Employees.Add(employee);
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Employees");
             }
+            DepartmentsDropDownList();
+
             return View(employee);
         }
 
@@ -160,6 +173,14 @@ namespace HRM.Controllers
         #endregion
 
         #endregion
+        private void DepartmentsDropDownList()
+        {
+            var departmentsQuery = from d in _context.Departments
+                                   orderby d.DepartmentName
+                                   select d;
+
+            ViewData["Departments"] = new SelectList(departmentsQuery.AsNoTracking(), "DepartmentCode", "DepartmentName");
+        }
 
         private bool EmployeeExists(int employeeID)
         {

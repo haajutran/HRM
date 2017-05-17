@@ -22,9 +22,9 @@ namespace HRM.Models
             return await departments.ToListAsync();
         }
 
-        public async Task<Department> SearchAsync(int departmentID)
+        public async Task<Department> SearchAsync(int departmentCode)
         {
-            return await context.Departments.FirstOrDefaultAsync(p => p.DepartmentID == departmentID);
+            return await context.Departments.FirstOrDefaultAsync(p => p.DepartmentCode == departmentCode);
         }
 
     }

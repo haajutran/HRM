@@ -4,57 +4,63 @@
 }
 
 
-@if (User.IsInRole("Manager"))
+@*@if (User.IsInRole("Manager"))
 {
     <a class="btn btn-primary" asp-controller="Employees" asp-action="AddEmployee">Thêm Nhân Viên</a>
-}
+}*@
+<div id="content-header">
+    <div id="breadcrumb"><a asp-controller="Employees" asp-action="Index" title="Quản lý nhân viên" class="tip-bottom"> Quản lý nhân viên </a></div>
 
-
-<div style="margin: auto;">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div style="text-align: center;margin: 2em;">
-        <h3><b>DANH SÁCH NHÂN VIÊN</b></h3>
-    </div>
-    <a class="btn btn-primary" asp-controller="Employees" asp-action="AddEmployee" style="margin-bottom: 2em;">Thêm Nhân Viên</a>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>MSNV</th>
-                <th>Họ và Tên</th>
-                <th>Điện thoại</th>
-                <th>Bộ phận</th>
-                <th>Email</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Employees)
-            {
-                <tr>
-                    <td><a asp-controller="Employees" asp-action="EmployeeProfile" asp-route-employeeID="@item.EmployeeID">@item.EmployeeCode</a></td>
-                    <td>@item.FullName</td>
-                    <td>@item.PhoneNumber</td>
-                    <td>@item.DepartmentCode</td>
-                    <td>@item.Email</td>
-                    <td>
-                        <form asp-action="DeleteConfirmed" asp-controller="Employees" asp-route-employeeID="@item.EmployeeID" method="post">
-                            <a class="btn btn-sm btn-primary" asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@item.EmployeeID">
-                                <i style="font-size: 20px" class="fa fa-pencil"></i>
-                            </a>
-
-                            <button type="submit"
-                                    class="btn btn-sm btn-danger">
-                                <i style="font-size: 20px" class="fa fa-trash"></i>
-                            </button>
-
-                        </form>
-
-                    </td>
-                </tr>
-            }
-
-        </tbody>
-    </table>
 </div>
+<!--End-breadcrumbs-->
+<!--Action boxes-->
+<div class="container-fluid">
 
+    <div style="margin: auto;">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div style="text-align: center;margin: 2em;">
+            <h3><b>DANH SÁCH NHÂN VIÊN</b></h3>
+        </div>
+        <a class="btn btn-primary" asp-controller="Employees" asp-action="AddEmployee" style="margin-bottom: 2em;">Thêm Nhân Viên</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>MSNV</th>
+                    <th>Họ và Tên</th>
+                    <th>Điện thoại</th>
+                    <th>Bộ phận</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Employees)
+            {
+                    <tr>
+                        <td><a asp-controller="Employees" asp-action="EmployeeProfile" asp-route-employeeID="@item.EmployeeID">@item.EmployeeCode</a></td>
+                        <td>@item.FullName</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.DepartmentCode</td>
+                        <td>@item.Email</td>
+                        <td>
+                            <form asp-action="DeleteConfirmed" asp-controller="Employees" asp-route-employeeID="@item.EmployeeID" method="post">
+                                <a class="btn btn-sm btn-primary" asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@item.EmployeeID">
+                                    <i style="font-size: 20px" class="fa fa-pencil"></i>
+                                </a>
 
+                                <button type="submit"
+                                        class="btn btn-sm btn-danger">
+                                    <i style="font-size: 20px" class="fa fa-trash"></i>
+                                </button>
+
+                            </form>
+
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+</div>

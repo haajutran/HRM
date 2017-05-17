@@ -4,30 +4,42 @@
     ViewBag.Title = "Thêm nhân viên";
 }
 
-<h2>Thêm Phòng Ban</h2>
 
-<div class="account">
-    <form asp-action="AddDepartment" method="post">
-        <input type="hidden" asp-for="DepartmentID" />
 
-        <div class="form-group">
-            <label>Mã số phòng ban</label>
-            <div><span asp-validation-for="DepartmentCode" class="text-danger"></span></div>
-            <input asp-for="DepartmentCode" class="form-control" />
-        </div>
-         
+<div id="content-header">
+    <div id="breadcrumb"><a asp-controller="Departments" asp-action="Index" title="Quản lý phòng ban" class="tip-bottom"> Quản lý phòng ban </a> <a asp-controller="Departments" title="Thêm phòng ban" asp-action="AddDepartment"> Thêm phòng ban </a></div>
 
-        <div class="form-group">
-            <label>Tên phòng ban</label>
-            <div><span asp-validation-for="DepartmentName" class="text-danger"></span></div>
-            <input type="datetime" asp-for="DepartmentName" class="form-control" />
-        </div>
-       
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <button class="btn btn-primary" role="button" title="Lưu" type="submit"><i font-weight: bold;" class="fa fa-2x fa-save"></i></button>
-                <a asp-controller="Departments" asp-action="Index" class="btn btn-primary" title="Quay về"><i class="fa fa-2x fa-arrow-left"></i></a>
-            </div>
-        </div>
-    </form>
 </div>
+<!--End-breadcrumbs-->
+<!--Action boxes-->
+<div class="container-fluid">
+    <h2 style="text-align: center">THÊM PHÒNG BAN</h2>
+
+    <div style="width: 40%; margin: auto">
+        <hr />
+        <form asp-action="AddDepartment" method="post">
+            <input type="hidden" asp-for="DepartmentID" />
+
+            <div class="form-group">
+                <label>Mã số phòng ban</label>
+                <div><span asp-validation-for="DepartmentCode" class="text-danger"></span></div>
+                <input asp-for="DepartmentCode" class="form-control" />
+            </div>
+
+
+            <div class="form-group">
+                <label>Tên phòng ban</label>
+                <div><span asp-validation-for="DepartmentName" class="text-danger"></span></div>
+                <input type="datetime" asp-for="DepartmentName" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <div class="">
+                    <button class="btn btn-primary" role="button" title="Lưu" type="submit"><i style="font-size: 20px;" class="fa fa-save"></i></button>
+                    <a asp-controller="Departments" asp-action="Index" class="btn btn-primary" title="Quay về"><i style="font-size: 20px;" class="fa fa-arrow-left"></i></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
