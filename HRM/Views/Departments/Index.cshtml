@@ -38,7 +38,7 @@
                 @foreach (var item in Model.Departments)
             {
                     <tr>
-                        <td style="text-align: center"><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-employeeID="@item.DepartmentCode">@item.DepartmentCode</a></td>
+                        <td style="text-align: center"><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentCode="@item.DepartmentCode">@item.DepartmentCode</a></td>
                         <td>@item.DepartmentName</td>
                         <td>
                             <form asp-action="DeleteConfirmed" asp-controller="Departments" asp-route-departmentCode="@item.DepartmentCode" method="post">

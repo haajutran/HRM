@@ -18,13 +18,15 @@ namespace HRM.Controllers
 
         private ApplicationDbContext _context;
         private IDepartmentRepository _departmentRepository;
+        private IEmployeeRepository _employeeRepository;
         private IHostingEnvironment _environment;
 
-        public DepartmentsController(IDepartmentRepository repo, ApplicationDbContext context, IHostingEnvironment environment)
+        public DepartmentsController(IDepartmentRepository repo, ApplicationDbContext context, IHostingEnvironment environment, IEmployeeRepository employeeRepository)
         {
             _departmentRepository = repo;
             _context = context;
             _environment = environment;
+            _employeeRepository = employeeRepository;
         }
 
         // GET: /<controller>/
@@ -91,9 +93,12 @@ namespace HRM.Controllers
 
         #region Department Detail
 
-        public IActionResult DepartmentDetail()
+        public async Task<ViewResult> DepartmentDetail(int departmentCode)
         {
-            return View();
+            return View(new EmployeesListViewModel
+            {
+                Employees = await _employeeRepository.EmployeesAsync(departmentCode)
+            });
         }
 
         #endregion

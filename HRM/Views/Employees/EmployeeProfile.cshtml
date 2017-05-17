@@ -1,120 +1,128 @@
 ﻿@model Employee
 
-<h2>THÔNG TIN NHÂN VIÊN</h2>
+<div id="content-header">
+    <div id="breadcrumb"><a asp-controller="Employees" asp-action="Index" title="Quản lý nhân viên" class="tip-bottom"> Quản lý nhân viên </a> <a asp-controller="Employees" asp-action="EditEmployee"> Chỉnh sửa nhân viên </a></div>
+</div>
+<!--End-breadcrumbs-->
+<!--Action boxes-->
+<div class="container-fluid">
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="row detailTable" style="margin-left: 25em;">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-2">
-                            MSNV
+    <h2 style="text-align: center">THÔNG TIN NHÂN VIÊN</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row detailTable" style="margin-left: 25em;">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-2">
+                                MSNV
+                            </div>
+                            <div class="col-md-10">
+                                @Model.EmployeeID
+                            </div>
                         </div>
-                        <div class="col-md-10">
-                            @Model.EmployeeID
+
+                    </div>
+                    <hr style="width: 30em; margin-left: -30em" />
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-2">
+                                Họ và Tên
+                            </div>
+                            <div class="col-md-10">
+                                @Model.FullName
+                            </div>
                         </div>
-                    </div>   
-                    
-                </div>
-                <hr style="width: 30em; margin-left: -30em"/>    
-          
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-2">
-                            Họ và Tên
+                    </div>
+                    <hr style="width: 30em; margin-left: -30em" />
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-2">
+                                Giới tính
+                            </div>
+                            <div class="col-md-10">
+                                @Model.Gender
+                            </div>
                         </div>
-                        <div class="col-md-10">
-                            @Model.FullName
+                    </div>
+                    <hr style="width: 30em; margin-left: -30em" />
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-2">
+                                Địa chỉ
+                            </div>
+                            <div class="col-md-10">
+                                @Model.Address
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="width: 30em; margin-left: -30em" />
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-2">
+                                Nơi sinh
+                            </div>
+                            <div class="col-md-10">
+                                @Model.PlaceOfBirth
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="width: 30em; margin-left: -30em" />
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-2">
+                                Ngày sinh
+                            </div>
+                            <div class="col-md-10">
+                                @Model.DateOfBirth
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="width: 30em; margin-left: -30em" />
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-2">
+                                Gia đình
+                            </div>
+                            <div class="col-md-10">
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Relationship</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @*@{if (Model.FamilyRelations.Count() != 0)
+                                            {
+                                                foreach (var item in Model.FamilyRelations)
+                                                {
+                                                    <tr>
+                                                        <td>@item.Name</td>
+                                                        <td>@item.Relation</td>
+                                                    </tr>
+                                                }
+                                            }
+                                            }*@
+                                        <tr>
+                                            <td>
+                                                <a asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID" class="fa fa-plus"></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <hr style="width: 30em; margin-left: -30em" />    
-
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-2">
-                            Giới tính
-                        </div>
-                        <div class="col-md-10">
-                            @Model.Gender
-                        </div>
-                    </div>
-                </div>
-                <hr style="width: 30em; margin-left: -30em" />
-
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-2">
-                            Địa chỉ
-                        </div>
-                        <div class="col-md-10">
-                            @Model.Address
-                        </div>
-                    </div>
-                </div>
-                <hr style="width: 30em; margin-left: -30em" />
-
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-2">
-                            Nơi sinh
-                        </div>
-                        <div class="col-md-10">
-                            @Model.PlaceOfBirth
-                        </div>
-                    </div>
-                </div>
-                <hr style="width: 30em; margin-left: -30em" />
-
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-2">
-                            Ngày sinh
-                        </div>
-                        <div class="col-md-10">
-                            @Model.DateOfBirth
-                        </div>
-                    </div>
-                </div>               
-                <hr style="width: 30em; margin-left: -30em" />
-
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-2">
-                            Gia đình
-                        </div>
-                        <div class="col-md-10">
-                            <table class="table table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Relationship</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @{if (Model.FamilyRelations.Count() != 0)
-                                    {
-                                        foreach (var item in Model.FamilyRelations)
-                                        {
-                                            <tr>
-                                                <td>@item.Name</td>
-                                                <td>@item.Relation</td>
-                                            </tr>
-                                        }
-                                    }
-                                    }
-                                    <tr>
-                                        <td>
-                                            <a asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID" class="fa fa-plus"></a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>   
             </div>
         </div>
     </div>
 </div>
+    

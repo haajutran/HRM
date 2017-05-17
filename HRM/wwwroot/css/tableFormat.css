@@ -13,3 +13,11 @@
 .btn {
     border-radius: 5px;
 }
+
+.genderForm .btn {
+    background-color: aliceblue;
+}
+
+.genderForm .btn.active {
+    background-color: #0094ff;
+}

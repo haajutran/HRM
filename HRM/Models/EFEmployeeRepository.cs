@@ -21,6 +21,12 @@ namespace HRM.Models
             return await employees.ToListAsync();
         }
 
+        public async Task<IEnumerable<Employee>> EmployeesAsync(int departmentCode)
+        {
+            IQueryable<Employee> employees = context.Employees.Where(e => e.DepartmentCode == departmentCode);          
+            return await employees.ToListAsync();
+        }
+
         public async Task<Employee> SearchAsync(int employeeID)
         {
             return await context.Employees.FirstOrDefaultAsync(p => p.EmployeeID == employeeID);

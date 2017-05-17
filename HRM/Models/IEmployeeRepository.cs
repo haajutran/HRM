@@ -6,6 +6,7 @@ namespace HRM.Models
     public interface IEmployeeRepository
     {
         Task<IEnumerable<Employee>> EmployeesAsync();
+        Task<IEnumerable<Employee>> EmployeesAsync(int departmentCode);
         Task<Employee> SearchAsync(int employeeID);
     }
 }

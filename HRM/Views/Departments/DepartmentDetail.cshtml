@@ -1,11 +1,12 @@
-﻿
+﻿@model EmployeesListViewModel
+
 @{ 
-    ViewBa
+    ViewBag.Title = "Chi tiết phòng ban";
 }
 
 
 <div id="content-header">
-    <div id="breadcrumb"><a asp-controller="Departments" asp-action="Index" title="Quản lý phòng ban" class="tip-bottom"> Quản lý phòng ban </a> <a asp-controller="Departments" title="Thêm phòng ban" asp-action="AddDepartment"> Thêm phòng ban </a></div>
+    <div id="breadcrumb"><a asp-controller="Departments" asp-action="Index" title="Quản lý phòng ban" class="tip-bottom"> Quản lý phòng ban </a> <a asp-controller="Departments" title="Chi tiết phòng ban" asp-action="DepartmentDetail"> Chi tiết phòng ban </a></div>
 
 </div>
 <!--End-breadcrumbs-->

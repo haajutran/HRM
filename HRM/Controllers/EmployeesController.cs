@@ -39,6 +39,8 @@ namespace HRM.Controllers
             });
         }
 
+        #region Employee Profile
+
         /*--- Employee Profile ---*/
         public async Task<IActionResult> EmployeeProfile(int employeeID)
         {
@@ -48,6 +50,8 @@ namespace HRM.Controllers
 
             return View(employee);
         }
+
+        #endregion
 
         #region Add Employee
 
@@ -63,14 +67,13 @@ namespace HRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEmployee([Bind("EmployeeCode, FullName, DateOfBirth,PlaceOfBirth, Family, Gender, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, Avatar, DepartmentCode, OutOfWork")] Employee employee, string gender)
+        public async Task<IActionResult> AddEmployee([Bind("EmployeeCode, FullName, Address, DateOfBirth,PlaceOfBirth, Gender, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, Avatar, DepartmentCode, OutOfWork")] Employee employee, string gender)
         {
-            ModifyEmployee(employee);
 
             if (ModelState.IsValid)
             {
                 employee.Gender = gender;
-                employee.FamilyRelations = _context.FamilyRelations.Select(f => f).Where(x => x.EmployeeId == employee.EmployeeID);
+                //employee.FamilyRelations = _context.FamilyRelations.Select(f => f).Where(x => x.EmployeeId == employee.EmployeeID);
                 Department department = await _context.Departments
                     .Include(d => d.Employees)
                     .SingleOrDefaultAsync(m => m.DepartmentCode == employee.DepartmentCode);
@@ -95,31 +98,56 @@ namespace HRM.Controllers
             {
                 return NotFound();
             }
+            DepartmentsDropDownList();
+            var employee = await _context.Employees
+                .Include(e => e.Department)
+                .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
 
-            var employee = await _context.Employees.SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
+           
 
-            if (employeeID == null)
-            {
-                return NotFound();
-            }
 
             return View(employee);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditEmployee([Bind("EmployeeCode, FullName, DateOfBirth, PlaceOfBirth, Family, Gender, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, Avatar, DepartmentCode, OutOfWork")] Employee employee, string gender)
+        public async Task<IActionResult> EditEmployee(int? employeeID, string gender)
         {
 
-            ModifyEmployee(employee);
+            if (employeeID == null) { return NotFound(); }
 
+            var employeeToUpdate = await _context.Employees.SingleOrDefaultAsync(e => e.EmployeeID == employeeID);
 
-            employee.Gender = gender;
-            _context.Update(employee);
-            await _context.SaveChangesAsync();
+            if (await TryUpdateModelAsync<Employee>(employeeToUpdate, ""))
+            {
+                try {
+                    employeeToUpdate.Gender = gender;
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException /* ex */)
+                {            //Log the error (uncomment ex variable name and write a log.)          
+                    ModelState.AddModelError("", "Unable to save changes. " +  
+                        "Try again, and if the problem persists, " +        
+                        "see your system administrator.");
+                }        return RedirectToAction("Index");
+            }
+            DepartmentsDropDownList();
+            return View(employeeToUpdate); 
 
+            //        if (ModelState.IsValid)
+            //{
+            //    Department department = await _context.Departments
+            //     .Include(d => d.Employees)
+            //     .FirstOrDefaultAsync(m => m.DepartmentCode == employee.DepartmentCode);
+            //    employee.Department = department;
+            //    employee.Gender = gender;
+            //    _context.Update(employee);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction("Index", "Employees");
+            //}
+            //DepartmentsDropDownList();
 
-            return View(employee);
+            //return View(employee);
         }
 
 
@@ -154,7 +182,7 @@ namespace HRM.Controllers
             var employee = await _employeeRepository.SearchAsync(employeeID);
             if (employee == null)
             {
-                return RedirectToAction("EmployeesManagement", "Main");
+                return RedirectToAction("Index", "Employees");
             }
 
             try
@@ -162,7 +190,7 @@ namespace HRM.Controllers
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
                 //TempData["message"] = $"{employee.Name} đã được xóa.";
-                return RedirectToAction("EmployeesManagement", "Main");
+                return RedirectToAction("Index", "Employees");
             }
             catch (DbUpdateException /* ex */)
             {
@@ -173,6 +201,9 @@ namespace HRM.Controllers
         #endregion
 
         #endregion
+
+        #region Mothods
+
         private void DepartmentsDropDownList()
         {
             var departmentsQuery = from d in _context.Departments
@@ -187,9 +218,6 @@ namespace HRM.Controllers
             return _context.Employees.Any(e => e.EmployeeID == employeeID);
         }
 
-        private void ModifyEmployee(Employee employee)
-        {
-
-        }
+        #endregion
     }
 }
