@@ -53,6 +53,7 @@ namespace HRM
 
             // Add application services.
             services.AddTransient<IEmployeeRepository, EFEmployeeRepository>();
+            services.AddTransient<IDepartmentRepository, EFDepartmentRepository>();
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
@@ -86,7 +87,7 @@ namespace HRM
                 routes.MapRoute(
                     name: null,
                     template: "",
-                    defaults: new { controller = "Home", action = "Index" });
+                    defaults: new { controller = "Employees", action = "Index" });
                 routes.MapRoute(name: null, template: "{controller}/{action}");
             });
 

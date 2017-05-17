@@ -5,8 +5,9 @@ using HRM.Data;
 using HRM.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using System;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using HRM.Models.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,10 +29,21 @@ namespace HRM.Controllers
 
         #region Employee Management
 
+        public async Task<ViewResult> Index()
+        {
+            return View(new EmployeesListViewModel
+            {
+                Employees = await _employeeRepository.EmployeesAsync()
+            });
+        }
+
         /*--- Employee Profile ---*/
         public async Task<IActionResult> EmployeeProfile(int employeeID)
         {
-            var employee = await _context.Employees.SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
+            Employee employee = new Employee();
+
+            employee = await _context.Employees.SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
+
             return View(employee);
         }
 
@@ -45,16 +57,17 @@ namespace HRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEmployee([Bind("EmployeeCode, FullName, DateOfBirth,PlaceOfBirth, Family, Gender, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, Avatar, DepartmentID, OutOfWork")] Employee employee, string gender)
+        public async Task<IActionResult> AddEmployee([Bind("EmployeeCode, FullName, DateOfBirth,PlaceOfBirth, Family, Gender, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, Avatar, DepartmentCode, OutOfWork")] Employee employee, string gender)
         {
             ModifyEmployee(employee);
 
             if (ModelState.IsValid)
             {
                 employee.Gender = gender;
+                employee.FamilyRelations = _context.FamilyRelations.Select(f => f).Where(x => x.EmployeeId == employee.EmployeeID);
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Employees", "Home");
+                return RedirectToAction("Index", "Employees");
             }
             return View(employee);
         }
@@ -82,7 +95,7 @@ namespace HRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditEmployee([Bind("EmployeeCode, FullName, DateOfBirth,PlaceOfBirth, Family, Gender, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, Avatar, DepartmentID, OutOfWork")] Employee employee, string gender)
+        public async Task<IActionResult> EditEmployee([Bind("EmployeeCode, FullName, DateOfBirth, PlaceOfBirth, Family, Gender, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, Avatar, DepartmentCode, OutOfWork")] Employee employee, string gender)
         {
 
             ModifyEmployee(employee);

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HRM.Models
 {
@@ -21,7 +23,9 @@ namespace HRM.Models
         public string Address { get; set; }
         public string TempAddress { get; set; }
         public string Avatar { get; set; }
-        public int DepartmentID { get; set; }
+        public int DepartmentCode { get; set; }
         public int OutOfWork { get; set; }
+
+        public IQueryable<FamilyRelation> FamilyRelations { get; set; }
     }
 }

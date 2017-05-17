@@ -19,7 +19,11 @@ namespace HRM.Data
         {
             base.OnModelCreating(builder);
             builder.Entity<Employee>().ToTable("Employee");
+            builder.Entity<Department>().ToTable("Department");
+            builder.Entity<FamilyRelation>().ToTable("FamilyRelation");
         }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<FamilyRelation> FamilyRelations { get; set; }
     }
 }

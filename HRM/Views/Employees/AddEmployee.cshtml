@@ -39,18 +39,12 @@
             <div><span asp-validation-for="Gender" class="text-danger"></span></div>
             <div class="btn-group btn-group-vertical" data-toggle="buttons">
                 <label class="btn active">
-                    <input type="radio" value="Nam" id="nam" name="gender" checked><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i> <span>  Nam</span>
+                    <input type="radio" value="Nam" id="nam" name="gender" checked><span>  Nam</span>
                 </label>
                 <label class="btn">
-                    <input type="radio" value="Nữ" id="nu" name="gender"><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-dot-circle-o fa-2x"></i><span> Nữ</span>
+                    <input type="radio" value="Nữ" id="nu" name="gender"><span> Nữ</span>
                 </label>
             </div>
-        </div>
-
-        <div class="form-group">
-            <label>Gia đình</label>
-            <div><span asp-validation-for="Family" class="text-danger"></span></div>
-            <input asp-for="Family" class="form-control" />
         </div>
 
         <div class="form-group">
@@ -103,8 +97,8 @@
 
         <div class="form-group">
             <label>Phòng ban</label>
-            <div><span asp-validation-for="DepartmentID" class="text-danger"></span></div>
-            <input asp-for="DepartmentID" class="form-control" />
+            <div><span asp-validation-for="DepartmentCode" class="text-danger"></span></div>
+            <input asp-for="DepartmentCode" class="form-control" />
         </div>
 
         <div class="form-group">
@@ -115,8 +109,8 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <button class="btn btn-primary" role="button" title="Save" type="submit"><i style="font-size: 20px; font-weight: bold;" class="pe-7s-diskette"></i></button>
-                <a asp-controller="Main" asp-action="EmployeesManagement" class="btn btn-primary" title="Back"><i style="font-size: 20px; font-weight: bold;" class="pe-7s-back"></i></a>
+                <button class="btn btn-primary" role="button" title="Lưu" type="submit"><i font-weight: bold;" class="fa fa-2x fa-save"></i></button>
+                <a asp-controller="Main" asp-action="EmployeesManagement" class="btn btn-primary" title="Quay về"><i class="fa fa-2x fa-arrow-left"></i></a>
             </div>
         </div>
     </form>

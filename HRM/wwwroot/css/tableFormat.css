@@ -1,0 +1,15 @@
+﻿.table tr th {
+    font-size: 12px;
+}
+
+#sidebar ul li a span {
+    font-size: 15px;
+}
+
+#sidebar ul li a i {
+    font-size: 15px;
+}
+
+.btn {
+    border-radius: 5px;
+}

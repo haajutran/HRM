@@ -12,12 +12,12 @@
                             MSNV
                         </div>
                         <div class="col-md-10">
-                            @Model.EmployeeCode
+                            @Model.EmployeeID
                         </div>
                     </div>   
                     
                 </div>
-                <hr style="width: 20em; margin-left: 0" />    
+                <hr style="width: 30em; margin-left: -30em"/>    
           
                 <div class="col-md-12">
                     <div class="row">
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                 </div>
-                <hr style="width: 20em; margin-left: 0" />
+                <hr style="width: 30em; margin-left: -30em" />    
 
                 <div class="col-md-12">
                     <div class="row">
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <hr style="width: 20em; margin-left: 0" />
+                <hr style="width: 30em; margin-left: -30em" />
 
                 <div class="col-md-12">
                     <div class="row">
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 </div>
-                <hr style="width: 20em; margin-left: 0" />
+                <hr style="width: 30em; margin-left: -30em" />
 
                 <div class="col-md-12">
                     <div class="row">
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                 </div>
-                <hr style="width: 20em; margin-left: 0" />
+                <hr style="width: 30em; margin-left: -30em" />
 
                 <div class="col-md-12">
                     <div class="row">
@@ -77,7 +77,43 @@
                         </div>
                     </div>
                 </div>               
+                <hr style="width: 30em; margin-left: -30em" />
 
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            Gia đình
+                        </div>
+                        <div class="col-md-10">
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Relationship</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{if (Model.FamilyRelations.Count() != 0)
+                                    {
+                                        foreach (var item in Model.FamilyRelations)
+                                        {
+                                            <tr>
+                                                <td>@item.Name</td>
+                                                <td>@item.Relation</td>
+                                            </tr>
+                                        }
+                                    }
+                                    }
+                                    <tr>
+                                        <td>
+                                            <a asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID" class="fa fa-plus"></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>   
             </div>
         </div>
     </div>
