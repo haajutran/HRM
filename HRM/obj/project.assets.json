@@ -11944,10 +11944,10 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Codes\\GitHub\\HRM\\HRM\\HRM.csproj",
+      "projectUniqueName": "D:\\Codes\\C#\\HRM\\HRM\\HRM\\HRM.csproj",
       "projectName": "HRM",
-      "projectPath": "D:\\Codes\\GitHub\\HRM\\HRM\\HRM.csproj",
-      "outputPath": "D:\\Codes\\GitHub\\HRM\\HRM\\obj\\",
+      "projectPath": "D:\\Codes\\C#\\HRM\\HRM\\HRM\\HRM.csproj",
+      "outputPath": "D:\\Codes\\C#\\HRM\\HRM\\HRM\\obj\\",
       "projectStyle": "PackageReference",
       "originalTargetFrameworks": [
         "netcoreapp1.0"
