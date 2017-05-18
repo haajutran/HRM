@@ -227,9 +227,13 @@
                                     {
                                         <tr>
                                             <td>Không có</td>
-                                            <td><a class="fa fa-plus btn btn-danger" asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID"></a></td>
                                         </tr>
                                     }
+                                    <tr>
+                                        <td>
+                                            <a class="fa fa-plus btn btn-danger" asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID"></a>
+                                        </td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
