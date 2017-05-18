@@ -63,7 +63,7 @@ namespace HRM.Controllers
             {
                 _context.Add(familyRelation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("EmployeeProfile", "Employees", familyRelation.EmployeeId);
+                return RedirectToAction("Index");
             }
             return View(familyRelation);
         }

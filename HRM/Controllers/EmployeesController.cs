@@ -49,6 +49,7 @@ namespace HRM.Controllers
 
             employee = await _context.Employees
                 .Include(e => e.Department)
+                .Include(f => f.FamilyRelations)
                 .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
 
             return View(employee);
