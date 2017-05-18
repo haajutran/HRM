@@ -1,16 +1,71 @@
 ﻿@model EmployeesListViewModel
-
-@{ 
-    ViewBag.Title = "Chi tiết phòng ban";
+@{
+    ViewBag.Title = "Quản lý nhân viên";
 }
 
 
+@*@if (User.IsInRole("Manager"))
+    {
+        <a class="btn btn-primary" asp-controller="Employees" asp-action="AddEmployee">Thêm Nhân Viên</a>
+    }*@
 <div id="content-header">
-    <div id="breadcrumb"><a asp-controller="Departments" asp-action="Index" title="Quản lý phòng ban" class="tip-bottom"> Quản lý phòng ban </a> <a asp-controller="Departments" title="Chi tiết phòng ban" asp-action="DepartmentDetail"> Chi tiết phòng ban </a></div>
+    <div id="breadcrumb"><a asp-controller="Employees" asp-action="Index" title="Quản lý nhân viên" class="tip-bottom"> Quản lý nhân viên </a></div>
 
 </div>
 <!--End-breadcrumbs-->
 <!--Action boxes-->
 <div class="container-fluid">
-    
+    <div style="margin: auto;">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div style="text-align: center;margin: 2em;">
+            <h3><b>DANH SÁCH NHÂN VIÊN</b></h3>
+        </div>
+        <a class="btn btn-primary" asp-controller="Employees" asp-action="AddEmployee" style="margin-bottom: 2em;">Thêm Nhân Viên</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><span>MSNV</span></th>
+                    <th><span>Họ và Tên</span></th>
+                    <th><span>Điện thoại</span></th>
+                    <th><span>Bộ phận</span></th>
+                    <th><span>Email</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Employees)
+                {
+                    <tr>        
+                        <td style="text-align: center; padding: 0">
+                            <a style="color: #dd8787;" asp-controller="Employees" asp-action="EmployeeProfile" asp-route-employeeID="@item.EmployeeID">
+                                <div style="padding-top: 1em;">
+                                    @item.EmployeeCode
+                                </div>
+                            </a>
+                        </td>
+                        <td>@item.FullName</td>
+                        <td>@item.PhoneNumber</td>
+                        <td>@item.DepartmentCode</td>
+                        <td>@item.Email</td>
+                        <td>
+                            <form asp-action="DeleteConfirmed" asp-controller="Employees" asp-route-employeeID="@item.EmployeeID" method="post">
+                                <a class="btn btn-sm btn-primary" asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@item.EmployeeID">
+                                    <i style="font-size: 20px" class="fa fa-pencil"></i>
+                                </a>
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-danger">
+                                    <i style="font-size: 20px" class="fa fa-trash"></i>
+                                </button>
+
+                            </form>
+
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
 </div>

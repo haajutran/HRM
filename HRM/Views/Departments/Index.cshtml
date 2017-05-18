@@ -18,7 +18,7 @@
 <div class="container-fluid">
     <div>
         <div asp-validation-summary="All" class="text-danger"></div>
-        <div style="text-align: center;margin: 2em;">
+        <div style="text-align: center; margin: 2em;">
             <h3><b>DANH SÁCH PHÒNG BAN</b></h3>
         </div>
 
@@ -27,18 +27,26 @@
         </div>
 
         <table class="table table-bordered" style="width: 50%; margin: auto">
-            <thead>
+            <thead class="thead-inverse">
                 <tr>
-                    <th style="width: 10em; height: 2em; font-size: 15px">Mã Số Phòng Ban</th>
-                    <th style="height: 2em; font-size: 15px">Tên Phòng Ban</th>
+                    <th style="width: 15em; height: 2em;"><span>Mã Số Phòng Ban</span></th>
+                    <th style="height: 2em;"><span>Tên Phòng Ban</span></th>
                     <th style="width: 10em;"></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Departments)
-            {
+                {
                     <tr>
-                        <td style="text-align: center"><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentCode="@item.DepartmentCode">@item.DepartmentCode</a></td>
+
+                        <td style="text-align: center; padding: 0">
+                            <a style="color: #dd8787;" asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentCode="@item.DepartmentCode">
+                                <div style="padding-top: 1em;">
+                                    @item.DepartmentCode
+                                </div>
+                            </a>
+                        </td>
+
                         <td>@item.DepartmentName</td>
                         <td>
                             <form asp-action="DeleteConfirmed" asp-controller="Departments" asp-route-departmentCode="@item.DepartmentCode" method="post">
@@ -56,7 +64,6 @@
                         </td>
                     </tr>
                 }
-
             </tbody>
         </table>
 

@@ -18,6 +18,76 @@
     background-color: aliceblue;
 }
 
-.genderForm .btn.active {
-    background-color: #0094ff;
+    .genderForm .btn.active {
+        background-color: #0094ff;
+    }
+
+thead tr th {
+    text-align: center;
 }
+
+    thead tr th span {
+        font-size: 15px;
+    }
+
+tr td {
+    font-size: 15px;
+}
+
+/*-------------------------------------------------*/
+
+.thead-inverse th {
+    color: #fff;
+    background-color: #292b2c;
+}
+
+.thead-default th {
+    color: #fff;
+    background-color: #9bce59;
+}
+
+
+
+.frame {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+    .frame .employeeDetail {
+        border: 1px solid #72ca89;
+    }
+
+    .frame .detailBody {
+        padding: 5px 1em 5px 1em;
+        font-size: 15px;
+    }
+
+        .frame .detailBody .form-group {
+            margin-bottom: 0.5em;
+        }
+
+        .frame .detailBody .form-content {
+            padding: 5px 1em 5px 1em;
+            min-height: 3em;
+        }
+
+            .frame .detailBody .form-content .control-label {
+                padding-top: 5px;
+                text-align: right;
+            }
+
+            .frame .detailBody .form-content .right-body {
+                padding: 6px 0 0 10px;
+                height: 100%;
+                background-color: #cecece;
+                border-radius: 2px;
+            }
+
+    .frame .detailCaption {
+        padding: 10px 0 10px 10px;
+        font-size: 18px;
+    }
+
+    .frame .detailTitle {
+        background-color: #72ca89;
+    }

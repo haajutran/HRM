@@ -6,123 +6,190 @@
 <!--End-breadcrumbs-->
 <!--Action boxes-->
 <div class="container-fluid">
-
-    <h2 style="text-align: center">THÔNG TIN NHÂN VIÊN</h2>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row detailTable" style="margin-left: 25em;">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-2">
-                                MSNV
-                            </div>
-                            <div class="col-md-10">
-                                @Model.EmployeeID
-                            </div>
-                        </div>
-
-                    </div>
-                    <hr style="width: 30em; margin-left: -30em" />
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-2">
-                                Họ và Tên
-                            </div>
-                            <div class="col-md-10">
-                                @Model.FullName
-                            </div>
+    <h2 style="text-align: center; margin-top: 2rem">THÔNG TIN NHÂN VIÊN</h2>
+    <hr />
+    <div class="row" style="margin-left: 1em;margin-right: 1em">
+        <div class="col-6">
+            <div class="frame">
+                <div class="employeeDetail">
+                    <div class="detailTitle">
+                        <div class="detailCaption">
+                            <i class="fa fa-address-book-o"></i> Chi Tiết Nhân Viên
                         </div>
                     </div>
-                    <hr style="width: 30em; margin-left: -30em" />
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-2">
-                                Giới tính
+                    <div class="detailBody">
+                        <form>
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Ảnh đại diện</label>
+                                        <div class="col-9">
+                                            <div class="">
+                                                <img style="width: 100px; height: 100px" src="http://froiden.cloudapp.net/hrm_demo/profileImages/default.jpg" alt="ProfileImage">
+                                                <input type="hidden" name="hiddenImage" value="default.jpg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Họ và Tên</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.FullName</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Giới tính</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.Gender</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Ngày sinh</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.DateOfBirth</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Nơi sinh</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.PlaceOfBirth</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Email</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.Email</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Quê quán</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.HomeTown</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Địa chỉ</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.Address</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Tỉnh</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.PlaceOfProvide</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Thành phố</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.City</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Quốc gia</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.Region</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Tạm trú</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.TempAddress</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Số điện thoại</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.PhoneNumber</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Số CMND</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.CitizenID</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Phòng ban</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.Department.DepartmentName</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Nghỉ việc</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.OutOfWork</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-10">
-                                @Model.Gender
-                            </div>
-                        </div>
-                    </div>
-                    <hr style="width: 30em; margin-left: -30em" />
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-2">
-                                Địa chỉ
-                            </div>
-                            <div class="col-md-10">
-                                @Model.Address
-                            </div>
-                        </div>
-                    </div>
-                    <hr style="width: 30em; margin-left: -30em" />
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-2">
-                                Nơi sinh
-                            </div>
-                            <div class="col-md-10">
-                                @Model.PlaceOfBirth
-                            </div>
-                        </div>
-                    </div>
-                    <hr style="width: 30em; margin-left: -30em" />
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-2">
-                                Ngày sinh
-                            </div>
-                            <div class="col-md-10">
-                                @Model.DateOfBirth
-                            </div>
-                        </div>
-                    </div>
-                    <hr style="width: 30em; margin-left: -30em" />
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-2">
-                                Gia đình
-                            </div>
-                            <div class="col-md-10">
-                                <table class="table table-condensed">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Relationship</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @*@{if (Model.FamilyRelations.Count() != 0)
-                                            {
-                                                foreach (var item in Model.FamilyRelations)
-                                                {
-                                                    <tr>
-                                                        <td>@item.Name</td>
-                                                        <td>@item.Relation</td>
-                                                    </tr>
-                                                }
-                                            }
-                                            }*@
-                                        <tr>
-                                            <td>
-                                                <a asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID" class="fa fa-plus"></a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-6">
+
+        </div>
     </div>
+
 </div>
-    

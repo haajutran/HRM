@@ -78,14 +78,29 @@ namespace HRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditDepartment([Bind("DepartmentCode, DepartmentName")] Department department)
+        public async Task<IActionResult> EditDepartmentPost(int? departmentCode)
         {
 
-            _context.Update(department);
-            await _context.SaveChangesAsync();
+            if (departmentCode == null) { return NotFound(); }
 
+            var departmentToUpdate = await _context.Departments.SingleOrDefaultAsync(d => d.DepartmentCode == departmentCode);
 
-            return View(department);
+            if (await TryUpdateModelAsync<Department>(departmentToUpdate, ""))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException /* ex */)
+                {            //Log the error (uncomment ex variable name and write a log.)          
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+                return RedirectToAction("Index");
+            }
+
+            return View(departmentToUpdate);
         }
 
 

@@ -36,6 +36,7 @@ namespace HRM.Controllers
             return View(new EmployeesListViewModel
             {
                 Employees = await _employeeRepository.EmployeesAsync()
+
             });
         }
 
@@ -46,7 +47,9 @@ namespace HRM.Controllers
         {
             Employee employee = new Employee();
 
-            employee = await _context.Employees.SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
+            employee = await _context.Employees
+                .Include(e => e.Department)
+                .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
 
             return View(employee);
         }

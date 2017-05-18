@@ -20,9 +20,9 @@ namespace HRM.Models
             }
                     
             context.Departments.AddRange(
-                new Department { DepartmentCode = 1, DepartmentName = "Phòng nhân sự" },
-                new Department { DepartmentCode = 2, DepartmentName = "Phòng tài chính" },
-                new Department { DepartmentCode = 3, DepartmentName = "Phòng kỹ thuật" }
+                new Department { DepartmentCode = 1, DepartmentName = "Bộ phần nhân sự" },
+                new Department { DepartmentCode = 2, DepartmentName = "Bộ phận tài chính" },
+                new Department { DepartmentCode = 3, DepartmentName = "Bộ phận kỹ thuật" }
                 );
 
             context.SaveChanges();
