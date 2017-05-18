@@ -39,5 +39,7 @@ namespace HRM.Models
 
         [Display(Name = "Ghi chú")]
         public string Description { get; set; }
+
+        public Employee Employee { get; set; }
     }
 }

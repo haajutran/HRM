@@ -27,7 +27,7 @@ namespace HRM.Models
         public string Avatar { get; set; }
         public int OutOfWork { get; set; }
         public int DepartmentCode { get; set; }
-        //public IQueryable<FamilyRelation> FamilyRelations { get; set; }
+        public ICollection<FamilyRelation> FamilyRelations { get; set; }
         public Department Department { get; set; }
     }
 }

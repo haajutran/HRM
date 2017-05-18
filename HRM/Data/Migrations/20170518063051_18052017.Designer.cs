@@ -8,8 +8,8 @@ using HRM.Data;
 namespace HRM.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170516025335_FamilyRelation")]
-    partial class FamilyRelation
+    [Migration("20170518063051_18052017")]
+    partial class _18052017
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,6 +66,20 @@ namespace HRM.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("HRM.Models.Department", b =>
+                {
+                    b.Property<int>("DepartmentID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DepartmentCode");
+
+                    b.Property<string>("DepartmentName");
+
+                    b.HasKey("DepartmentID");
+
+                    b.ToTable("Department");
+                });
+
             modelBuilder.Entity("HRM.Models.Employee", b =>
                 {
                     b.Property<int>("EmployeeID")
@@ -81,13 +95,13 @@ namespace HRM.Data.Migrations
 
                     b.Property<string>("DateOfBirth");
 
-                    b.Property<int>("DepartmentID");
+                    b.Property<int>("DepartmentCode");
+
+                    b.Property<int?>("DepartmentID");
 
                     b.Property<string>("Email");
 
                     b.Property<int>("EmployeeCode");
-
-                    b.Property<int>("Family");
 
                     b.Property<string>("FullName");
 
@@ -108,6 +122,8 @@ namespace HRM.Data.Migrations
                     b.Property<string>("TempAddress");
 
                     b.HasKey("EmployeeID");
+
+                    b.HasIndex("DepartmentID");
 
                     b.ToTable("Employee");
                 });
@@ -137,6 +153,8 @@ namespace HRM.Data.Migrations
                     b.Property<string>("WorkPlace");
 
                     b.HasKey("FamilyRelationId");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("FamilyRelation");
                 });
@@ -246,6 +264,21 @@ namespace HRM.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("HRM.Models.Employee", b =>
+                {
+                    b.HasOne("HRM.Models.Department", "Department")
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentID");
+                });
+
+            modelBuilder.Entity("HRM.Models.FamilyRelation", b =>
+                {
+                    b.HasOne("HRM.Models.Employee", "Employee")
+                        .WithMany("FamilyRelations")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

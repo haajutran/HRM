@@ -5,10 +5,24 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace HRM.Data.Migrations
 {
-    public partial class FamilyRelation : Migration
+    public partial class _18052017 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Department",
+                columns: table => new
+                {
+                    DepartmentID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DepartmentCode = table.Column<int>(nullable: false),
+                    DepartmentName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Department", x => x.DepartmentID);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Employee",
                 columns: table => new
@@ -20,10 +34,10 @@ namespace HRM.Data.Migrations
                     CitizenID = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     DateOfBirth = table.Column<string>(nullable: true),
-                    DepartmentID = table.Column<int>(nullable: false),
+                    DepartmentCode = table.Column<int>(nullable: false),
+                    DepartmentID = table.Column<int>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     EmployeeCode = table.Column<int>(nullable: false),
-                    Family = table.Column<int>(nullable: false),
                     FullName = table.Column<string>(nullable: true),
                     Gender = table.Column<string>(nullable: true),
                     HomeTown = table.Column<string>(nullable: true),
@@ -37,6 +51,12 @@ namespace HRM.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employee", x => x.EmployeeID);
+                    table.ForeignKey(
+                        name: "FK_Employee_Department_DepartmentID",
+                        column: x => x.DepartmentID,
+                        principalTable: "Department",
+                        principalColumn: "DepartmentID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,16 +78,35 @@ namespace HRM.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FamilyRelation", x => x.FamilyRelationId);
+                    table.ForeignKey(
+                        name: "FK_FamilyRelation_Employee_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeID",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employee_DepartmentID",
+                table: "Employee",
+                column: "DepartmentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FamilyRelation_EmployeeId",
+                table: "FamilyRelation",
+                column: "EmployeeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "FamilyRelation");
+
+            migrationBuilder.DropTable(
                 name: "Employee");
 
             migrationBuilder.DropTable(
-                name: "FamilyRelation");
+                name: "Department");
         }
     }
 }
