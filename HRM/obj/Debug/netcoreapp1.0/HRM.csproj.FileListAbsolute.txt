@@ -48,7 +48,6 @@ D:\Users\Gideon\Source\Repos\NewRepo0\HRM\bin\Debug\netcoreapp1.0\HRM.runtimecon
 D:\Users\Gideon\Source\Repos\NewRepo0\HRM\bin\Debug\netcoreapp1.0\HRM.runtimeconfig.dev.json
 D:\Users\Gideon\Source\Repos\NewRepo0\HRM\bin\Debug\netcoreapp1.0\HRM.dll
 D:\Users\Gideon\Source\Repos\NewRepo0\HRM\bin\Debug\netcoreapp1.0\HRM.pdb
-D:\Users\Gideon\Source\Repos\NewRepo0\HRM\obj\Debug\netcoreapp1.0\HRM.csprojResolveAssemblyReference.cache
 D:\Users\Gideon\Source\Repos\NewRepo0\HRM\obj\Debug\netcoreapp1.0\HRM.AssemblyInfo.cs
 D:\Users\Gideon\Source\Repos\NewRepo0\HRM\obj\Debug\netcoreapp1.0\HRM.dll
 D:\Users\Gideon\Source\Repos\NewRepo0\HRM\obj\Debug\netcoreapp1.0\HRM.pdb
