@@ -1,4 +1,4 @@
-@model HRM.Models.FamilyRelation
+﻿@model HRM.Models.FamilyRelation
 
 @{
     ViewData["Title"] = "Delete";
@@ -11,12 +11,11 @@
     <h4>FamilyRelation</h4>
     <hr />
     <dl class="dl-horizontal">
-        <input type="hidden" asp-for="FamilyRelationId" />
         <dt>
-            @Html.DisplayNameFor(model => model.EmployeeId)
+            Nhân viên quan hệ
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.EmployeeId)
+            @Html.DisplayFor(model => model.Employee.FullName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Name)
@@ -68,10 +67,10 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+    <form asp-route-id="@Model.FamilyRelationId" asp-action="DeleteConfirmed">
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            <a asp-action="Index">Back to List</a>
+            <button type="submit" class="btn btn-danger"><i style="font-size: 25px" class="fa fa-trash"></i></button>
+            <a class="btn btn-primary" asp-action="Index" asp-controller="FamilyRelations"><i class="fa fa-arrow-left" style="font-size: 25px"></i></a>
         </div>
     </form>
 </div>

@@ -163,16 +163,6 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="row form-content">
-                                        <label class="control-label col-3">Phòng ban</label>
-                                        <div class="col-9">
-                                            <div class="right-body">
-                                                <span>@Model.Department.DepartmentName</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row form-content">
                                         <label class="control-label col-3">Nghỉ việc</label>
                                         <div class="col-9">
                                             <div class="right-body">
@@ -206,6 +196,7 @@
                                     <th>Nơi làm</th>
                                     <th>Điện thoại</th>
                                     <th>Quan hệ</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -214,12 +205,15 @@
                                         foreach (var p in Model.FamilyRelations)
                                         {
                                             <tr>
-                                                <td>@p.Name</td>
+                                                <td><a asp-controller="FamilyRelations" asp-action="Details" asp-route-id="@p.FamilyRelationId">@p.Name</a></td>
                                                 <td>@p.DateOfBirth</td>
                                                 <td>@p.Occupation</td>
                                                 <td>@p.WorkPlace</td>
                                                 <td>@p.PhoneNumber</td>
                                                 <td>@p.Relation</td>
+                                                <td>
+                                                    <a class="fa fa-trash btn btn-alert" style="width:100%" asp-controller="FamilyRelations" asp-action="Delete" asp-route-familyRelationID="@p.FamilyRelationId"></a>
+                                                </td>
                                             </tr>
                                         }
                                     }
@@ -231,7 +225,62 @@
                                     }
                                     <tr>
                                         <td>
-                                            <a class="fa fa-plus btn btn-danger" asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID"></a>
+                                            <a class="fa fa-plus btn btn-success" style="width:100%" asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID"></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="frame">
+                <div class="employeeDetail">
+                    <div class="detailTitle">
+                        <div class="detailCaption">
+                            <i class="fa fa-address-book-o"></i> Phòng Ban Trực Thuộc
+                        </div>
+                    </div>
+                    <div class="detailBody">
+                        <table class="table-striped table-bordered">
+                            <thead class="thead-inverse">
+                                <tr>
+                                    <th>Phòng</th>
+                                    <th>Mã phòng</th>
+                                    <th>Chức danh</th>
+                                    <th>Số lượng việc</th>
+                                    <th>Mô tả</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{  if (Model.Departments != null)
+                                    {
+                                        foreach (var d in Model.Departments)
+                                        {
+                                            <tr>
+                                                <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-id="@d.DepartmentID">@d.DepartmentName</a></td>
+                                                <td>@d.DepartmentCode</td>
+                                                <td>@d.DepartmentTitles.SingleOrDefault().Title</td>
+                                                <td>@d.DepartmentTasks.Count</td>
+                                                <td>@d.Description</td>
+                                                <td>
+                                                    <a class="fa fa-trash btn btn-alert" style="width:100%" href="#"></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>Không có</td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td>
+                                            <a class="fa fa-plus btn btn-success" style="width:100%" asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID"></a>
                                         </td>
                                     </tr>
                                 }

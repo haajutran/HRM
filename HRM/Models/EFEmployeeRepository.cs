@@ -17,7 +17,7 @@ namespace HRM.Models
 
         public async Task<IEnumerable<Employee>> EmployeesAsync()
         {
-            IQueryable<Employee> employees = context.Employees.Include(e => e.Department);
+            IQueryable<Employee> employees = context.Employees.Include(e => e.Departments);
             return await employees.ToListAsync();
         }
 

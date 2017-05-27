@@ -22,7 +22,10 @@ namespace HRM.Controllers
         // GET: FamilyRelations
         public async Task<IActionResult> Index()
         {
-            return View(await _context.FamilyRelations.ToListAsync());
+            var famRel = await _context.FamilyRelations
+                .Include(e => e.Employee)
+                .ToListAsync();
+            return View(famRel);
         }
 
         // GET: FamilyRelations/Details/5
@@ -34,6 +37,7 @@ namespace HRM.Controllers
             }
 
             var familyRelation = await _context.FamilyRelations
+                .Include(e => e.Employee)
                 .SingleOrDefaultAsync(m => m.FamilyRelationId == id);
             if (familyRelation == null)
             {
@@ -76,7 +80,9 @@ namespace HRM.Controllers
                 return NotFound();
             }
 
-            var familyRelation = await _context.FamilyRelations.SingleOrDefaultAsync(m => m.FamilyRelationId == id);
+            var familyRelation = await _context.FamilyRelations
+                .Include(e => e.Employee)
+                .SingleOrDefaultAsync(m => m.FamilyRelationId == id);
             if (familyRelation == null)
             {
                 return NotFound();
@@ -120,15 +126,16 @@ namespace HRM.Controllers
         }
 
         // GET: FamilyRelations/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? familyRelationID)
         {
-            if (id == null)
+            if (familyRelationID == null)
             {
                 return NotFound();
             }
 
             var familyRelation = await _context.FamilyRelations
-                .SingleOrDefaultAsync(m => m.FamilyRelationId == id);
+                .Include(e => e.Employee)
+                .SingleOrDefaultAsync(m => m.FamilyRelationId == familyRelationID);
             if (familyRelation == null)
             {
                 return NotFound();
@@ -138,11 +145,13 @@ namespace HRM.Controllers
         }
 
         // POST: FamilyRelations/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var familyRelation = await _context.FamilyRelations.SingleOrDefaultAsync(m => m.FamilyRelationId == id);
+            var familyRelation = await _context.FamilyRelations
+                .Include(e => e.Employee)
+                .SingleOrDefaultAsync(m => m.FamilyRelationId == id);
             _context.FamilyRelations.Remove(familyRelation);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

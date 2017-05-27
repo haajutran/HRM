@@ -11,10 +11,8 @@ namespace HRM.Models
         public int EmployeeCode { get; set; }
         public string FullName { get; set; }
         public string Gender { get; set; }
-        //public int Family { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-        [DataType(DataType.Date)]
         public string DateOfBirth { get; set; }
         public string PlaceOfBirth { get; set; }
         public string HomeTown { get; set; }
@@ -27,7 +25,11 @@ namespace HRM.Models
         public string Avatar { get; set; }
         public int OutOfWork { get; set; }
         public int DepartmentCode { get; set; }
+        public ICollection<Pay> Pays { get; set; }
+        public ICollection<Salary> SalaryRecords { get; set; }
+        public ICollection<DepartmentTitle> DepartmentTitles { get; set; }
+        public ICollection<DepartmentTask> DepartmentTasks { get; set; }
         public ICollection<FamilyRelation> FamilyRelations { get; set; }
-        public Department Department { get; set; }
+        public ICollection<Department> Departments { get; set; }
     }
 }

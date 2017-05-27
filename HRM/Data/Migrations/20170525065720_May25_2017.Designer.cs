@@ -8,8 +8,8 @@ using HRM.Data;
 namespace HRM.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170518063051_18052017")]
-    partial class _18052017
+    [Migration("20170525065720_May25_2017")]
+    partial class May25_2017
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,9 +75,65 @@ namespace HRM.Data.Migrations
 
                     b.Property<string>("DepartmentName");
 
+                    b.Property<string>("Description");
+
+                    b.Property<int?>("EmployeeID");
+
                     b.HasKey("DepartmentID");
 
+                    b.HasIndex("EmployeeID");
+
                     b.ToTable("Department");
+                });
+
+            modelBuilder.Entity("HRM.Models.DepartmentTask", b =>
+                {
+                    b.Property<int>("DepartmentTaskID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("DepartmentID");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int?>("EmployeeID");
+
+                    b.Property<int?>("PayID");
+
+                    b.Property<string>("Title");
+
+                    b.Property<int>("WorkHours");
+
+                    b.HasKey("DepartmentTaskID");
+
+                    b.HasIndex("DepartmentID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.HasIndex("PayID");
+
+                    b.ToTable("DepartmentTask");
+                });
+
+            modelBuilder.Entity("HRM.Models.DepartmentTitle", b =>
+                {
+                    b.Property<int>("DepartmentTitleID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("DepartmentID");
+
+                    b.Property<string>("Description");
+
+                    b.Property<int?>("EmployeeID");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("DepartmentTitleID");
+
+                    b.HasIndex("DepartmentID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.ToTable("DepartmentTitle");
                 });
 
             modelBuilder.Entity("HRM.Models.Employee", b =>
@@ -96,8 +152,6 @@ namespace HRM.Data.Migrations
                     b.Property<string>("DateOfBirth");
 
                     b.Property<int>("DepartmentCode");
-
-                    b.Property<int?>("DepartmentID");
 
                     b.Property<string>("Email");
 
@@ -122,8 +176,6 @@ namespace HRM.Data.Migrations
                     b.Property<string>("TempAddress");
 
                     b.HasKey("EmployeeID");
-
-                    b.HasIndex("DepartmentID");
 
                     b.ToTable("Employee");
                 });
@@ -157,6 +209,42 @@ namespace HRM.Data.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("FamilyRelation");
+                });
+
+            modelBuilder.Entity("HRM.Models.Pay", b =>
+                {
+                    b.Property<int>("PayID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Checked");
+
+                    b.Property<int?>("EmployeeID");
+
+                    b.Property<string>("RecordDate");
+
+                    b.HasKey("PayID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.ToTable("Pay");
+                });
+
+            modelBuilder.Entity("HRM.Models.Salary", b =>
+                {
+                    b.Property<int>("SalaryID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<long>("Earned");
+
+                    b.Property<int?>("EmployeeID");
+
+                    b.Property<string>("RecordDate");
+
+                    b.HasKey("SalaryID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.ToTable("Salary");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -266,11 +354,37 @@ namespace HRM.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("HRM.Models.Employee", b =>
+            modelBuilder.Entity("HRM.Models.Department", b =>
+                {
+                    b.HasOne("HRM.Models.Employee")
+                        .WithMany("Departments")
+                        .HasForeignKey("EmployeeID");
+                });
+
+            modelBuilder.Entity("HRM.Models.DepartmentTask", b =>
                 {
                     b.HasOne("HRM.Models.Department", "Department")
-                        .WithMany("Employees")
+                        .WithMany("DepartmentTasks")
                         .HasForeignKey("DepartmentID");
+
+                    b.HasOne("HRM.Models.Employee", "Employee")
+                        .WithMany("DepartmentTasks")
+                        .HasForeignKey("EmployeeID");
+
+                    b.HasOne("HRM.Models.Pay", "Pay")
+                        .WithMany()
+                        .HasForeignKey("PayID");
+                });
+
+            modelBuilder.Entity("HRM.Models.DepartmentTitle", b =>
+                {
+                    b.HasOne("HRM.Models.Department")
+                        .WithMany("DepartmentTitles")
+                        .HasForeignKey("DepartmentID");
+
+                    b.HasOne("HRM.Models.Employee")
+                        .WithMany("DepartmentTitles")
+                        .HasForeignKey("EmployeeID");
                 });
 
             modelBuilder.Entity("HRM.Models.FamilyRelation", b =>
@@ -279,6 +393,20 @@ namespace HRM.Data.Migrations
                         .WithMany("FamilyRelations")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("HRM.Models.Pay", b =>
+                {
+                    b.HasOne("HRM.Models.Employee")
+                        .WithMany("Pays")
+                        .HasForeignKey("EmployeeID");
+                });
+
+            modelBuilder.Entity("HRM.Models.Salary", b =>
+                {
+                    b.HasOne("HRM.Models.Employee", "Employee")
+                        .WithMany("SalaryRecords")
+                        .HasForeignKey("EmployeeID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

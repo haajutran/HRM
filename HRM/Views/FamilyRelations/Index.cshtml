@@ -20,7 +20,7 @@
             <thead class="thead-inverse">
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.EmployeeId)
+                        Nhân viên quan hệ
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.Name)
@@ -54,7 +54,7 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.EmployeeId)
+                            <a style="color: #db5b53" asp-controller="Employees" asp-action="EmployeeProfile" asp-route-employeeID="@item.EmployeeId">@Html.DisplayFor(modelItem => item.Employee.FullName)</a>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Name)

@@ -18,7 +18,6 @@ namespace HRM.Models
         [Display(Name = "Tên")]
         public string Name { get; set; }
 
-        [DataType(DataType.Date)]
         [Display(Name = "Ngày sinh")]
         public string DateOfBirth { get; set; }
 

@@ -48,8 +48,13 @@ namespace HRM.Controllers
             Employee employee = new Employee();
 
             employee = await _context.Employees
-                .Include(e => e.Department)
+                .Include(e => e.Departments)
+                    .ThenInclude(i => i.DepartmentTitles)
+                .Include(e => e.Departments)
+                    .ThenInclude(a => a.DepartmentTasks)
+                        .ThenInclude(p => p.Pay)
                 .Include(f => f.FamilyRelations)
+                .Include(s => s.SalaryRecords)
                 .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
 
             return View(employee);
@@ -78,11 +83,11 @@ namespace HRM.Controllers
             {
                 employee.Gender = gender;
                 //employee.FamilyRelations = _context.FamilyRelations.Select(f => f).Where(x => x.EmployeeId == employee.EmployeeID);
-                Department department = await _context.Departments
-                    .Include(d => d.Employees)
-                    .SingleOrDefaultAsync(m => m.DepartmentCode == employee.DepartmentCode);
-                employee.Department = department;
-                department.Employees.Add(employee);
+                //Department department = await _context.Departments
+                //    .Include(d => d.Employees)
+                //    .SingleOrDefaultAsync(m => m.DepartmentCode == employee.DepartmentCode);
+                //employee.Departments = department;
+                //department.Employees.Add(employee);
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Employees");
@@ -104,7 +109,6 @@ namespace HRM.Controllers
             }
             DepartmentsDropDownList();
             var employee = await _context.Employees
-                .Include(e => e.Department)
                 .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
 
            
@@ -155,7 +159,7 @@ namespace HRM.Controllers
         }
 
 
-        #endregion
+        #endregion --------------------------------------
 
         #region Delete Employee
         [Authorize(Roles = "Manager")]
@@ -202,11 +206,11 @@ namespace HRM.Controllers
                 return RedirectToAction("DeleteEmployee", new { id = employeeID, saveChangesError = true });
             }
         }
-        #endregion
+        #endregion -------------------------------------- --------------------------------------
 
-        #endregion
+        #endregion --------------------------------------
 
-        #region Mothods
+        #region Methods --------------------------------------
 
         private void DepartmentsDropDownList()
         {

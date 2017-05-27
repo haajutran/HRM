@@ -21,9 +21,18 @@ namespace HRM.Data
             builder.Entity<Employee>().ToTable("Employee");
             builder.Entity<Department>().ToTable("Department");
             builder.Entity<FamilyRelation>().ToTable("FamilyRelation");
+            builder.Entity<DepartmentTask>().ToTable("DepartmentTask");
+            builder.Entity<DepartmentTitle>().ToTable("DepartmentTitle");
+            builder.Entity<Pay>().ToTable("Pay");
+            builder.Entity<Salary>().ToTable("Salary");
         }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<FamilyRelation> FamilyRelations { get; set; }
+        public DbSet<DepartmentTask> DepartmentTasks { get; set; }
+        public DbSet<DepartmentTitle> DepartmentTitles { get; set; }
+        public DbSet<Pay> Pays { get; set; }
+        public DbSet<Salary> SalaryRecords { get; set; }
+
     }
 }

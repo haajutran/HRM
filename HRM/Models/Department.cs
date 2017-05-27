@@ -10,7 +10,8 @@ namespace HRM.Models
         public int DepartmentID { get; set; }
         public int DepartmentCode { get; set; }
         public string DepartmentName { get; set; }
-        public ICollection<Employee> Employees { get; set; }
-
+        public string Description { get; set; }
+        public ICollection<DepartmentTask> DepartmentTasks { get; set; }
+        public ICollection<DepartmentTitle> DepartmentTitles { get; set; }
     }
 }

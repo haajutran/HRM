@@ -18,7 +18,11 @@ namespace HRM.Models
 
         public async Task<IEnumerable<Department>> DepartmentsAsync()
         {
-            IQueryable<Department> departments = context.Departments;
+            IQueryable<Department> departments = context.Departments
+                .Include(ta => ta.DepartmentTasks)
+                    .ThenInclude(e => e.Employee)
+                .Include(ti => ti.DepartmentTitles)
+                .AsNoTracking();
             return await departments.ToListAsync();
         }
 
