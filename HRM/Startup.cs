@@ -92,6 +92,7 @@ namespace HRM
             });
 
             SeedData.EnsurePopulated(app);
+            RolesData.SeedRoles(app.ApplicationServices).Wait();
             IdentitySeedData.EnsurePopulated(app);
         }
     }
