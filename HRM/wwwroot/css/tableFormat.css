@@ -12,6 +12,9 @@
 
 .btn {
     border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 14px;
 }
 
 .genderForm .btn {

@@ -12,82 +12,83 @@
         <div style="text-align: center;margin: 2em;">
             <h3><b>DANH SÁCH THÂN NHÂN</b></h3>
         </div>
-
-        <p>
-            <a class="btn btn-primary" asp-action="Create" style="margin-bottom: 2em;">Thêm Thân Nhân</a>
-        </p>
-        <table class="table table-striped table-bordered">
-            <thead class="thead-inverse">
-                <tr>
-                    <th>
-                        Nhân viên quan hệ
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DateOfBirth)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Relation)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Occupation)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Address)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.WorkPlace)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.PhoneNumber)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-inverse">
                     <tr>
-                        <td>
-                            <a style="color: #db5b53" asp-controller="Employees" asp-action="EmployeeProfile" asp-route-employeeID="@item.EmployeeId">@Html.DisplayFor(modelItem => item.Employee.FullName)</a>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateOfBirth)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Relation)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Occupation)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.WorkPlace)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PhoneNumber)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.FamilyRelationId">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.FamilyRelationId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.FamilyRelationId">Delete</a>
-                        </td>
+                        <th>
+                            Nhân viên quan hệ
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateOfBirth)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Relation)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Occupation)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Address)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.WorkPlace)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a style="color: #db5b53" asp-controller="Employees" asp-action="EmployeeProfile" asp-route-employeeID="@item.EmployeeId">@Html.DisplayFor(modelItem => item.Employee.FullName)</a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateOfBirth)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Relation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Occupation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.WorkPlace)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.FamilyRelationId">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.FamilyRelationId">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.FamilyRelationId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>             
+            </table>
+            <div>
+                <a class="btn btn-primary" asp-action="Create" style="margin-bottom: 2em;">Thêm Thân Nhân</a>
+            </div>
+        </div>
     </div>
     </div>

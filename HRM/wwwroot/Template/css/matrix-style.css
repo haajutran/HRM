@@ -1,6 +1,5 @@
 * {
     outline: none !important;
-    -moz-outline: none !important;
 }
 
 html, body {
@@ -13,9 +12,20 @@ html, body {
 body {
     overflow-x: hidden;
     margin-top: -10px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-    color: #666;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+}
+
+.input-form {
+    max-width: 40%;
+    margin: auto;
+    padding: 2em;
+}
+
+.input-form-title {
+    text-align: center;
+    margin-top: 1em;
+    text-transform: uppercase;    
 }
 
 
@@ -39,7 +49,7 @@ a {
     .dropdown-menu > li > a {
         padding: 3px 10px;
         color: #666;
-        font-size: 12px;
+        font-weight: 400;
     }
 
         .dropdown-menu > li > a i {
@@ -206,9 +216,6 @@ hr {
         margin: 0;
         padding: 0;
         list-style: none;
-        border-right: 1px solid #2e363f;
-        border-left: 1px solid #000;
-
     }
 
         #user-nav > ul > li {
@@ -217,8 +224,6 @@ hr {
             margin: 0;
             position: relative;
             padding: 0;
-            border-left: 1px solid #37414b;
-            border-right: 1px solid #000;
             height: 50px;
             background-color: #2e363f;
         }
@@ -228,6 +233,7 @@ hr {
                 display: block;
                 font-size: 15px;
                 height: 50px;
+                font-weight: bold;
                 color: #8b96a2;
             }
 
@@ -283,7 +289,8 @@ hr {
             #sidebar > ul > li > a {
                 padding: 10px 0 10px 15px;
                 display: block;
-                color: #939da8;
+                color: #d9c9c9;
+                font-weight: bold;
             }
 
                 #sidebar > ul > li > a > i {
@@ -336,11 +343,11 @@ hr {
 }
 
 #content-header {
-    position: abslute;
     width: 100%;
     margin-top: -38px;
     z-index: 20;
 }
+
 
     #content-header h1 {
         color: #555555;
@@ -386,7 +393,7 @@ hr {
         background-image: url('../img/breadcrumb.png');
         background-position: center right;
         background-repeat: no-repeat;
-        font-size: 11px;
+        font-size: 14px;
         color: #666666;
     }
 
@@ -611,7 +618,6 @@ hr {
     background-image: -webkit-gradient(linear, 0 0%, 0 100%, from(#EEEEEE), to(#F4F4F4));
     background-image: -webkit-linear-gradient(top, #EEEEEE 0%, #F4F4F4 100%);
     background-image: -moz-linear-gradient(top, #EEEEEE 0%, #F4F4F4 100%);
-    background-image: -ms-linear-gradient(top, #EEEEEE 0%, #F4F4F4 100%);
     background-image: -o-linear-gradient(top, #EEEEEE 0%, #F4F4F4 100%);
     background-image: linear-gradient(top, #EEEEEE 0%, #F4F4F4 100%);
     box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2) inset, 0 1px 0 rgba(255,255,255,0.4);
@@ -649,7 +655,7 @@ hr {
         margin-top: 6px;
     }
 
-.stat-boxes .peity_bar_good, .stat-boxes .peity_line_good, {
+.stat-boxes .peity_bar_good, .stat-boxes .peity_line_good {
     color: #459D1C;
 }
 
@@ -1619,7 +1625,7 @@ form {
 }
 
 .input-prepend input, .input-append input, .input-prepend input[class*="span"], .input-append input[class*="span"] {
-    width: none;
+
 }
 
 .input-append input, .input-append select, .input-prepend span, .input-prepend input {
@@ -1773,7 +1779,7 @@ form {
                 position: absolute;
                 width: 100%;
                 min-width: 100%;
-                border-radius: none;
+             
             }
 
                 #sidebar > ul li ul li {
@@ -1824,7 +1830,7 @@ form {
             color: #AAAAAA;
         }
 
-    .widget-title .buttons > {
+    .widget-title .buttons {
         width: 11px;
         white-space: nowrap;
         overflow: hidden;
@@ -1862,7 +1868,6 @@ form {
     .dataTables_paginate .ui-button, .pagination.alternate li a {
         padding: 4px 4px !important;
     }
-
 }
 
 @media (min-width: 481px) and (max-width: 970px) {

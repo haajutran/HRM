@@ -19,6 +19,7 @@ namespace HRM.Model
             {
                 user = new AppUser { UserName = adminUser, Email = adminEmail };
                 await userManager.CreateAsync(user, adminPassword);
+                await userManager.AddToRoleAsync(user, "Manager");
             }
         }
     }

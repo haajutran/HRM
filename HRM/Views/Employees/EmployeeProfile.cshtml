@@ -263,7 +263,12 @@
                                             <tr>
                                                 <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-id="@d.DepartmentID">@d.DepartmentName</a></td>
                                                 <td>@d.DepartmentCode</td>
-                                                <td>@d.DepartmentTitles.SingleOrDefault().Title</td>
+                                                <td>
+                                                    @foreach (var title in @d.DepartmentTitles)
+                                                    {
+                                                        @title.Title
+                                                    }
+                                                </td>
                                                 <td>@d.DepartmentTasks.Count</td>
                                                 <td>@d.Description</td>
                                                 <td>

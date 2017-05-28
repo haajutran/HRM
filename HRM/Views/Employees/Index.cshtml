@@ -4,15 +4,6 @@
 }
 
 
-@*@if (User.IsInRole("Manager"))
-    {
-        <a class="btn btn-primary" asp-controller="Employees" asp-action="AddEmployee">Thêm Nhân Viên</a>
-    }*@
-
-<div id="content-header">
-    <div id="breadcrumb"><a asp-controller="Employees" asp-action="Index" title="Quản lý nhân viên" class="tip-bottom"> Quản lý nhân viên </a></div>
-
-</div>
 <!--End-breadcrumbs-->
 <!--Action boxes-->
 <div class="container-fluid">
@@ -30,26 +21,31 @@
                     <th>Điện thoại</th>
                     <th>Phòng ban</th>
                     <th>Email</th>
-                    <th></th>
+                    <th style="width: 9em"></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Employees)
+                @foreach (var employee in Model.Employees)
                 {
                     <tr>
-                        <td style="text-align: center"><a style="color: #db5b53" asp-controller="Employees" asp-action="EmployeeProfile" asp-route-employeeID="@item.EmployeeID">@item.EmployeeCode</a></td>
-                        <td>@item.FullName</td>
-                        <td>@item.PhoneNumber</td>
-                        <td>@item.Department.DepartmentName</td>
-                        <td>@item.Email</td>
+                        <td style="text-align: center"><a asp-action="EditEmployee" asp-route-employeeID="@employee.EmployeeID">@employee.EmployeeCode</a></td>
+                        <td>@employee.FullName</td>
+                        <td>@employee.PhoneNumber</td>
                         <td>
-                            <form asp-action="DeleteConfirmed" asp-controller="Employees" asp-route-employeeID="@item.EmployeeID" method="post">
-                                <a class="btn btn-sm btn-primary" asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@item.EmployeeID">
+                            @foreach (var department in employee.Departments)
+                            {
+                                @department.DepartmentName
+                            }
+                        </td>
+                        <td>@employee.Email</td>
+                        <td>
+                            <form asp-action="DeleteConfirmed" asp-controller="Employees" asp-route-employeeID="@employee.EmployeeID" method="post">
+                                <a class="btn btn-primary" asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@employee.EmployeeID">
                                     <i style="font-size: 20px" class="fa fa-pencil"></i>
                                 </a>
 
                                 <button type="submit"
-                                        class="btn btn-sm btn-danger">
+                                        class="btn btn-danger">
                                     <i style="font-size: 20px" class="fa fa-trash"></i>
                                 </button>
 

@@ -36,7 +36,6 @@ namespace HRM.Controllers
             return View(new EmployeesListViewModel
             {
                 Employees = await _employeeRepository.EmployeesAsync()
-
             });
         }
 
@@ -68,7 +67,6 @@ namespace HRM.Controllers
         public IActionResult AddEmployee()
         {
             DepartmentsDropDownList();
-
             return View();
         }
 
@@ -81,7 +79,12 @@ namespace HRM.Controllers
 
             if (ModelState.IsValid)
             {
+                var department = _context.Departments.SingleOrDefault(d => d.DepartmentCode == employee.DepartmentCode);
+                var departments = new List<Department>();  
+                employee.Departments = departments;
                 employee.Gender = gender;
+                employee.Region = "Việt Nam";
+                departments.Add(department);
                 //employee.FamilyRelations = _context.FamilyRelations.Select(f => f).Where(x => x.EmployeeId == employee.EmployeeID);
                 //Department department = await _context.Departments
                 //    .Include(d => d.Employees)
@@ -109,11 +112,8 @@ namespace HRM.Controllers
             }
             DepartmentsDropDownList();
             var employee = await _context.Employees
+                .Include(d => d.Departments)
                 .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
-
-           
-
-
             return View(employee);
         }
 
