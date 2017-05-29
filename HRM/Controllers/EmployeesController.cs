@@ -113,6 +113,7 @@ namespace HRM.Controllers
             DepartmentsDropDownList();
             var employee = await _context.Employees
                 .Include(d => d.Departments)
+                .Include(f => f.FamilyRelations)
                 .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
             return View(employee);
         }
@@ -124,7 +125,7 @@ namespace HRM.Controllers
 
             if (employeeID == null) { return NotFound(); }
 
-            var employeeToUpdate = await _context.Employees.SingleOrDefaultAsync(e => e.EmployeeID == employeeID);
+            var employeeToUpdate = await _context.Employees.Include(f => f.FamilyRelations).SingleOrDefaultAsync(e => e.EmployeeID == employeeID);
 
             if (await TryUpdateModelAsync<Employee>(employeeToUpdate, ""))
             {

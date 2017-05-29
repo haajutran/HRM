@@ -44,65 +44,87 @@
 
             <div class="card">
                 <div class="header">
-                    <h4 class="title">Team Members</h4>
+                    <h4 class="title col-md-6"> Thân Nhân</h4>
+                    <div class="col-md-2">
+                        <a class="btn btn-success pull-right" style="width: 5em" asp-controller="FamilyRelations" asp-action="Index" asp-route-employeeID="@Model.EmployeeID"><i class="fa fa-users"></i></a>
+                    </div>
+                    <div  col-md-2>
+                        <a class="btn btn-success pull-right" style="width: 5em" asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID"><i class="fa fa-plus"></i></a>
+                    </div>
                 </div>
-                <div class="content">
-                    <ul class="list-unstyled team-members">
-                        <li>
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <div class="avatar">
-                                        <img src="~/assets/img/faces/face-0.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    DJ Khaled
-                                    <br>
-                                    <span class="text-muted"><small>Offline</small></span>
-                                </div>
+                <div class="card-content table-responsive">
+                    <table class="table-striped table-hover" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th width="70%">Họ và Tên</th>
+                                <th>Ngày sinh</th>
+                                <th>Nghề nghiệp</th>
+                                <th>Quan hệ</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.FamilyRelations != null)
+                            {
+                                foreach (var p in Model.FamilyRelations)
+                                {
+                                    <tr>
+                                        <td><a asp-controller="FamilyRelations" asp-action="Details" asp-route-id="@p.FamilyRelationId">@p.Name</a></td>
+                                        <td>@p.DateOfBirth</td>
+                                        <td>@p.Occupation</td>
+                                        <td>@p.Relation</td>
+                                        <td>
+                                            <a class="fa fa-trash btn btn-alert" style="width:100%" asp-controller="FamilyRelations" asp-action="Delete" asp-route-familyRelationID="@p.FamilyRelationId"></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="7">Không có thân nhân</td>
+                                </tr>
+                            }                         
 
-                                <div class="col-xs-3 text-right">
-                                    <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <div class="avatar">
-                                        <img src="~/assets/img/faces/face-1.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    Creative Tim
-                                    <br>
-                                    <span class="text-success"><small>Available</small></span>
-                                </div>
+                        </tbody>
+                    </table>
 
-                                <div class="col-xs-3 text-right">
-                                    <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <div class="avatar">
-                                        <img src="~/assets/img/faces/face-3.jpg" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                    </div>
-                                </div>
-                                <div class="col-xs-6">
-                                    Flume
-                                    <br>
-                                    <span class="text-danger"><small>Busy</small></span>
-                                </div>
-
-                                <div class="col-xs-3 text-right">
-                                    <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                    @*<table class="table table-hover">
+                            <thead class="">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Salary</th>
+                                    <th>Country</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Dakota Rice</td>
+                                    <td>$36,738</td>
+                                    <td>Niger</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Minerva Hooper</td>
+                                    <td>$23,789</td>
+                                    <td>Curaçao</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Sage Rodriguez</td>
+                                    <td>$56,142</td>
+                                    <td>Netherlands</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Philip Chaney</td>
+                                    <td>$38,735</td>
+                                    <td>Korea, South</td>
+                                </tr>
+                            </tbody>
+                        </table>*@
                 </div>
             </div>
         </div>
@@ -142,28 +164,42 @@
                                 <input type="email" asp-for="Email" class="form-control border-input" placeholder="Email">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label>Điện thoại</label>
                                 <input type="tel" asp-for="PhoneNumber" class="form-control border-input" placeholder="Số điện thoại">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <label>Giới tính</label>
-                                @*<input type="text" class="form-control border-input" placeholder="Quốc gia" asp-for="@Model.Gender">*@
-                                <div>
-
-                                    <div class="btn-group" data-toggle="buttons">
-                                        <label class="btn active" style="border: 0.5px solid #808080; width: 8em">
-                                            <input type="radio" value="Nam" id="nam" name="gender" checked><span><i class="fa fa-male"></i> Nam</span>
-                                        </label>
-                                        <label class="btn" style="max-width: 8em;  width: 8em; border: 0.5px solid #808080">
-                                            <input type="radio" value="Nữ" id="nu" name="gender"><span><i class="fa fa-female"></i> Nữ</span>
-                                        </label>
+                                @if (Model.Gender == "Nam")
+                                {
+                                    <div>
+                                        <div class="btn-group col-md-12" data-toggle="buttons">
+                                            <label class="btn active col-md-6" style="border: 0.5px solid #808080;">
+                                                <input type="radio" value="Nam" id="nam" name="gender" checked><span><i class="fa fa-male"></i> Nam</span>
+                                            </label>
+                                            <label class="btn col-md-6" style="border: 0.5px solid #808080">
+                                                <input type="radio" value="Nữ" id="nu" name="gender"><span><i class="fa fa-female"></i> Nữ</span>
+                                            </label>
+                                        </div>
                                     </div>
+                                }
+                                else
+                                {
+                                    <div>
+                                        <div class="btn-group col-md-12" data-toggle="buttons">
+                                            <label class="btn col-md-6" style="border: 0.5px solid #808080;">
+                                                <input type="radio" value="Nam" id="nam" name="gender"><span><i class="fa fa-male"></i> Nam</span>
+                                            </label>
+                                            <label class="btn active col-md-6" style="border: 0.5px solid #808080">
+                                                <input type="radio" value="Nữ" id="nu" name="gender" checked><span><i class="fa fa-female"></i> Nữ</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
 
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -255,6 +291,26 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-6">
+            <div class="frame">
+                <div class="employeeDetail">
+                    <div class="detailTitle">
+                        <div class="detailCaption">
+                            <i class="fa fa-address-book-o"></i>
+                        </div>
+                    </div>
+                    <div class="detailBody">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
 
 
     </div>

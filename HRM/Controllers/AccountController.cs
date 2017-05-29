@@ -64,6 +64,7 @@ namespace HRM.Controllers
                 {
                     _logger.LogInformation(1, "Logged in successful!");
                     return RedirectToAction("Index", "Employees");
+                 
                 }
                 if (result.RequiresTwoFactor)
                 {

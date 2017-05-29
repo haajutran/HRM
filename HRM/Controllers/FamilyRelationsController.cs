@@ -56,18 +56,18 @@ namespace HRM.Controllers
             return View(familyRelation);
         }
 
-        // POST: FamilyRelations/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FamilyRelationId,EmployeeId,Name,DateOfBirth,Relation,Occupation,Address,WorkPlace,PhoneNumber,Description")] FamilyRelation familyRelation)
+        public async Task<IActionResult> Create([Bind("FamilyRelationId,EmployeeId,Name,DateOfBirth,Relation,Occupation,Address,WorkPlace,PhoneNumber,Description")] FamilyRelation familyRelation, int employeeID)
         {
+            var employee = await _context.Employees.Include(f => f.FamilyRelations).FirstOrDefaultAsync(e => e.EmployeeID == employeeID);
             if (ModelState.IsValid)
             {
+                familyRelation.Employee = employee;
+                employee.FamilyRelations.Add(familyRelation);
                 _context.Add(familyRelation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return Redirect("Index");
             }
             return View(familyRelation);
         }
@@ -120,7 +120,8 @@ namespace HRM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                var employeeID = familyRelation.EmployeeId;
+                return Redirect("Index");
             }
             return View(familyRelation);
         }
@@ -153,13 +154,27 @@ namespace HRM.Controllers
                 .Include(e => e.Employee)
                 .SingleOrDefaultAsync(m => m.FamilyRelationId == id);
             _context.FamilyRelations.Remove(familyRelation);
+            var employeeID = familyRelation.EmployeeId;
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            var returnUrl = "Employees/EditEmployee?employeeID=" + employeeID;
+            return RedirectToLocal(returnUrl);
         }
 
         private bool FamilyRelationExists(int id)
         {
             return _context.FamilyRelations.Any(e => e.FamilyRelationId == id);
+        }
+
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Index");
+            }
         }
     }
 }
