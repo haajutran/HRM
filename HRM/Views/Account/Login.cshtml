@@ -6,51 +6,50 @@
 
 @{
     ViewData["Title"] = "Đăng nhập";
+    Layout = "_LoginLayout";
 }
 
-<h2>@ViewData["Title"].</h2>
+
 <div class="row">
-    <div class="col-md-8">
+    <div class="content">
+        <h2 class="text-uppercase text-center"><b>@ViewData["Title"]</b></h2>
         <section>
             <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                <h4>Sử dụng mã ID của bạn để đăng nhập.</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="AccountID" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="AccountID" class="form-control" />
+                    <div class="col-md-12">
+                        <input asp-for="AccountID" placeholder="Tên tài khoản" class="form-control" />
                         <span asp-validation-for="AccountID" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Password" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="Password" class="form-control" />
+                    <div class="col-md-12">
+                        <input asp-for="Password" type="password" placeholder="Mật khẩu" class="form-control" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <div class="checkbox">
                             <label asp-for="RememberMe">
-                                <input asp-for="RememberMe" />
+                                <input asp-for="RememberMe"/>
                                 @Html.DisplayNameFor(m => m.RememberMe)
                             </label>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
+                </div>*@
+                <div class="form-group col-md-12">
+                    <div class="col-md-4">
                         <button type="submit" class="btn btn-default">Đăng nhập</button>
                     </div>
-                </div>
-                <p>
-                    <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Đăng ký tài khoản ?</a>
-                </p>
-                <p>
-                    <a asp-action="ForgotPassword">Quên mật khẩu ?</a>
-                </p>
+                    <div class="col-md-4">
+                        <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-primary">Đăng ký</a>
+                    </div>
+                    <div class="col-md-4">
+                        <a asp-action="ForgotPassword" asp-route-returnurl="@ViewData["ReturnUrl"]" class="btn btn-danger">Quên mật khẩu?</a>
+                    </div>
+                </div>                
             </form>
         </section>
     </div>

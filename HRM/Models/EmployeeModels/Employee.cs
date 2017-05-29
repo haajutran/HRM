@@ -23,8 +23,10 @@ namespace HRM.Models
         public string Address { get; set; }
         public string TempAddress { get; set; }
         public string Avatar { get; set; }
-        public int OutOfWork { get; set; }
+        public bool Active { get; set; }
         public int DepartmentCode { get; set; }
+        public DateTime DateOfJoining { get; set; }
+        public DateTime ExitDate { get; set; }
         public ICollection<Pay> Pays { get; set; }
         public ICollection<Salary> SalaryRecords { get; set; }
         public ICollection<DepartmentTitle> DepartmentTitles { get; set; }

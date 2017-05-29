@@ -13,50 +13,60 @@
             <h3><b>DANH SÁCH NHÂN VIÊN</b></h3>
         </div>
         <a class="btn btn-primary" asp-controller="Employees" asp-action="AddEmployee" style="margin-bottom: 2em;">Thêm Nhân Viên</a>
-        <table class="table table-striped table-bordered">
-            <thead class="thead-inverse">
-                <tr>
-                    <th>MSNV</th>
-                    <th>Họ và Tên</th>
-                    <th>Điện thoại</th>
-                    <th>Phòng ban</th>
-                    <th>Email</th>
-                    <th style="width: 9em"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var employee in Model.Employees)
-                {
-                    <tr>
-                        <td style="text-align: center"><a asp-action="EditEmployee" asp-route-employeeID="@employee.EmployeeID">@employee.EmployeeCode</a></td>
-                        <td>@employee.FullName</td>
-                        <td>@employee.PhoneNumber</td>
-                        <td>
-                            @foreach (var department in employee.Departments)
+
+        <div class="card">
+            <div class="header">
+                <h4 class="title">DANH SÁCH NHÂN VIÊN</h4>
+                <p class="category">Danh sách các nhân viên trong công ty</p>
+            </div>
+            <div class="content table-responsive table-full-width">           
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>MSNV</th>
+                            <th>Họ và Tên</th>
+                            <th>Điện thoại</th>
+                            <th>Phòng ban</th>
+                            <th>Email</th>
+                            <th style="width: 9em"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var employee in Model.Employees)
                             {
-                                @department.DepartmentName
+                            <tr>
+                                <td><a asp-action="EditEmployee" asp-route-employeeID="@employee.EmployeeID">@employee.EmployeeCode</a></td>
+                                <td>@employee.FullName</td>
+                                <td>@employee.PhoneNumber</td>
+                                <td>
+                                    @foreach (var department in employee.Departments)
+                                        {
+                                        @department.DepartmentName
+                                        }
+                                </td>
+                                <td>@employee.Email</td>
+                                <td>
+                                    <form asp-action="DeleteConfirmed" asp-controller="Employees" asp-route-employeeID="@employee.EmployeeID" method="post">
+                                        <a class="btn btn-simple btn-primary" asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@employee.EmployeeID">
+                                            <i style="font-size: 20px" class="fa fa-pencil"></i>
+                                        </a>
+
+                                        <button type="submit"
+                                                class="btn btn-simple btn-danger">
+                                            <i style="font-size: 20px" class="fa fa-trash"></i>
+                                        </button>
+
+                                    </form>
+
+                                </td>
+                            </tr>
                             }
-                        </td>
-                        <td>@employee.Email</td>
-                        <td>
-                            <form asp-action="DeleteConfirmed" asp-controller="Employees" asp-route-employeeID="@employee.EmployeeID" method="post">
-                                <a class="btn btn-primary" asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@employee.EmployeeID">
-                                    <i style="font-size: 20px" class="fa fa-pencil"></i>
-                                </a>
 
-                                <button type="submit"
-                                        class="btn btn-danger">
-                                    <i style="font-size: 20px" class="fa fa-trash"></i>
-                                </button>
+                    </tbody>
+                </table>
 
-                            </form>
-
-                        </td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
+            </div>
+        </div>
     </div>
 
 </div>

@@ -73,9 +73,12 @@
     <Content Include="wwwroot\assets\sass\paper\_tables.scss" />
     <Content Include="wwwroot\assets\sass\paper\_typography.scss" />
     <Content Include="wwwroot\assets\sass\paper\_variables.scss" />
+    <Content Include="wwwroot\css\background.css" />
     <Content Include="wwwroot\css\tableFormat.css" />
     <Content Include="wwwroot\images\13528872_930129437096013_535751867252842230_n.jpg" />
+    <Content Include="wwwroot\images\wall2.jpg" />
     <Content Include="wwwroot\images\wall.jpg" />
+    <Content Include="wwwroot\images\wallpaper.jpg" />
     <Content Include="wwwroot\lib\font-awesome-4.7.0\css\font-awesome.css" />
     <Content Include="wwwroot\lib\font-awesome-4.7.0\css\font-awesome.min.css" />
     <Content Include="wwwroot\lib\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />

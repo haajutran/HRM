@@ -21,7 +21,7 @@ namespace HRM.Controllers
         private ApplicationDbContext _context;
         private IEmployeeRepository _employeeRepository;
         private IHostingEnvironment _environment;
-
+        string url = "EditEmployee?employeeID=";
         public EmployeesController(IEmployeeRepository repo, ApplicationDbContext context, IHostingEnvironment environment)
         {
             _employeeRepository = repo;
@@ -80,7 +80,8 @@ namespace HRM.Controllers
             if (ModelState.IsValid)
             {
                 var department = _context.Departments.SingleOrDefault(d => d.DepartmentCode == employee.DepartmentCode);
-                var departments = new List<Department>();  
+                var departments = new List<Department>();
+                employee.Active = true;
                 employee.Departments = departments;
                 employee.Gender = gender;
                 employee.Region = "Việt Nam";
@@ -113,6 +114,9 @@ namespace HRM.Controllers
             DepartmentsDropDownList();
             var employee = await _context.Employees
                 .Include(d => d.Departments)
+                    .ThenInclude(d => d.DepartmentTasks)
+                .Include(d => d.Departments)
+                    .ThenInclude(d => d.DepartmentTitles)
                 .Include(f => f.FamilyRelations)
                 .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
             return View(employee);
@@ -129,19 +133,21 @@ namespace HRM.Controllers
 
             if (await TryUpdateModelAsync<Employee>(employeeToUpdate, ""))
             {
-                try {
+                try
+                {
                     employeeToUpdate.Gender = gender;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateException /* ex */)
                 {            //Log the error (uncomment ex variable name and write a log.)          
-                    ModelState.AddModelError("", "Unable to save changes. " +  
-                        "Try again, and if the problem persists, " +        
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
                         "see your system administrator.");
-                }        return RedirectToAction("Index");
+                }
+                return Redirect("Index");
             }
             DepartmentsDropDownList();
-            return View(employeeToUpdate); 
+            return View(employeeToUpdate);
 
             //        if (ModelState.IsValid)
             //{
@@ -191,7 +197,7 @@ namespace HRM.Controllers
             var employee = await _employeeRepository.SearchAsync(employeeID);
             if (employee == null)
             {
-                return RedirectToAction("Index", "Employees");
+                return Redirect("Index");
             }
 
             try
@@ -199,7 +205,7 @@ namespace HRM.Controllers
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
                 //TempData["message"] = $"{employee.Name} đã được xóa.";
-                return RedirectToAction("Index", "Employees");
+                return Redirect("Index");
             }
             catch (DbUpdateException /* ex */)
             {
@@ -210,6 +216,141 @@ namespace HRM.Controllers
         #endregion -------------------------------------- --------------------------------------
 
         #endregion --------------------------------------
+
+        #region Employees' Family Management
+
+        public async Task<IActionResult> FamilyDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var familyRelation = await _context.FamilyRelations
+                .Include(e => e.Employee)
+                .SingleOrDefaultAsync(m => m.FamilyRelationId == id);
+            if (familyRelation == null)
+            {
+                return NotFound();
+            }
+
+            return View(familyRelation);
+        }
+
+        public IActionResult AddFamily(int employeeID)
+        {
+            FamilyRelation familyRelation = new FamilyRelation()
+            {
+                EmployeeId = employeeID
+            };
+            return View(familyRelation);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddFamily([Bind("FamilyRelationId,EmployeeId,Name,DateOfBirth,Relation,Occupation,Address,WorkPlace,PhoneNumber,Description")] FamilyRelation familyRelation, int employeeID)
+        {
+            var employee = await _context.Employees.Include(f => f.FamilyRelations).FirstOrDefaultAsync(e => e.EmployeeID == employeeID);
+            if (ModelState.IsValid)
+            {
+                familyRelation.Employee = employee;
+                employee.FamilyRelations.Add(familyRelation);
+                _context.Add(familyRelation);
+                await _context.SaveChangesAsync();
+                return Redirect(url + employeeID);
+            }
+            return View(familyRelation);
+        }
+
+
+        public async Task<IActionResult> EditFamily(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var familyRelation = await _context.FamilyRelations
+                .Include(e => e.Employee)
+                .SingleOrDefaultAsync(m => m.FamilyRelationId == id);
+            if (familyRelation == null)
+            {
+                return NotFound();
+            }
+            return View(familyRelation);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditFamily(int id, [Bind("FamilyRelationId,EmployeeId,Name,DateOfBirth,Relation,Occupation,Address,WorkPlace,PhoneNumber,Description")] FamilyRelation familyRelation)
+        {
+            if (id != familyRelation.FamilyRelationId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(familyRelation);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!FamilyRelationExists(familyRelation.FamilyRelationId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                var employeeID = familyRelation.EmployeeId;
+                return Redirect(url + employeeID);
+            }
+            return View(familyRelation);
+        }
+
+        public async Task<IActionResult> DeleteFamily(int? familyRelationID)
+        {
+            if (familyRelationID == null)
+            {
+                return NotFound();
+            }
+
+            var familyRelation = await _context.FamilyRelations
+                .Include(e => e.Employee)
+                .SingleOrDefaultAsync(m => m.FamilyRelationId == familyRelationID);
+            if (familyRelation == null)
+            {
+                return NotFound();
+            }
+
+            return View(familyRelation);
+        }
+
+        [HttpPost, ActionName("DeleteConfirmed")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteFamilyConfirmed(int id)
+        {
+            var familyRelation = await _context.FamilyRelations
+                .Include(e => e.Employee)
+                .SingleOrDefaultAsync(m => m.FamilyRelationId == id);
+            _context.FamilyRelations.Remove(familyRelation);
+            var employeeID = familyRelation.EmployeeId;
+            await _context.SaveChangesAsync();
+            var returnUrl = "Employees/EditEmployee?employeeID=" + employeeID;
+            return Redirect(url + employeeID);
+        }
+
+        private bool FamilyRelationExists(int id)
+        {
+            return _context.FamilyRelations.Any(e => e.FamilyRelationId == id);
+        }
+        #endregion
 
         #region Methods --------------------------------------
 

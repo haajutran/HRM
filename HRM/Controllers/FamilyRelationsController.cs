@@ -50,9 +50,10 @@ namespace HRM.Controllers
         // GET: FamilyRelations/Create
         public IActionResult Create(int employeeID)
         {
-            FamilyRelation familyRelation = new FamilyRelation();
-            familyRelation.EmployeeId = employeeID;
-
+            FamilyRelation familyRelation = new FamilyRelation()
+            {
+                EmployeeId = employeeID
+            };
             return View(familyRelation);
         }
 

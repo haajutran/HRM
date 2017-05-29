@@ -14,9 +14,7 @@
  
  */
 /*      light colors - used for select dropdown         */
-table thead tr th {
-    text-align: center
-}
+
 .ct-blue {
   stroke: #7A9E9F !important; }
 

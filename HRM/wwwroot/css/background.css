@@ -1,0 +1,18 @@
+﻿body {
+    background-image: url('/images/wallpaper.jpg');
+    color: black;
+}
+
+.content {
+    width: 40%;
+    margin: auto;
+    margin-top: 15em;
+}
+
+.bonus p a{
+    color: #696767
+}
+
+.bonus p a:hover {
+    color: #3c3b3b
+}
