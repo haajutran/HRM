@@ -67,6 +67,7 @@ namespace HRM.Controllers
         public IActionResult AddEmployee()
         {
             DepartmentsDropDownList();
+            DepartmentTitlesDropDownList();
             return View();
         }
 
@@ -74,13 +75,19 @@ namespace HRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEmployee([Bind("EmployeeCode, FullName, Address, DateOfBirth,PlaceOfBirth, Gender, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, Avatar, DepartmentCode")] Employee employee, string gender)
+        public async Task<IActionResult> AddEmployee([Bind("FullName, Address, DateOfBirth, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, DepartmentCode, DateOfJoining, DepartmentTitleID")] Employee employee, string gender)
         {
 
             if (ModelState.IsValid)
             {
-                var department = _context.Departments.SingleOrDefault(d => d.DepartmentCode == employee.DepartmentCode);
+                var department = _context.Departments.Include(d => d.DepartmentTitles).SingleOrDefault(d => d.DepartmentCode == employee.DepartmentCode);
                 var departments = new List<Department>();
+                DepartmentTitle departmentTitle = new DepartmentTitle();
+                departmentTitle.Employee = employee;
+                departmentTitle.Department = department;
+                departmentTitle.Title = _context.DepartmentTitles.SingleOrDefault(d => d.DepartmentTitleID == employee.DepartmentTitleID).Title;
+                _context.DepartmentTitles.Add(departmentTitle);
+                employee.EmployeeCode = CodeGenerator(employee, department);
                 employee.Active = true;
                 employee.Departments = departments;
                 employee.Gender = gender;
@@ -97,9 +104,12 @@ namespace HRM.Controllers
                 return RedirectToAction("Index", "Employees");
             }
             DepartmentsDropDownList();
+            DepartmentTitlesDropDownList();
 
             return View(employee);
         }
+
+
 
         #endregion
 
@@ -112,7 +122,7 @@ namespace HRM.Controllers
                 return NotFound();
             }
             DepartmentsDropDownList();
-
+            DepartmentTitlesDropDownList();
             var employee = await _employeeRepository.SearchAsync(employeeID);
             return View(employee);
         }
@@ -142,6 +152,7 @@ namespace HRM.Controllers
                 return Redirect("Index");
             }
             DepartmentsDropDownList();
+            DepartmentTitlesDropDownList();
             return View(employeeToUpdate);
 
             //        if (ModelState.IsValid)
@@ -358,9 +369,30 @@ namespace HRM.Controllers
             ViewData["Departments"] = new SelectList(departmentsQuery.AsNoTracking(), "DepartmentCode", "DepartmentName");
         }
 
+        #region Department Titles Drop Down List
+        private void DepartmentTitlesDropDownList()
+        {
+            var departmentTitlesQuery = from d in _context.DepartmentTitles
+                                        orderby d.Title
+                                        select d;
+
+            ViewData["DepartmentTitles"] = new SelectList(departmentTitlesQuery.AsNoTracking(), "DepartmentTitleID", "Title");
+
+        }
+        #endregion
+
         private bool EmployeeExists(int employeeID)
         {
             return _context.Employees.Any(e => e.EmployeeID == employeeID);
+        }
+
+        private int CodeGenerator(Employee employee, Department department)
+        {
+            var left = (10 + department.DepartmentCode).ToString();
+            var right = (10000 + department.DepartmentTitles.Count);
+            var right2 = right.ToString().Substring(1, 4);
+            var employeeCode = int.Parse(left + right2);
+            return employeeCode;
         }
 
         #endregion

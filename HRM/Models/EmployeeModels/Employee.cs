@@ -25,6 +25,7 @@ namespace HRM.Models
         public string Avatar { get; set; }
         public bool Active { get; set; }
         public int DepartmentCode { get; set; }
+        public int DepartmentTitleID { get; set; }
         public DateTime DateOfJoining { get; set; }
         public DateTime ExitDate { get; set; }
         public ICollection<Pay> Pays { get; set; }
