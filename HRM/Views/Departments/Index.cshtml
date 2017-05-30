@@ -26,46 +26,48 @@
             <a class="btn btn-primary" asp-controller="Departments" asp-action="AddDepartment">Thêm Phòng Ban</a>
         </div>
 
-        <table class="table table-striped table-bordered" style="width: 50%; margin: auto">
-            <thead class="thead-inverse">
-                <tr>
-                    <th style="width: 15em; height: 2em;"><span>Mã Số Phòng Ban</span></th>
-                    <th style="height: 2em;"><span>Tên Phòng Ban</span></th>
-                    <th style="width: 10em;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div  style="margin: auto; width:60%;">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-inverse">
                     <tr>
-
-                        <td style="text-align: center; padding: 0">
-                            <a style="color: #dd8787;" asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@item.DepartmentID">
-                                <div style="padding-top: 1em;">
-                                    @item.DepartmentCode
-                                </div>
-                            </a>
-                        </td>
-
-                        <td>@item.DepartmentName</td>
-                        <td>
-                            <form asp-action="DeleteConfirmed" asp-controller="Departments" asp-route-departmentID="@item.DepartmentID" method="post">
-                                <a class="btn btn-sm btn-primary" asp-action="EditDepartment" asp-route-departmentID="@item.DepartmentID">
-                                    <i style="font-size: 20px" class="fa fa-pencil"></i>
-                                </a>
-
-                                <button type="submit"
-                                        class="btn btn-sm btn-danger">
-                                    <i style="font-size: 20px" class="fa fa-trash"></i>
-                                </button>
-
-                            </form>
-
-                        </td>
+                        <th class="col-md-3"><span>Mã Số Phòng Ban</span></th>
+                        <th><span>Tên Phòng Ban</span></th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td style="text-align: center; padding: 0">
+                                <a style="color: #dd8787;" asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@item.DepartmentID">
+                                    <div style="padding-top: 1em;">
+                                        @item.DepartmentCode
+                                    </div>
+                                </a>
+                            </td>
+
+                            <td>@item.DepartmentName</td>
+                            <td>
+                                <form asp-action="DeleteConfirmed" asp-controller="Departments" asp-route-departmentID="@item.DepartmentID" method="post">
+                                    <a class="btn btn-sm btn-primary" asp-action="EditDepartment" asp-route-departmentID="@item.DepartmentID">
+                                        <i style="font-size: 20px" class="fa fa-pencil"></i>
+                                    </a>
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-danger">
+                                        <i style="font-size: 20px" class="fa fa-trash"></i>
+                                    </button>
+
+                                </form>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
     </div>
 </div>

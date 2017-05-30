@@ -63,10 +63,12 @@ namespace HRM.Controllers
         #region Add Title
         public IActionResult AddTitle(int employeeID)
         {
-            listOfDepartments();
-            listOfTitles();
-            DepartmentTitle departmentTitle = new DepartmentTitle();
-            departmentTitle.Employee = new Employee();
+            ListOfDepartments();
+            ListOfTitles();
+            DepartmentTitle departmentTitle = new DepartmentTitle()
+            {
+                Employee = new Employee()
+            };
             departmentTitle.Employee.EmployeeCode = employeeID;
             return View(departmentTitle);
         }
@@ -90,8 +92,8 @@ namespace HRM.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Departments");
             }
-            listOfDepartments();
-            listOfTitles();
+            ListOfDepartments();
+            ListOfTitles();
 
             return View(departmentTitle);
         }
@@ -100,45 +102,51 @@ namespace HRM.Controllers
         #region Add Task
         public IActionResult AddTask(int departmentID)
         {
-            listOfDepartments();
-            listOfTitles();
+            ListOfDepartments();
+            ListOfTitles();
             //var dT = await _context.DepartmentTasks
             //    .Include(x => x.Department)
             //    .Include(y => y.Employee)
             //    .SingleOrDefaultAsync(d => d.DepartmentTaskID == departmentID);
+
             DepartmentTask departmentTask = new DepartmentTask();
+            ViewBag.DepartmentID = departmentID;
+            //departmentTask.Employee = new Employee();
+            //departmentTask.Employee.EmployeeCode = dT.Employee.EmployeeID;
 
-            departmentTask.Employee = new Employee();
-            departmentTask.Employee.EmployeeCode = dT.Employee.EmployeeID;
-
-            departmentTask.Department = new Department();
-            departmentTask.Department.DepartmentCode = dT.Department.DepartmentID;
+            //departmentTask.Department = new Department();
+            //departmentTask.Department.DepartmentCode = dT.Department.DepartmentID;
 
             return View(departmentTask);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTask([Bind("Title, Description, WorkHours, Employee, Department")] DepartmentTask departmentTask)
+        public async Task<IActionResult> AddTask([Bind("Title, Description")] DepartmentTask departmentTask, int employeeCode, int departmentID)
         {
 
             if (ModelState.IsValid)
             {
-                var dT = new DepartmentTask()
-                {
-                    Title = departmentTask.Title,
-                    Description = departmentTask.Description,
-                    WorkHours = 0,
-                    Employee = await _employeeRepository.SearchAsync(departmentTask.Employee.EmployeeCode),
-                    Department = await _departmentRepository.SearchAsync(departmentTask.Department.DepartmentCode)
-                };
+                var employee = _context.Employees.SingleOrDefault(e => e.EmployeeCode == employeeCode);
+                var department = _context.Departments.SingleOrDefault(d => d.DepartmentID == departmentID);
+                //var dT = new DepartmentTask()
+                //{
+                //    Title = departmentTask.Title,
+                //    Description = departmentTask.Description,
+                //    WorkHours = 0,
+                //    Employee = await _employeeRepository.SearchAsync(departmentTask.Employee.EmployeeCode),
+                //    Department = await _departmentRepository.SearchAsync(departmentTask.Department.DepartmentCode)
+                //};
+                departmentTask.WorkHours = 0;
+                departmentTask.Employee = employee;
+                departmentTask.Department = department;
 
-                _context.Add(dT);
+                _context.Add(departmentTask);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Departments");
             }
-            listOfDepartments();
-            listOfTitles();
+            ListOfDepartments();
+            ListOfTitles();
 
             return View(departmentTask);
         }
@@ -155,7 +163,7 @@ namespace HRM.Controllers
 
             var department = await _context.Departments.SingleOrDefaultAsync(m => m.DepartmentCode == departmentCode);
 
-            listOfTitles();
+            ListOfTitles();
 
             return View(department);
         }
@@ -184,7 +192,7 @@ namespace HRM.Controllers
                 return RedirectToAction("Index");
             }
 
-            listOfTitles();
+            ListOfTitles();
 
             return View(departmentToUpdate);
         }
@@ -282,13 +290,13 @@ namespace HRM.Controllers
         #endregion
 
         #region Methods
-        private void listOfTitles()
+        private void ListOfTitles()
         {
             var departmentTitles = _context.DepartmentTitles.Select(t => t.Title).Distinct().ToList();
             ViewData["DepartmentTitles"] = new SelectList(departmentTitles);
         }
 
-        private void listOfDepartments()
+        private void ListOfDepartments()
         {
             var departments = _context.Departments.Select(t => t).ToList();
             ViewData["Departments"] = new SelectList(departments, "DepartmentID", "DepartmentName");
