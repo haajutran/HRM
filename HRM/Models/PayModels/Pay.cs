@@ -13,6 +13,6 @@ namespace HRM.Models
 
         public int Checked { get; set; }
 
-        DepartmentTask DepartmentTask { get; set; }
+        public DepartmentTask DepartmentTask { get; set; }
     }
 }

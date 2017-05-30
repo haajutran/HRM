@@ -13,6 +13,7 @@ namespace HRM.Controllers
     public class FamilyRelationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        string url = "EditEmployee?employeeID=";
 
         public FamilyRelationsController(ApplicationDbContext context)
         {
@@ -68,7 +69,7 @@ namespace HRM.Controllers
                 employee.FamilyRelations.Add(familyRelation);
                 _context.Add(familyRelation);
                 await _context.SaveChangesAsync();
-                return Redirect("Index");
+                return Redirect(url + employeeID);
             }
             return View(familyRelation);
         }

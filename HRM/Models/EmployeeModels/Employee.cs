@@ -33,5 +33,10 @@ namespace HRM.Models
         public ICollection<DepartmentTask> DepartmentTasks { get; set; }
         public ICollection<FamilyRelation> FamilyRelations { get; set; }
         public ICollection<Department> Departments { get; set; }
+
+        public static implicit operator Employee(int v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

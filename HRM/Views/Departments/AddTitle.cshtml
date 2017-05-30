@@ -1,0 +1,55 @@
+﻿@model HRM.Models.DepartmentTitle
+
+@{  
+    var a = Model;
+    ViewData["Title"] = "Thêm chức danh";
+}
+
+<h2>Thêm chức danh</h2>
+
+<form asp-action="AddTitle" method="post">
+    <div class="form-horizontal">
+        <h4>Chức danh</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Employee.EmployeeCode"/>
+        <div class="form-group">
+            <label asp-for="Title" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select class="form-control border-input" asp-for="Title" asp-items="ViewBag.DepartmentTitles">
+                    <option value="">-- Chọn chức danh --</option>
+                </select>
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Phòng ban</label>
+            <div class="col-md-10">
+                <select class="form-control border-input" asp-for="Department.DepartmentCode" asp-items="ViewBag.Departments">
+                    <option value="">-- Chọn phòng ban --</option>
+                </select>
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Thêm chức danh" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

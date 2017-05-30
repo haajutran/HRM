@@ -8,8 +8,8 @@ using HRM.Data;
 namespace HRM.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170525065720_May25_2017")]
-    partial class May25_2017
+    [Migration("20170529160222_29ofMay2017")]
+    partial class _29ofMay2017
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -109,7 +109,8 @@ namespace HRM.Data.Migrations
 
                     b.HasIndex("EmployeeID");
 
-                    b.HasIndex("PayID");
+                    b.HasIndex("PayID")
+                        .IsUnique();
 
                     b.ToTable("DepartmentTask");
                 });
@@ -141,6 +142,8 @@ namespace HRM.Data.Migrations
                     b.Property<int>("EmployeeID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("Active");
+
                     b.Property<string>("Address");
 
                     b.Property<string>("Avatar");
@@ -151,19 +154,21 @@ namespace HRM.Data.Migrations
 
                     b.Property<string>("DateOfBirth");
 
+                    b.Property<DateTime>("DateOfJoining");
+
                     b.Property<int>("DepartmentCode");
 
                     b.Property<string>("Email");
 
                     b.Property<int>("EmployeeCode");
 
+                    b.Property<DateTime>("ExitDate");
+
                     b.Property<string>("FullName");
 
                     b.Property<string>("Gender");
 
                     b.Property<string>("HomeTown");
-
-                    b.Property<int>("OutOfWork");
 
                     b.Property<string>("PhoneNumber");
 
@@ -372,17 +377,17 @@ namespace HRM.Data.Migrations
                         .HasForeignKey("EmployeeID");
 
                     b.HasOne("HRM.Models.Pay", "Pay")
-                        .WithMany()
-                        .HasForeignKey("PayID");
+                        .WithOne("DepartmentTask")
+                        .HasForeignKey("HRM.Models.DepartmentTask", "PayID");
                 });
 
             modelBuilder.Entity("HRM.Models.DepartmentTitle", b =>
                 {
-                    b.HasOne("HRM.Models.Department")
+                    b.HasOne("HRM.Models.Department", "Department")
                         .WithMany("DepartmentTitles")
                         .HasForeignKey("DepartmentID");
 
-                    b.HasOne("HRM.Models.Employee")
+                    b.HasOne("HRM.Models.Employee", "Employee")
                         .WithMany("DepartmentTitles")
                         .HasForeignKey("EmployeeID");
                 });

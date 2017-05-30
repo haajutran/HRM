@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace HRM.Data.Migrations
 {
-    public partial class May25_2017 : Migration
+    public partial class _29ofMay2017 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,18 +15,20 @@ namespace HRM.Data.Migrations
                 {
                     EmployeeID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Active = table.Column<bool>(nullable: false),
                     Address = table.Column<string>(nullable: true),
                     Avatar = table.Column<string>(nullable: true),
                     CitizenID = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     DateOfBirth = table.Column<string>(nullable: true),
+                    DateOfJoining = table.Column<DateTime>(nullable: false),
                     DepartmentCode = table.Column<int>(nullable: false),
                     Email = table.Column<string>(nullable: true),
                     EmployeeCode = table.Column<int>(nullable: false),
+                    ExitDate = table.Column<DateTime>(nullable: false),
                     FullName = table.Column<string>(nullable: true),
                     Gender = table.Column<string>(nullable: true),
                     HomeTown = table.Column<string>(nullable: true),
-                    OutOfWork = table.Column<int>(nullable: false),
                     PhoneNumber = table.Column<string>(nullable: true),
                     PlaceOfBirth = table.Column<string>(nullable: true),
                     PlaceOfProvide = table.Column<string>(nullable: true),
@@ -211,7 +213,8 @@ namespace HRM.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_DepartmentTask_PayID",
                 table: "DepartmentTask",
-                column: "PayID");
+                column: "PayID",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DepartmentTitle_DepartmentID",

@@ -7,5 +7,6 @@ namespace HRM.Models
     {
         Task<IEnumerable<Department>> DepartmentsAsync();
         Task<Department> SearchAsync(int departmentID);
+        Task<DepartmentTitle> SearchTitleAsync(int departmentTitleID);
     }
 }

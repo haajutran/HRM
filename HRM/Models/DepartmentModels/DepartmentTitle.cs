@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace HRM.Models
 {
     public class DepartmentTitle
-    {
+    {   
         public int DepartmentTitleID { get; set; }
-
+        [Display(Name="Chức danh")]
         public string Title { get; set; }
-
+        [Display(Name = "Mô tả")]
         public string Description { get; set; }
-
-        Department Department { get; set; }
-
-        Employee Employee { get; set; }
+        public Department Department { get; set; }
+        public Employee Employee { get; set; }
     }
 }

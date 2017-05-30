@@ -1,6 +1,7 @@
 ﻿@model HRM.Models.FamilyRelation
 
-@{
+@{  
+    var a = Model;
     ViewData["Title"] = "Create";
 }
 
@@ -10,7 +11,7 @@
 
 <div class="container-fluid">
 
-    <form asp-action="Create" asp-route-employeeID="@Model.EmployeeId">
+    <form asp-action="AddFamily" method="post">
 
         <h3 style="margin-left: -2em" class="input-form-title">THÊM NGƯỜI THÂN TRONG GIA ĐÌNH</h3>
         <hr />
@@ -75,8 +76,8 @@
             </div>
             <div class="">
                 <div class="col-md-12">
-                    <button role="button" type="submit" value="Create" class="btn btn-success">Lưu</button>
-                    <a asp-action="Index" class="btn btn-primary">Bảng gia phả</a>           
+                    <button type="submit" role="button" value="AddFamily" class="btn btn-success">Lưu</button>
+                    <a asp-action="Index" class="btn btn-primary">Tất cả thân nhân</a>           
                     <a asp-controller="Employees" asp-action="EmployeeProfile" asp-route-employeeID="@Model.EmployeeId" class="btn btn-warning">Hủy</a>
                 </div>  
             </div>

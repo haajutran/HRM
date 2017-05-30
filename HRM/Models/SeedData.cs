@@ -25,6 +25,17 @@ namespace HRM.Models
                 new Department { DepartmentCode = 3, DepartmentName = "Bộ phận kỹ thuật" }
                 );
 
+            if (context.DepartmentTitles.Any())
+            {
+                return;
+            }
+
+            context.DepartmentTitles.AddRange(
+                new DepartmentTitle { Title = "Trưởng phòng"},
+                new DepartmentTitle { Title = "Thư ký"},
+                new DepartmentTitle { Title = "Phòng viên"}
+                );
+
             context.SaveChanges();
         }
     }

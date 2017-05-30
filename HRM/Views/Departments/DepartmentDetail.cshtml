@@ -1,4 +1,4 @@
-﻿@model EmployeesListViewModel
+﻿@model Department
 @{
     ViewBag.Title = "Quản lý nhân viên";
 }
@@ -24,32 +24,25 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th><span>MSNV</span></th>
-                    <th><span>Họ và Tên</span></th>
-                    <th><span>Điện thoại</span></th>
-                    <th><span>Bộ phận</span></th>
-                    <th><span>Email</span></th>
-                    <th></th>
+                    <th>MSNV</th>
+                    <th>Tên nhân viên</th>
+                    <th>Chức danh</th>
+                    <th>Công việc</th>
+                    <th>Mô tả</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Employees)
+                @foreach (var item in Model.DepartmentTitles)
                 {
-                    <tr>        
-                        <td style="text-align: center; padding: 0">
-                            <a style="color: #dd8787;" asp-controller="Employees" asp-action="EmployeeProfile" asp-route-employeeID="@item.EmployeeID">
-                                <div style="padding-top: 1em;">
-                                    @item.EmployeeCode
-                                </div>
-                            </a>
-                        </td>
-                        <td>@item.FullName</td>
-                        <td>@item.PhoneNumber</td>
-                        <td>@item.DepartmentCode</td>
-                        <td>@item.Email</td>
+                    <tr>
+                        <td></td>
+                        <td>Tên nhân viên</td>
+                        <td>Chức danh</td>
+                        <td>Công việc</td>
+                        <td>Mô tả</td>
                         <td>
-                            <form asp-action="DeleteConfirmed" asp-controller="Employees" asp-route-employeeID="@item.EmployeeID" method="post">
-                                <a class="btn btn-sm btn-primary" asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@item.EmployeeID">
+                            <form method="post">
+                                <a class="btn btn-sm btn-primary" href="#">
                                     <i style="font-size: 20px" class="fa fa-pencil"></i>
                                 </a>
 
@@ -57,13 +50,10 @@
                                         class="btn btn-sm btn-danger">
                                     <i style="font-size: 20px" class="fa fa-trash"></i>
                                 </button>
-
                             </form>
-
                         </td>
                     </tr>
                 }
-
             </tbody>
         </table>
     </div>

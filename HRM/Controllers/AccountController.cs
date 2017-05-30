@@ -77,7 +77,7 @@ namespace HRM.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "ID or Password is wrong!");
+                    ModelState.AddModelError(string.Empty, "Sai ID hoặc mật khẩu!");
                     return View(model);
                 }
             }

@@ -176,7 +176,7 @@
 
             <div class="card">
                 <div class="header">
-                    <h4 class="title col-lg-6"> Thân Nhân</h4>
+                    <h4 class="title col-lg-6">Thân Nhân</h4>
                     <div col-lg-2>
                         <a class="btn btn-success pull-right" style="width: 5em" asp-action="AddFamily" asp-route-employeeID="@Model.EmployeeID"><i class="fa fa-plus"></i></a>
                     </div>
@@ -219,9 +219,106 @@
                     </table>
                 </div>
             </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4 class="title col-lg-6">Phòng ban</h4>
+                    <div col-lg-2>
+                        <a class="btn btn-success pull-right" style="width: 5em" asp-controller="Departments" asp-action="AddTitle" asp-route-employeeID="@Model.EmployeeID"><i class="fa fa-plus"></i></a>
+                    </div>
+                </div>
+                <div class="card-content table-responsive">
+                    <table class="table-striped table-hover" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>Phòng</th>
+                                <th>Mã phòng</th>
+                                <th>Chức danh</th>
+                                <th>Số lượng việc</th>
+                                <th>Mô tả</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{  if (Model.DepartmentTitles != null)
+                                {
+                                    foreach (var d in Model.DepartmentTitles)
+                                    {
+                                        <tr>
+                                            <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-id="@d.Department.DepartmentID">@d.Department.DepartmentName</a></td>
+                                            <td>@d.Department.DepartmentCode</td>
+                                            <td>@d.Title</td>
+                                            <td>@d.Department.DepartmentTasks.Count</td>
+                                            <td>@d.Description</td>
+                                            <td>
+                                                <a class="fa fa-trash btn btn-alert" style="width:100%" asp-controller="Departments" asp-action="DeleteTitle"></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>Không có</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="header">
+                    <h4 class="title col-lg-6">Chấm công</h4>
+                </div>
+                <div class="card-content table-responsive">
+                    <table class="table-striped table-hover" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th>Phòng</th>
+                                <th>Mã phòng</th>
+                                <th>Tên việc</th>
+                                <th>Mô tả</th>
+                                <th>Giờ công</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{  if (Model.DepartmentTasks != null)
+                                {
+                                    foreach (var d in Model.DepartmentTasks)
+                                    {
+                                        <tr>
+                                            <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@d.Department.DepartmentID">@d.Department.DepartmentName</a></td>
+                                            <td>@d.Department.DepartmentCode</td>
+                                            <td>@d.Title</td>
+                                            <td>@d.Description</td>
+                                            <td><a asp-controller="Pays" asp-action="Create" asp-route-departmentTaskID="@d.DepartmentTaskID">@d.WorkHours</a></td>
+                                            <td>
+                                                <a class="fa fa-trash btn btn-alert" style="width:100%" href="#"></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>Không có</td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <td><a class="fa fa-calculator btn btn-success" style="width:100%"></a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
-        <div class="col-lg-5">
+        @*<div class="col-lg-5">
             <div class="card">               
                 <div class="content">                         
                     <div class="content">
@@ -282,7 +379,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
 
     </div>
 </form>

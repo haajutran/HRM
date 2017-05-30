@@ -10,7 +10,7 @@
     <hr />
     <div class="row" style="margin-left: 1em;margin-right: 1em">
         <div class="col-6">
-            <div class="frame">
+            <div class="card card-user content">
                 <div class="employeeDetail">
                     <div class="detailTitle">
                         <div class="detailCaption">
@@ -163,10 +163,20 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="row form-content">
-                                        <label class="control-label col-3">Nghỉ việc</label>
+                                        <label class="control-label col-3">Ngày vào làm</label>
                                         <div class="col-9">
                                             <div class="right-body">
-                                                <span>@Model.OutOfWork  </span>
+                                                <span>@Model.DateOfJoining  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row form-content">
+                                        <label class="control-label col-3">Ngày nghỉ việc</label>
+                                        <div class="col-9">
+                                            <div class="right-body">
+                                                <span>@Model.ExitDate  </span>
                                             </div>
                                         </div>
                                     </div>
@@ -177,9 +187,9 @@
                 </div>
             </div>
 
-        </div>
+        </div> @*Thông tin cá nhân*@
         <div class="col-6">
-            <div class="frame">
+            <div class="card card-user content">
                 <div class="employeeDetail">
                     <div class="detailTitle">
                         <div class="detailCaption">
@@ -224,8 +234,8 @@
                                         </tr>
                                     }
                                     <tr>
-                                        <td>
-                                            <a class="fa fa-plus btn btn-success" style="width:100%" asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID"></a>
+                                        <td asp-controller="Employees" asp-action="AddFamily" asp-route-employeeID="@Model.EmployeeID">
+                                            <a class="fa fa-plus btn btn-success" style="width:100%"></a>
                                         </td>
                                     </tr>
                                 }
@@ -234,9 +244,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> @*Thông tin người thân*@
         <div class="col-6">
-            <div class="frame">
+            <div class="card card-user">
                 <div class="employeeDetail">
                     <div class="detailTitle">
                         <div class="detailCaption">
@@ -285,7 +295,7 @@
                                     }
                                     <tr>
                                         <td>
-                                            <a class="fa fa-plus btn btn-success" style="width:100%" asp-controller="FamilyRelations" asp-action="Create" asp-route-employeeID="@Model.EmployeeID"></a>
+                                            <a class="fa fa-plus btn btn-success" style="width:100%" href="#"></a>
                                         </td>
                                     </tr>
                                 }
@@ -294,7 +304,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> @*Phòng ban trực thuộc*@
     </div>
 
 </div>

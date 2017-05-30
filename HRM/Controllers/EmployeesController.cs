@@ -74,7 +74,7 @@ namespace HRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEmployee([Bind("EmployeeCode, FullName, Address, DateOfBirth,PlaceOfBirth, Gender, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, Avatar, DepartmentCode, OutOfWork")] Employee employee, string gender)
+        public async Task<IActionResult> AddEmployee([Bind("EmployeeCode, FullName, Address, DateOfBirth,PlaceOfBirth, Gender, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, Avatar, DepartmentCode")] Employee employee, string gender)
         {
 
             if (ModelState.IsValid)
@@ -112,13 +112,8 @@ namespace HRM.Controllers
                 return NotFound();
             }
             DepartmentsDropDownList();
-            var employee = await _context.Employees
-                .Include(d => d.Departments)
-                    .ThenInclude(d => d.DepartmentTasks)
-                .Include(d => d.Departments)
-                    .ThenInclude(d => d.DepartmentTitles)
-                .Include(f => f.FamilyRelations)
-                .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
+
+            var employee = await _employeeRepository.SearchAsync(employeeID);
             return View(employee);
         }
 
