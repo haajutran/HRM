@@ -1,5 +1,5 @@
-﻿@model DepartmentsListViewModel
-@{
+﻿@model IEnumerable<Department>
+@{  
     ViewBag.Title = "Quản lý phòng ban";
 }
 
@@ -35,12 +35,12 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Departments)
+                @foreach (var item in Model)
                 {
                     <tr>
 
                         <td style="text-align: center; padding: 0">
-                            <a style="color: #dd8787;" asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentCode="@item.DepartmentCode">
+                            <a style="color: #dd8787;" asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@item.DepartmentID">
                                 <div style="padding-top: 1em;">
                                     @item.DepartmentCode
                                 </div>
@@ -49,8 +49,8 @@
 
                         <td>@item.DepartmentName</td>
                         <td>
-                            <form asp-action="DeleteConfirmed" asp-controller="Departments" asp-route-departmentCode="@item.DepartmentCode" method="post">
-                                <a class="btn btn-sm btn-primary" asp-action="EditDepartment" asp-route-departmentCode="@item.DepartmentCode">
+                            <form asp-action="DeleteConfirmed" asp-controller="Departments" asp-route-departmentID="@item.DepartmentID" method="post">
+                                <a class="btn btn-sm btn-primary" asp-action="EditDepartment" asp-route-departmentID="@item.DepartmentID">
                                     <i style="font-size: 20px" class="fa fa-pencil"></i>
                                 </a>
 

@@ -28,14 +28,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.DepartmentTitles)
+                @foreach (var departmentTitle in Model.DepartmentTitles)
                 {
                     <tr>
-                        <td>@item.Employee.EmployeeCode</td>
-                        <td>Tên nhân viên</td>
-                        <td>Chức danh</td>
-                        <td>Công việc</td>
-                        <td>Mô tả</td>
+                        <td>@departmentTitle.Employee.EmployeeCode</td>
+                        <td>@departmentTitle.Employee.FullName</td>
+                        <td>@departmentTitle.Title</td>
+                        <td>@departmentTitle.Employee.DepartmentTasks.Count</td>
+                        <td>@departmentTitle.Description</td>
                         <td>
                             <form method="post">
                                 <a class="btn btn-sm btn-primary" href="#">
@@ -54,4 +54,48 @@
         </table>
     </div>
 
+    <div style="margin: auto;">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div style="text-align: center;margin: 2em;">
+            <h3><b>DANH SÁCH CÔNG VIỆC</b></h3>
+        </div>
+        <a class="btn btn-primary" asp-action="AddTask" asp-route-departmentID="" style="margin-bottom: 2em;">Thêm Công Việc</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>MSNV</th>
+                    <th>Tên nhân viên</th>
+                    <th>Chức danh</th>
+                    <th>Tên công việc</th>
+                    <th>Mô tả</th>
+                    <th>Giờ làm</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model.DepartmentTasks)
+                {
+                    <tr>
+                        <td>@task.Employee.EmployeeCode</td>
+                        <td>@task.Employee.FullName</td>
+                        <td>@Model.DepartmentTitles.Select(e => e).Where(e => e.Employee.EmployeeID == task.Employee.EmployeeID)</td>
+                        <td>@task.Title</td>
+                        <td>@task.Description</td>
+                        <td>@task.WorkHours</td>
+                        <td>
+                            <form method="post">
+                                <a class="btn btn-sm btn-primary" href="#">
+                                    <i style="font-size: 20px" class="fa fa-pencil"></i>
+                                </a>
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-danger">
+                                    <i style="font-size: 20px" class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

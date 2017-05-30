@@ -32,10 +32,8 @@ namespace HRM.Controllers
         // GET: /<controller>/
         public async Task<ViewResult> Index()
         {
-            return View(new DepartmentsListViewModel
-            {
-                Departments = await _departmentRepository.DepartmentsAsync()
-            });
+            var departments = await _departmentRepository.DepartmentsAsync();
+            return View(departments);
         }
 
         #region Add Department
@@ -100,14 +98,14 @@ namespace HRM.Controllers
         #endregion
 
         #region Add Task
-        public async Task<IActionResult> AddTask(int departmentTaskID)
+        public IActionResult AddTask(int departmentID)
         {
             listOfDepartments();
             listOfTitles();
-            var dT = await _context.DepartmentTasks
-                .Include(x => x.Department)
-                .Include(y => y.Employee)
-                .SingleOrDefaultAsync(d => d.DepartmentTaskID == departmentTaskID);
+            //var dT = await _context.DepartmentTasks
+            //    .Include(x => x.Department)
+            //    .Include(y => y.Employee)
+            //    .SingleOrDefaultAsync(d => d.DepartmentTaskID == departmentID);
             DepartmentTask departmentTask = new DepartmentTask();
 
             departmentTask.Employee = new Employee();
@@ -201,8 +199,10 @@ namespace HRM.Controllers
             Department department = await _context.Departments
                 .Include(ta => ta.DepartmentTasks)
                     .ThenInclude(a => a.Employee)
+                        .ThenInclude(d => d.DepartmentTitles)
                 .Include(tt => tt.DepartmentTitles)
                     .ThenInclude(t => t.Employee)
+                        .ThenInclude(d => d.DepartmentTasks)
                 .SingleOrDefaultAsync(d => d.DepartmentID == departmentID);
 
             return View(department);
