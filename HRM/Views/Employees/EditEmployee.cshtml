@@ -245,7 +245,7 @@
                                     foreach (var d in Model.DepartmentTitles)
                                     {
                                         <tr>
-                                            <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-id="@d.Department.DepartmentID">@d.Department.DepartmentName</a></td>
+                                            <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@d.Department.DepartmentID">@d.Department.DepartmentName</a></td>
                                             <td>@d.Department.DepartmentCode</td>
                                             <td>@d.Title</td>
                                             <td>@d.Department.DepartmentTasks.Count</td>
