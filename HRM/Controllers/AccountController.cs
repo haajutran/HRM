@@ -14,6 +14,7 @@ using HRM.Services;
 
 namespace HRM.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class AccountController : Controller
     {
         #region Requires
@@ -126,7 +127,7 @@ namespace HRM.Controllers
         }
 
         /*--- Log Out ---*/
-        [Authorize]
+  
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();

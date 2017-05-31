@@ -8,6 +8,7 @@ namespace HRM.Models
 {
     public class FamilyRelation
     {
+        [Key]
         public int FamilyRelationId { get; set; }
 
         [Required]

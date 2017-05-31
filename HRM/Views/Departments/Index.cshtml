@@ -49,18 +49,17 @@
                             </td>
 
                             <td>@item.DepartmentName</td>
-                            <td>
-                                <form asp-action="DeleteConfirmed" asp-controller="Departments" asp-route-departmentID="@item.DepartmentID" method="post">
+                            <td>                               
+                                <div>
                                     <a class="btn btn-sm btn-primary" asp-action="EditDepartment" asp-route-departmentID="@item.DepartmentID">
                                         <i style="font-size: 20px" class="fa fa-pencil"></i>
                                     </a>
 
-                                    <button type="submit"
+                                    <a asp-action="DeleteDepartment" asp-route-departmentID="@item.DepartmentID"
                                             class="btn btn-sm btn-danger">
                                         <i style="font-size: 20px" class="fa fa-trash"></i>
-                                    </button>
-
-                                </form>
+                                    </a>
+                                </div>                               
 
                             </td>
                         </tr>

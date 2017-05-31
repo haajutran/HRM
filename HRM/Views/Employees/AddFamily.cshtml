@@ -5,11 +5,8 @@
     ViewData["Title"] = "Create";
 }
 
-<div id="content-header">
-    <div id="breadcrumb"><a asp-controller="FamilyRelations" asp-action="Index" title="Thân nhân" class="tip-bottom"> Quản lý thân nhân</a><a href="#" title="Thêm thân nhân" class="tip-bottom"> Thêm thân nhân</a></div>
-</div>
 
-<div class="container-fluid">
+<div class="container">
 
     <form asp-action="AddFamily" method="post">
 
@@ -74,20 +71,13 @@
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
             </div>
-            <div class="">
-                <div class="col-md-12">
+            <div>
+                <div class="col-md-12" style="margin-top: 1em;">
                     <button type="submit" role="button" value="AddFamily" class="btn btn-success">Lưu</button>
                     <a asp-action="Index" class="btn btn-primary">Tất cả thân nhân</a>           
-                    <a asp-controller="Employees" asp-action="EmployeeProfile" asp-route-employeeID="@Model.EmployeeId" class="btn btn-warning">Hủy</a>
+                    <a asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@Model.EmployeeId" class="btn btn-warning">Hủy</a>
                 </div>  
             </div>
         </div>
     </form>
 </div>
-
-
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

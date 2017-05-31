@@ -1,0 +1,8 @@
+﻿@model Department
+
+    <div class="alert alert-warning">
+        <h4>Bạn có chắn chắn muốn xóa phòng ban này?</h4>
+        <form asp-route-departmentID="@Model.DepartmentID" asp-controller="Departments" asp-action="DeleteConfirmed">
+            <button class="btn btn-danger">Xóa</button>
+        </form>
+    </div>
