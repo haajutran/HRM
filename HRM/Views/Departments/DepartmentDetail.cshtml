@@ -1,6 +1,6 @@
 ﻿@model Department
 @{
-    ViewBag.Title = "Quản lý nhân viên";
+    ViewBag.Title = ViewData["DepartmentName"];
 }
 
 
@@ -11,6 +11,9 @@
 <!--End-breadcrumbs-->
 <!--Action boxes-->
 <div class="container-fluid">
+    <div style="text-align: center;margin: 2em;">
+        <h2><b>@ViewData["DepartmentName"]</b></h2>
+    </div>
     <div style="margin: auto;">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div style="text-align: center;margin: 2em;">
@@ -31,7 +34,7 @@
                 @foreach (var departmentTitle in Model.DepartmentTitles)
                 {
                     <tr>
-                        <td>@departmentTitle.Employee.EmployeeCode</td>
+                        <td><a asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@departmentTitle.Employee.EmployeeID">@departmentTitle.Employee.EmployeeCode</a></td>
                         <td>@departmentTitle.Employee.FullName</td>
                         <td>@departmentTitle.Title</td>
                         <td>@departmentTitle.Employee.DepartmentTasks.Count</td>
@@ -69,15 +72,17 @@
                     <th>Tên công việc</th>
                     <th>Mô tả</th>
                     <th>Giờ làm</th>
+                    <th><a asp-for="UpdateWorkHours" asp-route-departmentID="@Model.DepartmentID" class="btn btn-fill btn-block">Quản lý giờ làm</a></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var task in Model.DepartmentTasks)
                 {
+                    var thisEmployeeTitle = task.Employee.DepartmentTitles.FirstOrDefault().Title;
                     <tr>
-                        <td>@task.Employee.EmployeeCode</td>
+                        <td><a asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@task.Employee.EmployeeID">@task.Employee.EmployeeCode</a></td>
                         <td>@task.Employee.FullName</td>
-                        <td>@*@Model.DepartmentTitles.Select(e => e.).Where(e => e.Employee.EmployeeID == task.Employee.EmployeeID)*@</td>
+                        <td>@thisEmployeeTitle</td>
                         <td>@task.Title</td>
                         <td>@task.Description</td>
                         <td>@task.WorkHours</td>

@@ -51,7 +51,6 @@ namespace HRM.Controllers
                     .ThenInclude(i => i.DepartmentTitles)
                 .Include(e => e.Departments)
                     .ThenInclude(a => a.DepartmentTasks)
-                        .ThenInclude(p => p.Pay)
                 .Include(f => f.FamilyRelations)
                 .Include(s => s.SalaryRecords)
                 .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
@@ -75,7 +74,7 @@ namespace HRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEmployee([Bind("FullName, Address, DateOfBirth, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, DepartmentCode, DateOfJoining, DepartmentTitleID")] Employee employee, string gender)
+        public async Task<IActionResult> AddEmployee([Bind("FullName, Address, DateOfBirth, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, DepartmentCode, DateOfJoining, DepartmentTitle")] Employee employee, string gender)
         {
 
             if (ModelState.IsValid)
@@ -85,7 +84,7 @@ namespace HRM.Controllers
                 DepartmentTitle departmentTitle = new DepartmentTitle();
                 departmentTitle.Employee = employee;
                 departmentTitle.Department = department;
-                departmentTitle.Title = _context.DepartmentTitles.SingleOrDefault(d => d.DepartmentTitleID == employee.DepartmentTitleID).Title;
+                departmentTitle.Title = employee.DepartmentTitle;
                 _context.DepartmentTitles.Add(departmentTitle);
                 employee.EmployeeCode = CodeGenerator(employee, department);
                 employee.Active = true;
@@ -360,6 +359,7 @@ namespace HRM.Controllers
 
         #region Methods --------------------------------------
 
+        #region Departments Drop Down List
         private void DepartmentsDropDownList()
         {
             var departmentsQuery = from d in _context.Departments
@@ -368,15 +368,16 @@ namespace HRM.Controllers
 
             ViewData["Departments"] = new SelectList(departmentsQuery.AsNoTracking(), "DepartmentCode", "DepartmentName");
         }
+        #endregion
 
         #region Department Titles Drop Down List
         private void DepartmentTitlesDropDownList()
         {
-            var departmentTitlesQuery = from d in _context.DepartmentTitles
-                                        orderby d.Title
-                                        select d;
+            var titlesQuery = from d in _context.DepartmentTitles
+                                            orderby d.Title
+                                            select d.Title;
 
-            ViewData["DepartmentTitles"] = new SelectList(departmentTitlesQuery.AsNoTracking(), "DepartmentTitleID", "Title");
+            ViewData["DepartmentTitles"] = new SelectList(titlesQuery.Distinct().AsNoTracking());
 
         }
         #endregion

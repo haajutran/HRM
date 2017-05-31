@@ -23,7 +23,6 @@ namespace HRM.Data
             builder.Entity<FamilyRelation>().ToTable("FamilyRelation");
             builder.Entity<DepartmentTask>().ToTable("DepartmentTask");
             builder.Entity<DepartmentTitle>().ToTable("DepartmentTitle");
-            builder.Entity<Pay>().ToTable("Pay");
             builder.Entity<Salary>().ToTable("Salary");
         }
         public DbSet<Employee> Employees { get; set; }
@@ -31,7 +30,6 @@ namespace HRM.Data
         public DbSet<FamilyRelation> FamilyRelations { get; set; }
         public DbSet<DepartmentTask> DepartmentTasks { get; set; }
         public DbSet<DepartmentTitle> DepartmentTitles { get; set; }
-        public DbSet<Pay> Pays { get; set; }
         public DbSet<Salary> SalaryRecords { get; set; }
 
     }

@@ -96,8 +96,6 @@ namespace HRM.Data.Migrations
 
                     b.Property<int?>("EmployeeID");
 
-                    b.Property<int?>("PayID");
-
                     b.Property<string>("Title");
 
                     b.Property<int>("WorkHours");
@@ -107,9 +105,6 @@ namespace HRM.Data.Migrations
                     b.HasIndex("DepartmentID");
 
                     b.HasIndex("EmployeeID");
-
-                    b.HasIndex("PayID")
-                        .IsUnique();
 
                     b.ToTable("DepartmentTask");
                 });
@@ -156,6 +151,8 @@ namespace HRM.Data.Migrations
                     b.Property<DateTime>("DateOfJoining");
 
                     b.Property<int>("DepartmentCode");
+
+                    b.Property<string>("DepartmentTitle");
 
                     b.Property<string>("Email");
 
@@ -213,24 +210,6 @@ namespace HRM.Data.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("FamilyRelation");
-                });
-
-            modelBuilder.Entity("HRM.Models.Pay", b =>
-                {
-                    b.Property<int>("PayID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("Checked");
-
-                    b.Property<int?>("EmployeeID");
-
-                    b.Property<string>("RecordDate");
-
-                    b.HasKey("PayID");
-
-                    b.HasIndex("EmployeeID");
-
-                    b.ToTable("Pay");
                 });
 
             modelBuilder.Entity("HRM.Models.Salary", b =>
@@ -374,10 +353,6 @@ namespace HRM.Data.Migrations
                     b.HasOne("HRM.Models.Employee", "Employee")
                         .WithMany("DepartmentTasks")
                         .HasForeignKey("EmployeeID");
-
-                    b.HasOne("HRM.Models.Pay", "Pay")
-                        .WithOne("DepartmentTask")
-                        .HasForeignKey("HRM.Models.DepartmentTask", "PayID");
                 });
 
             modelBuilder.Entity("HRM.Models.DepartmentTitle", b =>
@@ -397,13 +372,6 @@ namespace HRM.Data.Migrations
                         .WithMany("FamilyRelations")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("HRM.Models.Pay", b =>
-                {
-                    b.HasOne("HRM.Models.Employee")
-                        .WithMany("Pays")
-                        .HasForeignKey("EmployeeID");
                 });
 
             modelBuilder.Entity("HRM.Models.Salary", b =>

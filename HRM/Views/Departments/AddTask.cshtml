@@ -2,7 +2,7 @@
 
 @{  
     var a = Model;
-    ViewData["Title"] = "Thêm chức danh";
+    ViewData["Title"] = "Thêm công việc";
 }
 
 
@@ -11,7 +11,7 @@
 
 <form asp-action="AddTask" method="post" asp-route-departmentID="@ViewBag.DepartmentID">
     <div class="form-horizontal">
-        <h4>Chức danh</h4>
+        <h4>công việc</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
        
@@ -22,15 +22,6 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label asp-for="Title" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select class="form-control border-input" asp-for="Title" asp-items="ViewBag.DepartmentTitles">
-                    <option value="">-- Chọn chức danh --</option>
-                </select>
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-        </div>
         <div class="form-group">
             <label class="col-md-2 control-label">Tên việc</label>
             <div class="col-md-10">
@@ -47,14 +38,14 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Thêm chức danh" class="btn btn-default" />
+                <input type="submit" value="Thêm công việc" class="btn btn-default" />
             </div>
         </div>
     </div>
 </form>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="DepartmentDetail" asp-route-departmentID="Model.Department.DepartmentID">Trở lại</a>
 </div>
 
 @section Scripts {

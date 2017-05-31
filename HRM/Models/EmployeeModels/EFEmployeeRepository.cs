@@ -37,11 +37,14 @@ namespace HRM.Models
         public async Task<Employee> SearchAsync(int employeeID)
         {
             var employee = context.Employees
-                .Include(d => d.Departments)
-                    .ThenInclude(d => d.DepartmentTasks)
-                .Include(d => d.Departments)
-                    .ThenInclude(d => d.DepartmentTitles)
-                        .ThenInclude(d => d.Department)
+                .Include(d => d.DepartmentTitles)
+                    .ThenInclude(dt => dt.Department)
+                .Include(d => d.DepartmentTitles)
+                    .ThenInclude(dt => dt.Employee)
+                .Include(d => d.DepartmentTasks)
+                    .ThenInclude(dt => dt.Department)
+                .Include(d => d.DepartmentTasks)
+                    .ThenInclude(dt => dt.Employee)
                 .Include(f => f.FamilyRelations)
                 .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
 
@@ -51,11 +54,13 @@ namespace HRM.Models
         public async Task<Employee> SearchAsync(int? employeeID)
         {
             var employee = context.Employees
-                .Include(d => d.Departments)
-                    .ThenInclude(d => d.DepartmentTasks)
-                .Include(d => d.Departments)
-                    .ThenInclude(d => d.DepartmentTitles)
-                        .ThenInclude(d => d.Department)
+                .Include(d => d.DepartmentTitles)
+                    .ThenInclude(dt => dt.Department)
+                        .ThenInclude(dk => dk.DepartmentTasks)
+                .Include(d => d.DepartmentTasks)
+                    .ThenInclude(dt => dt.Department)
+                .Include(d => d.DepartmentTasks)
+                    .ThenInclude(dt => dt.Employee)
                 .Include(f => f.FamilyRelations)
                 .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
 

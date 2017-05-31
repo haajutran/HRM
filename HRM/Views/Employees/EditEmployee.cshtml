@@ -7,6 +7,7 @@
 <form asp-action="EditEmployee" asp-route-employeeID="@Model.EmployeeID" method="post">
     <div class="row">
         <div class="col-lg-7">
+
             <div class="card card-user">
                 <div class="image">
                     <img src="~/images/wall.jpg" alt="...">
@@ -172,7 +173,7 @@
                 </div>
                 <hr>
               
-            </div>
+            </div> @*Thông tin chi tiết nhân viên*@
 
             <div class="card">
                 <div class="header">
@@ -218,7 +219,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> @*Thân nhân*@
 
             <div class="card">
                 <div class="header">
@@ -266,7 +267,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> @*Phòng ban*@
 
             <div class="card">
                 <div class="header">
@@ -294,7 +295,7 @@
                                             <td>@d.Department.DepartmentCode</td>
                                             <td>@d.Title</td>
                                             <td>@d.Description</td>
-                                            <td><a asp-controller="Pays" asp-action="Create" asp-route-departmentTaskID="@d.DepartmentTaskID">@d.WorkHours</a></td>
+                                            <td>@d.WorkHours</td>
                                             <td>
                                                 <a class="fa fa-trash btn btn-alert" style="width:100%" href="#"></a>
                                             </td>
@@ -315,7 +316,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> @*Công việc*@
         </div>
 
         <div class="col-lg-5">
@@ -357,7 +358,7 @@
                                         <p class="pull-right">Chức danh</p>
                                     </div>
                                     <div class="col-xs-8">
-                                        <select class="form-control border-input" asp-for="DepartmentTitleID" asp-items="ViewBag.DepartmentTitles">
+                                        <select class="form-control border-input" asp-for="DepartmentTitle" asp-items="ViewBag.DepartmentTitles">
                                             <option value="">-- Chọn chức danh --</option>
                                         </select>
                                         <br>
@@ -393,7 +394,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> @*Chức danh và phòng ban chính*@
 
     </div>
 </form>

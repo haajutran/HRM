@@ -1,0 +1,46 @@
+﻿@model IEnumerable<DepartmentTask>
+@{  
+    ViewBag.Title = "Quản lý công việc";
+}
+
+
+@*@if (User.IsInRole("Manager"))
+    {
+        <a class="btn btn-primary" asp-controller="Departments" asp-action="AddEmployee">Thêm Phòng Ban</a>
+    }*@
+
+<div id="content-header">
+    <div id="breadcrumb"><a asp-controller="Departments" asp-action="Index" title="Quản lý phòng ban" class="tip-bottom"> Quản lý phòng ban </a> </div>
+
+</div>
+<!--End-breadcrumbs-->
+<!--Action boxes-->
+<div class="container-fluid">
+    <div>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div style="text-align: center; margin: 2em;">
+            <h3><b>QUẢN LÝ CÔNG VIỆC</b></h3>
+        </div>
+
+        <div  style="margin: auto; width:60%;">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th class="col-md-3"><span>Mã Số Phòng Ban</span></th>
+                        <th><span>Tên Phòng Ban</span></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+

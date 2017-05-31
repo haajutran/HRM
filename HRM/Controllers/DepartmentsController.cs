@@ -1,12 +1,10 @@
 ﻿using HRM.Data;
 using HRM.Models;
-using HRM.Models.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -35,6 +33,22 @@ namespace HRM.Controllers
             var departments = await _departmentRepository.DepartmentsAsync();
             return View(departments);
         }
+
+        #region Update Work Hours
+
+        public IActionResult UpdateWorkHours(int departmentID)
+        {
+            WorkHoursManagement whm = new WorkHoursManagement();
+
+            whm.DepartmentTasks = _context.DepartmentTasks
+                .Include(d => d.Department)
+                .Include(d => d.Employee)
+                .Select(a => a).Where(a => a.Department.DepartmentID == departmentID);
+
+            return View(whm);
+        }
+
+        #endregion
 
         #region Add Department
 
@@ -167,7 +181,7 @@ namespace HRM.Controllers
 
             return View(department);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditDepartmentPost(int? departmentCode)
@@ -212,6 +226,8 @@ namespace HRM.Controllers
                     .ThenInclude(t => t.Employee)
                         .ThenInclude(d => d.DepartmentTasks)
                 .SingleOrDefaultAsync(d => d.DepartmentID == departmentID);
+
+            ViewData["DepartmentName"] = department.DepartmentName;
 
             return View(department);
         }
