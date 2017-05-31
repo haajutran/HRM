@@ -14,7 +14,7 @@ using HRM.Services;
 
 namespace HRM.Controllers
 {
-    [Authorize(Roles = "Manager")]
+
     public class AccountController : Controller
     {
         #region Requires
@@ -38,11 +38,12 @@ namespace HRM.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
         #endregion
-
+        [Authorize(Roles = "Manager")]
         public IActionResult Index() => View(_userManager.Users);
 
         #region Actions
         /*--- Get Login ---*/
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
@@ -92,6 +93,7 @@ namespace HRM.Controllers
         /*--- Get Register ---*/
         [HttpGet]
         [AllowAnonymous]
+        [Authorize(Roles = "Manager")]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -99,6 +101,7 @@ namespace HRM.Controllers
         }
 
         /*--- Post Register ---*/
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -118,7 +121,7 @@ namespace HRM.Controllers
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToAction("Index", "Employees");
+                    return RedirectToAction("Index", "Account");
                 }
                 AddErrors(result);
             }
@@ -137,6 +140,7 @@ namespace HRM.Controllers
 
 
         /*--- Edit Account ---*/
+        [Authorize(Roles = "Manager")]
         [HttpGet]
         [AllowAnonymous]
         public IActionResult EditAccount(string returnUrl = null)
