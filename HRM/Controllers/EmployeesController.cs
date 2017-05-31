@@ -15,7 +15,7 @@ using System;
 
 namespace HRM.Controllers
 {
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Manager, Staff")]
     public class EmployeesController : Controller
     {
 

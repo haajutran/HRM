@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HRM.Controllers
 {
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Manager, Staff")]
     public class FamilyRelationsController : Controller
     {
         private readonly ApplicationDbContext _context;
