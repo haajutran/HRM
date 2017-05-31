@@ -46,17 +46,16 @@
                                 </td>
                                 <td>@employee.Email</td>
                                 <td>
-                                    <form asp-action="DeleteConfirmed" asp-controller="Employees" asp-route-employeeID="@employee.EmployeeID" method="post">
+                                    <div>
                                         <a class="btn btn-simple btn-primary" asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@employee.EmployeeID">
                                             <i style="font-size: 20px" class="fa fa-pencil"></i>
                                         </a>
 
-                                        <button type="submit"
-                                                class="btn btn-simple btn-danger">
+                                        <a class="btn btn-simple btn-danger" asp-controller="Employees" asp-action="DeleteEmployee" asp-route-employeeID="@employee.EmployeeID">
                                             <i style="font-size: 20px" class="fa fa-trash"></i>
-                                        </button>
+                                        </a>
 
-                                    </form>
+                                    </div>
 
                                 </td>
                             </tr>
