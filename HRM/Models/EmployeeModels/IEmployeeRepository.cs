@@ -9,5 +9,6 @@ namespace HRM.Models
         Task<IEnumerable<Employee>> EmployeesAsync(int departmentCode);
         Task<Employee> SearchAsync(int employeeID);
         Task<Employee> SearchAsync(int? employeeID);
+        Task<Employee> SearchCodeAsync(int? employeeCode);
     }
 }

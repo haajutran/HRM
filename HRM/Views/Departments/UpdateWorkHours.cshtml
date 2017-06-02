@@ -45,6 +45,10 @@
                     </tbody>
                 </table>
             </div>
+            @if (ViewBag.IsSuccessful != null)
+            {
+                <span class="text-danger">@ViewBag.IsSuccessful</span>
+            }
             <div style="margin: auto">
                 <button type="submit" class="btn btn-primary">Cập nhật</button>
             </div>

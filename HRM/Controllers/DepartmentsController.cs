@@ -51,11 +51,12 @@ namespace HRM.Controllers
             return View(whm);
         }
 
-        public async Task<IActionResult> UpdateWorkHours(int departmentTaskID)
+        public async Task<IActionResult> UpdateWorkHours(int departmentTaskID, string message)
         {
             var dTask = await _departmentRepository.SearchTaskAsync(departmentTaskID);
 
-            ViewBag.DepartmentName = (await _departmentRepository.SearchAsync(dTask.Department.DepartmentCode)).DepartmentName;
+            ViewBag.DepartmentName = (await _departmentRepository.SearchByIDAsync(dTask.Department.DepartmentID)).DepartmentName;
+            ViewBag.IsSuccessful = message;
 
             return View(dTask);
         }
@@ -67,12 +68,22 @@ namespace HRM.Controllers
         {
             var dT = await _departmentRepository.SearchTaskAsync(departmentTask.DepartmentTaskID);
             dT.WorkHours = departmentTask.WorkHours;
-            _context.Update(dT);
-            await _context.SaveChangesAsync();
+            int ID = dT.DepartmentTaskID;
 
-            ViewBag.DepartmentName = (await _departmentRepository.SearchByIDAsync(dT.Department.DepartmentID)).DepartmentName;
-            
-            return Redirect("UpdateWorkHours" + "?departmentTaskID=" + dT.DepartmentTaskID);
+            try
+            {
+                _context.Update(dT);
+                await _context.SaveChangesAsync();
+
+                ViewBag.DepartmentName = (await _departmentRepository.SearchByIDAsync(dT.Department.DepartmentID)).DepartmentName;
+                string message = "Cập nhật thành công !";
+                return RedirectToAction("UpdateWorkHours", new { departmentTaskID = ID, message = message });
+            }
+            catch (DbUpdateException)
+            {
+                string message = "Cập nhật không thành công!";
+                return RedirectToAction("UpdateWorkHours", new { departmentTaskID = ID, message = message });
+            }
         }
 
         #endregion
@@ -111,36 +122,49 @@ namespace HRM.Controllers
         #endregion
 
         #region Add Title
-        public IActionResult AddTitle(int employeeID)
+        public IActionResult AddTitle(int? employeeCode, int? departmentID)
         {
             ListOfDepartments();
             ListOfTitles();
             DepartmentTitle departmentTitle = new DepartmentTitle()
             {
-                Employee = new Employee()
+                EmployeeCode = employeeCode,
             };
-            departmentTitle.Employee.EmployeeCode = employeeID;
+            if (departmentID != null)
+            {
+                departmentTitle.DepartmentID = departmentID;
+            }
+            
             return View(departmentTitle);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTitle([Bind("Title, Description, Department, Employee")] DepartmentTitle departmentTitle)
+        public async Task<IActionResult> AddTitle([Bind("Title, Description, DepartmentID, EmployeeCode")] DepartmentTitle departmentTitle)
         {
 
             if (ModelState.IsValid)
             {
-                var employee = await _employeeRepository.SearchAsync(departmentTitle.Employee.EmployeeCode);
+                var employee = await _employeeRepository.SearchCodeAsync(departmentTitle.EmployeeCode);
                 if (employee == null)
                 {
                     return Redirect("EmployeeNull");
                 }
+
+                if (departmentTitle.DepartmentID == null)
+                {
+                    ListOfDepartments();
+                    ListOfTitles();
+                    ViewBag.DepartmentIDNullWarning = "Xin chọn phòng ban muốn thêm chức danh !";
+                    return View(departmentTitle);
+                }
+
                 var dT = new DepartmentTitle()
                 {
                     Title = departmentTitle.Title,
                     Description = departmentTitle.Description,
                     Employee = employee,
-                    Department = await _departmentRepository.SearchAsync(departmentTitle.Department.DepartmentCode)
+                    Department = await _departmentRepository.SearchByIDAsync(departmentTitle.DepartmentID)
                 };
 
                 _context.Add(dT);
@@ -309,7 +333,7 @@ namespace HRM.Controllers
 
         #endregion
 
-        #region Delete Employee
+        #region Delete Department
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteDepartment(int? departmentID, bool? saveChangesError = false)
         {
@@ -357,25 +381,54 @@ namespace HRM.Controllers
         #endregion
 
         #region Delete Title
-        public async Task<IActionResult> DeleteTitle(int titleID)
+        public async Task<IActionResult> DeleteTitle(int? titleID, bool? saveChangesError = false)
         {
-            var department = await _departmentRepository.SearchTitleAsync(titleID);
-            if (department == null)
+            if (titleID == null)
             {
-                return RedirectToAction("EmployeesManagement", "Main");
+                return NotFound();
             }
+            var title = await _context.DepartmentTitles
+                .Include(d => d.Department)
+                .Include(e => e.Employee)
+                .SingleOrDefaultAsync(m => m.DepartmentTitleID == titleID);
+            if (title == null)
+            {
+                return NotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Failed!";
+            }
+
+            return View(title);
+        }
+
+        // POST: DepartmentTitles/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteTitleConfirmed(int titleID)
+        {
+            var title = await _departmentRepository.SearchTitleAsync(titleID);
+
+            if (title == null)
+            {
+                return Redirect("Index");
+            }
+
+            var dID = title.DepartmentID;
 
             try
             {
-                _context.DepartmentTitles.Remove(department);
+                _context.DepartmentTitles.Remove(title);
                 await _context.SaveChangesAsync();
-
-                return RedirectToAction("Index", "Departments");
+                return Redirect("Index");
             }
             catch (DbUpdateException /* ex */)
             {
                 //Log the error (uncomment ex variable name and write a log.)
-                return RedirectToAction("DeleteTitle", new { id = titleID, saveChangesError = true });
+                return RedirectToAction("DeleteEmployee", new { id = titleID, saveChangesError = true });
             }
         }
         #endregion

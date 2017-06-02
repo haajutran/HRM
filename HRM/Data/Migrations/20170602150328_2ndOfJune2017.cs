@@ -150,6 +150,7 @@ namespace HRM.Data.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DepartmentID = table.Column<int>(nullable: true),
                     Description = table.Column<string>(nullable: true),
+                    EmployeeCode = table.Column<int>(nullable: true),
                     EmployeeID = table.Column<int>(nullable: true),
                     Title = table.Column<string>(nullable: false)
                 },

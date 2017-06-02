@@ -12,7 +12,20 @@
         <h4>Chức danh</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="Employee.EmployeeCode"/>
+        @if (Model.EmployeeCode == null)
+        {
+            <div class="form-group">
+                <label class="col-md-2 control-label">MSNV</label>
+                <div class="col-md-10">
+                    <input asp-for="EmployeeCode" class="form-control" />
+                    <span asp-validation-for="EmployeeCode" class="text-danger"></span>
+                </div>
+            </div>
+        }
+        else
+        {
+            <input type="hidden" asp-for="EmployeeCode" />
+        }
         <div class="form-group">
             <label asp-for="Title" class="col-md-2 control-label"></label>
             <div class="col-md-10">
@@ -25,10 +38,17 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Phòng ban</label>
             <div class="col-md-10">
-                <select class="form-control border-input" asp-for="Department.DepartmentCode" asp-items="ViewBag.Departments">
+                <select class="form-control border-input" asp-for="DepartmentID" asp-items="ViewBag.Departments">
                     <option value="">-- Chọn phòng ban --</option>
                 </select>
-                <span asp-validation-for="Title" class="text-danger"></span>
+                @if (ViewBag.DepartmentIDNullWarning == null)
+                {
+                    <span asp-validation-for="DepartmentID" class="text-danger"></span>
+                }
+                else
+                {
+                    <span class="text-danger">@ViewBag.DepartmentIDNullWarning</span>
+                }
             </div>
         </div>
         <div class="form-group">

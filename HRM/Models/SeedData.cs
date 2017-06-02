@@ -21,9 +21,9 @@ namespace HRM.Models
             }
                     
             context.Departments.AddRange(
-                new Department { DepartmentCode = 1, DepartmentName = "Bộ phận nhân sự" },
-                new Department { DepartmentCode = 2, DepartmentName = "Bộ phận tài chính" },
-                new Department { DepartmentCode = 3, DepartmentName = "Bộ phận kỹ thuật" }
+                new Department { DepartmentCode = 1, DepartmentName = "Bộ phận nhân sự",    Description = "Chịu trách nhiệm về mảng nhân sự"    },
+                new Department { DepartmentCode = 2, DepartmentName = "Bộ phận tài chính",  Description = "Chịu trách nhiệm về mảng tài chính"  },
+                new Department { DepartmentCode = 3, DepartmentName = "Bộ phận kỹ thuật",   Description = "Chịu trách nhiệm về mảng kỹ thuật"   }
                 );
 
             if (context.DepartmentTitles.Any())
@@ -34,7 +34,8 @@ namespace HRM.Models
             context.DepartmentTitles.AddRange(
                 new DepartmentTitle { Title = "Trưởng phòng"},
                 new DepartmentTitle { Title = "Thư ký"},
-                new DepartmentTitle { Title = "Phòng viên"}
+                new DepartmentTitle { Title = "Phòng viên"},
+                new DepartmentTitle { Title = "Thử việc" }
                 );
 
             context.SaveChanges();

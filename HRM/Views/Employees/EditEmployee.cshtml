@@ -232,7 +232,7 @@
                 <div class="header">
                     <h4 class="title col-lg-6">Phòng ban</h4>
                     <div col-lg-2>
-                        <a class="btn btn-success pull-right" style="width: 5em" asp-controller="Departments" asp-action="AddTitle" asp-route-employeeID="@Model.EmployeeID"><i class="fa fa-plus"></i></a>
+                        <a class="btn btn-success pull-right" style="width: 5em" asp-controller="Departments" asp-action="AddTitle" asp-route-employeeCode="@Model.EmployeeCode"><i class="fa fa-plus"></i></a>
                     </div>
                 </div>
                 <div class="card-content table-responsive">
@@ -252,16 +252,25 @@
                                 {
                                     foreach (var d in Model.DepartmentTitles)
                                     {
-                                        <tr>
-                                            <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@d.Department.DepartmentID">@d.Department.DepartmentName</a></td>
-                                            <td>@d.Department.DepartmentCode</td>
-                                            <td>@d.Title</td>
-                                            <td>@d.Department.DepartmentTasks.Count</td>
-                                            <td>@d.Description</td>
-                                            <td>
-                                                <a class="fa fa-trash btn btn-alert" style="width:100%" asp-controller="Departments" asp-action="DeleteTitle"></a>
-                                            </td>
-                                        </tr>
+                                        var thisTitleDepartmentID = d.Department.DepartmentID;
+                                        if (Model.DepartmentTitles.FirstOrDefault(dt => dt.Department.DepartmentID == thisTitleDepartmentID).Title.Equals(d.Title))
+                                        {
+                                            <tr>
+                                                <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@d.Department.DepartmentID">@d.Department.DepartmentName</a></td>
+                                                <td>@d.Department.DepartmentCode</td>
+                                                <td>
+                                                    @foreach (var item in Model.DepartmentTitles.Select(dt => dt).Where(dt => dt.Department.DepartmentID == thisTitleDepartmentID))
+                                                    {
+                                                        @item.Title <br>
+                                                    }
+                                                </td>
+                                                <td>@d.Department.DepartmentTasks.Count</td>
+                                                <td>@d.Description</td>
+                                                <td>
+                                                    <a class="fa fa-trash btn btn-alert" style="width:100%" asp-controller="Departments" asp-action="DeleteTitle"></a>
+                                                </td>
+                                            </tr>
+                                        }
                                     }
                                 }
                                 else

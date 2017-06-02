@@ -32,6 +32,12 @@ namespace HRM.Models
                 .SingleOrDefaultAsync(p => p.DepartmentCode == departmentCode);
         }
 
+        public async Task<Department> SearchByIDAsync(int? departmentID)
+        {
+            return await context.Departments
+                .SingleOrDefaultAsync(p => p.DepartmentCode == departmentID);
+        }
+
         public async Task<Department> SearchByIDAsync(int departmentID)
         {
             return await context.Departments
@@ -49,6 +55,8 @@ namespace HRM.Models
         public async Task<DepartmentTitle> SearchTitleAsync(int departmentTitleID)
         {
             return await context.DepartmentTitles
+                .Include(d => d.Employee)
+                .Include(d => d.Department)
                 .SingleOrDefaultAsync(t => t.DepartmentTitleID == departmentTitleID);
         }
     }

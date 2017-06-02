@@ -10,5 +10,6 @@ namespace HRM.Models
         Task<DepartmentTitle> SearchTitleAsync(int departmentTitleID);
         Task<DepartmentTask> SearchTaskAsync(int departmentTaskID);
         Task<Department> SearchByIDAsync(int departmentID);
+        Task<Department> SearchByIDAsync(int? departmentID);
     }
 }

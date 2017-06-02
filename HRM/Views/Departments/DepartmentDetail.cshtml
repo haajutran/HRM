@@ -8,19 +8,31 @@
 <!--Action boxes-->
 <div class="container-fluid">
     <div>
+        @if (Model != null)
+        {
+            <div class="card">
+                <div style="padding-top: 1em; padding-bottom: 1em; ">
+                    <center>
+                        <h3 class="title"><b>@Model.DepartmentName.ToUpper()</b></h3>
+                        <p class="category">@Model.Description</p>
+                    </center>
+                </div>
+            </div>
+        }
+        
         <div class="card">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="header">
                 <div class="col-md-9" style="padding-left: 0">
                     <h4 class="title"><b>DANH SÁCH NHÂN VIÊN</b></h4>
-                    <p class="category">Danh sách các phòng ban trong công ty</p>
+                    <p class="category">Danh sách các nhân viên có chức danh trong phòng này</p>
                 </div>
                 <div class="pull-right col-md-3">
-                    <a class="btn btn-primary" asp-controller="Employees" asp-action="AddEmployee" style="margin-bottom: 2em;">Thêm Nhân Viên</a>
+                    <a class="btn btn-primary" asp-action="AddTitle" style="margin-bottom: 2em;">Thêm Nhân Viên Vào</a>
                 </div>
             </div>
             <div class="content table-responsive table-full-width">
-       
+
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -34,25 +46,36 @@
                     <tbody>
                         @foreach (var departmentTitle in Model.DepartmentTitles)
                         {
-                            <tr>
-                                <td><a asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@departmentTitle.Employee.EmployeeID">@departmentTitle.Employee.EmployeeCode</a></td>
-                                <td>@departmentTitle.Employee.FullName</td>
-                                <td>@departmentTitle.Title</td>
-                                <td>@departmentTitle.Employee.DepartmentTasks.Count</td>
-                                <td>@departmentTitle.Description</td>
-                                <td>
-                                    <form method="post">
-                                        <a class="btn btn-sm btn-primary" href="#">
-                                            <i style="font-size: 20px" class="fa fa-pencil"></i>
-                                        </a>
-
-                                        <button type="submit"
-                                                class="btn btn-sm btn-danger">
-                                            <i style="font-size: 20px" class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
+                            var thisTitleEmployeeID = departmentTitle.Employee.EmployeeID;
+                            if (Model.DepartmentTitles.FirstOrDefault(dt => dt.Employee.EmployeeID == thisTitleEmployeeID).Title.Equals(departmentTitle.Title))
+                            {
+                                <tr>
+                                    <td><a asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@departmentTitle.Employee.EmployeeID">@departmentTitle.Employee.EmployeeCode</a></td>
+                                    <td>@departmentTitle.Employee.FullName</td>
+                                    <td>
+                                        @foreach (var item in Model.DepartmentTitles.Select(dt => dt).Where(dt => dt.Employee.EmployeeID == thisTitleEmployeeID))
+                                        {
+                                            @item.Title <br>
+                                        }
+                                    </td>
+                                    <td>
+                                        @Model.DepartmentTasks.Select(a => a).Where(a => a.Employee.EmployeeID == departmentTitle.Employee.EmployeeID).ToList().Count
+                                    </td>
+                                    <td>@departmentTitle.Description</td>
+                                    <td>
+                                        <form>
+                                            <a class="btn btn-sm btn-primary" href="#">
+                                                <i style="font-size: 20px" class="fa fa-pencil"></i>
+                                            </a>
+                                            <a asp-action="DeleteTitle"
+                                               asp-route-titleID="@departmentTitle.DepartmentTitleID"
+                                               class="btn btn-sm btn-danger">
+                                                <i style="font-size: 20px" class="fa fa-trash"></i>
+                                            </a>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>
@@ -66,20 +89,19 @@
 
         <div class="header">
             <div class="col-md-9" style="padding-left: 0">
-                <h4 class="title"><b>DANH SÁCH NHÂN VIÊN</b></h4>
-                <p class="category">Danh sách các phòng ban trong công ty</p>
+                <h4 class="title"><b>DANH SÁCH CÔNG VIỆC</b></h4>
+                <p class="category">Danh sách các công việc của phòng này</p>
             </div>
             <div class="pull-right col-md-3">
                 <a class="btn btn-primary" asp-action="AddTask" asp-route-departmentID="@Model.DepartmentID" style="margin-bottom: 2em;">Thêm Công Việc</a>
             </div>
         </div>
-     
+
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th>MSNV</th>
-                    <th>Tên nhân viên</th>
-                    <th>Chức danh</th>
+                    <th>Chịu trách nhiệm</th>
                     <th>Tên công việc</th>
                     <th>Mô tả</th>
                     <th>Giờ làm</th>
@@ -93,7 +115,6 @@
                         <td><a asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@task.Employee.EmployeeID">@task.Employee.EmployeeCode</a></td>
                         <td>@task.Employee.FullName</td>
                         <td>@thisEmployeeTitle</td>
-                        <td>@task.Title</td>
                         <td>@task.Description</td>
                         <td>
                             <a asp-route-departmentTaskID="@task.DepartmentTaskID" asp-action="UpdateWorkHours" class="btn" style="width:100%">

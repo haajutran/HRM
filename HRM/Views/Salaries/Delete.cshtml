@@ -1,4 +1,4 @@
-@model HRM.Models.Salary
+﻿@model HRM.Models.Salary
 
 @{
     ViewData["Title"] = "Delete";
@@ -10,8 +10,8 @@
 <div>
     <h4>Salary</h4>
     <hr />
+    <input type="hidden" asp-for="SalaryID" />
     <dl class="dl-horizontal">
-        <input type="hidden" asp-for="SalaryID" />
         <dt>
             @Html.DisplayNameFor(model => model.RecordDate)
         </dt>
@@ -29,7 +29,7 @@
     <form asp-action="Delete">
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            <a asp-action="Index">Back to List</a>
+            <a asp-action="Index">Đến danh sách lương</a>
         </div>
     </form>
 </div>

@@ -8,7 +8,7 @@ using HRM.Data;
 namespace HRM.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170602092206_2ndOfJune2017")]
+    [Migration("20170602150328_2ndOfJune2017")]
     partial class _2ndOfJune2017
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -120,6 +120,8 @@ namespace HRM.Data.Migrations
                     b.Property<int?>("DepartmentID");
 
                     b.Property<string>("Description");
+
+                    b.Property<int?>("EmployeeCode");
 
                     b.Property<int?>("EmployeeID");
 

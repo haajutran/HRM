@@ -66,5 +66,21 @@ namespace HRM.Models
 
             return await employee;
         }
+
+        public async Task<Employee> SearchCodeAsync(int? employeeCode)
+        {
+            var employee = context.Employees
+                .Include(d => d.DepartmentTitles)
+                    .ThenInclude(dt => dt.Department)
+                        .ThenInclude(dk => dk.DepartmentTasks)
+                .Include(d => d.DepartmentTasks)
+                    .ThenInclude(dt => dt.Department)
+                .Include(d => d.DepartmentTasks)
+                    .ThenInclude(dt => dt.Employee)
+                .Include(f => f.FamilyRelations)
+                .SingleOrDefaultAsync(m => m.EmployeeCode == employeeCode);
+
+            return await employee;
+        }
     }
 }
