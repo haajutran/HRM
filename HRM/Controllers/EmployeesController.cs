@@ -68,6 +68,7 @@ namespace HRM.Controllers
         {
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();
+            ContractsDropDownList();
             return View();
         }
 
@@ -75,7 +76,7 @@ namespace HRM.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEmployee([Bind("FullName, Address, DateOfBirth, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, DepartmentCode, DateOfJoining, DepartmentTitle")] Employee employee, string gender)
+        public async Task<IActionResult> AddEmployee([Bind("FullName, Address, DateOfBirth, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, DepartmentCode, DateOfJoining, DepartmentTitle, ContractID")] Employee employee, string gender)
         {
 
             if (ModelState.IsValid)
@@ -94,6 +95,7 @@ namespace HRM.Controllers
                 employee.Departments = departments;
                 employee.Gender = gender;
                 employee.Region = "Việt Nam";
+                employee.Contract = await _context.Contracts.SingleOrDefaultAsync(c => c.ContractID == employee.ContractID);
                 departments.Add(department);
                 //employee.FamilyRelations = _context.FamilyRelations.Select(f => f).Where(x => x.EmployeeId == employee.EmployeeID);
                 //Department department = await _context.Departments
@@ -107,6 +109,7 @@ namespace HRM.Controllers
             }
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();
+            ContractsDropDownList();
 
             return View(employee);
         }
@@ -125,7 +128,9 @@ namespace HRM.Controllers
             }
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();
+            ContractsDropDownList();
             var employee = await _employeeRepository.SearchAsync(employeeID);
+            employee.ContractID = employee.Contract.ContractID;
             return View(employee);
         }
 
@@ -155,6 +160,7 @@ namespace HRM.Controllers
             }
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();
+            ContractsDropDownList();
             return View(employeeToUpdate);
 
             //        if (ModelState.IsValid)
@@ -383,6 +389,18 @@ namespace HRM.Controllers
                                             select d.Title;
 
             ViewData["DepartmentTitles"] = new SelectList(titlesQuery.Distinct().AsNoTracking());
+
+        }
+        #endregion
+
+        #region Contracts Drop Down List
+        private void ContractsDropDownList()
+        {
+            var contractsQuery = from d in _context.Contracts
+                              orderby d.Title
+                              select d;
+
+            ViewData["Contracts"] = new SelectList(contractsQuery.Distinct().AsNoTracking(), "ContractID", "Title");
 
         }
         #endregion

@@ -65,6 +65,20 @@ namespace HRM.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("HRM.Models.Contract", b =>
+                {
+                    b.Property<int>("ContractID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<long>("PayPerHour");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("ContractID");
+
+                    b.ToTable("Contract");
+                });
+
             modelBuilder.Entity("HRM.Models.Department", b =>
                 {
                     b.Property<int>("DepartmentID")
@@ -153,6 +167,8 @@ namespace HRM.Data.Migrations
 
                     b.Property<string>("City");
 
+                    b.Property<int?>("ContractID");
+
                     b.Property<string>("DateOfBirth")
                         .IsRequired();
 
@@ -176,7 +192,8 @@ namespace HRM.Data.Migrations
 
                     b.Property<string>("HomeTown");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(13);
 
                     b.Property<string>("PlaceOfBirth");
 
@@ -187,7 +204,11 @@ namespace HRM.Data.Migrations
                     b.Property<string>("TempAddress")
                         .IsRequired();
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("EmployeeID");
+
+                    b.HasIndex("ContractID");
 
                     b.ToTable("Employee");
                 });
@@ -379,6 +400,13 @@ namespace HRM.Data.Migrations
                     b.HasOne("HRM.Models.Employee", "Employee")
                         .WithMany("DepartmentTitles")
                         .HasForeignKey("EmployeeID");
+                });
+
+            modelBuilder.Entity("HRM.Models.Employee", b =>
+                {
+                    b.HasOne("HRM.Models.Contract", "Contract")
+                        .WithMany("Employees")
+                        .HasForeignKey("ContractID");
                 });
 
             modelBuilder.Entity("HRM.Models.FamilyRelation", b =>

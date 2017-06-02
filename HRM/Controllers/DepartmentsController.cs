@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -178,36 +179,6 @@ namespace HRM.Controllers
         }
         #endregion
 
-        #region Edit Task
-
-        public async Task<IActionResult> EditTask(int departmentTaskID)
-        {
-            var departmentTask = await _departmentRepository.SearchTaskAsync(departmentTaskID);
-
-            return View(departmentTask);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTask(DepartmentTask departmentTask)
-        {
-
-            if (departmentTask == null) { return NotFound(); }
-
-            if (await TryUpdateModelAsync<DepartmentTask>(departmentTask, ""))
-            {
-                _context.Update(departmentTask);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-
-            ListOfTitles();
-
-            return View(departmentTask);
-        }
-
-        #endregion
-
         #region Add Task
         public IActionResult AddTask(int departmentID)
         {
@@ -310,6 +281,97 @@ namespace HRM.Controllers
             return View(departmentToUpdate);
         }
 
+
+        #endregion
+
+        #region Edit Title
+
+        public async Task<IActionResult> EditTitle(int? titleID)
+        {
+            if (titleID == null)
+            {
+                return NotFound();
+            }
+
+            var departmentTitle = await _departmentRepository.SearchByIDAsync(titleID);
+            if (departmentTitle == null)
+            {
+                return NotFound();
+            }
+            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentName", departmentTitle.DepartmentID);
+            return View(departmentTitle);
+        }
+
+        // POST: DepartmentTitles/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost, ActionName("EditTitle")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditTitleConfirmed(int titleID, [Bind("DepartmentTitleID,Title,Description,DepartmentID")] DepartmentTitle departmentTitle)
+        {
+            if (titleID != departmentTitle.DepartmentTitleID)
+            {
+                return NotFound();
+            }
+
+            var dT = await _departmentRepository.SearchTitleAsync(titleID);
+            dT.DepartmentID = departmentTitle.DepartmentID;
+            dT.Description = departmentTitle.Description;
+            dT.Title = departmentTitle.Title;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(departmentTitle);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!DepartmentTitleExists(departmentTitle.DepartmentTitleID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentName", departmentTitle.DepartmentID);
+            return View(departmentTitle);
+        }
+        
+        #endregion
+
+        #region Edit Task
+
+        public async Task<IActionResult> EditTask(int departmentTaskID)
+        {
+            var departmentTask = await _departmentRepository.SearchTaskAsync(departmentTaskID);
+
+            return View(departmentTask);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditTask(DepartmentTask departmentTask)
+        {
+
+            if (departmentTask == null) { return NotFound(); }
+
+            if (await TryUpdateModelAsync<DepartmentTask>(departmentTask, ""))
+            {
+                _context.Update(departmentTask);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            ListOfTitles();
+
+            return View(departmentTask);
+        }
 
         #endregion
 
@@ -445,6 +507,12 @@ namespace HRM.Controllers
             var departments = _context.Departments.Select(t => t).ToList();
             ViewData["Departments"] = new SelectList(departments, "DepartmentID", "DepartmentName");
         }
+
+        private bool DepartmentTitleExists(int departmentTitleID)
+        {
+            return _context.DepartmentTitles.Any(e => e.DepartmentTitleID == departmentTitleID);
+        }
+
         #endregion
 
         #region Employee Null

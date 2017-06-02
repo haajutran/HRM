@@ -385,6 +385,21 @@
                             <li>
                                 <div class="row">
                                     <div class="col-xs-4" style="padding-top: 0.5em">
+                                        <p class="pull-right">Loại hợp đồng</p>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        <select class="form-control border-input" asp-for="ContractID" asp-items="ViewBag.Contracts">
+                                            <option value="">-- Chọn hợp đồng --</option>
+                                        </select>
+                                        <span asp-validation-for="DepartmentTitle" class="text-danger"></span>
+                                        <br>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="row">
+                                    <div class="col-xs-4" style="padding-top: 0.5em">
                                         <p class="pull-right">Ngày tham gia</p>
                                     </div>
                                     <div class="col-xs-8">

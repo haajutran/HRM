@@ -38,6 +38,16 @@ namespace HRM.Models
                 new DepartmentTitle { Title = "Thử việc" }
                 );
 
+            if (context.Contracts.Any())
+            {
+                return;
+            }
+
+            context.Contracts.AddRange(
+                new Contract {  Title = "Chính thức",   PayPerHour = 100_000},
+                new Contract {  Title = "Thử việc",     PayPerHour = 50_000}
+                );
+
             context.SaveChanges();
         }
     }

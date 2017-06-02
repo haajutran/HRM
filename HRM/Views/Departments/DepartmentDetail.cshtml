@@ -64,7 +64,9 @@
                                     <td>@departmentTitle.Description</td>
                                     <td>
                                         <form>
-                                            <a class="btn btn-sm btn-primary" href="#">
+                                            <a asp-action="EditTitle"
+                                               asp-route-titleID="@departmentTitle.DepartmentTitleID"
+                                               class="btn btn-sm btn-success">
                                                 <i style="font-size: 20px" class="fa fa-pencil"></i>
                                             </a>
                                             <a asp-action="DeleteTitle"

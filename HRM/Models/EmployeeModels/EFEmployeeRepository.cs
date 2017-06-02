@@ -46,6 +46,7 @@ namespace HRM.Models
                 .Include(d => d.DepartmentTasks)
                     .ThenInclude(dt => dt.Employee)
                 .Include(f => f.FamilyRelations)
+                .Include(c => c.Contract)
                 .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
 
             return await employee;
@@ -62,6 +63,7 @@ namespace HRM.Models
                 .Include(d => d.DepartmentTasks)
                     .ThenInclude(dt => dt.Employee)
                 .Include(f => f.FamilyRelations)
+                .Include(c => c.Contract)
                 .SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
 
             return await employee;
@@ -78,6 +80,7 @@ namespace HRM.Models
                 .Include(d => d.DepartmentTasks)
                     .ThenInclude(dt => dt.Employee)
                 .Include(f => f.FamilyRelations)
+                .Include(c => c.Contract)
                 .SingleOrDefaultAsync(m => m.EmployeeCode == employeeCode);
 
             return await employee;

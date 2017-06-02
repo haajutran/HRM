@@ -22,6 +22,7 @@ namespace HRM.Models
                 .Include(ta => ta.DepartmentTasks)
                     .ThenInclude(e => e.Employee)
                 .Include(ti => ti.DepartmentTitles)
+                    .ThenInclude(e => e.Employee)
                 .AsNoTracking();
             return await departments.ToListAsync();
         }
@@ -29,26 +30,38 @@ namespace HRM.Models
         public async Task<Department> SearchAsync(int departmentCode)
         {
             return await context.Departments
+                .Include(ta => ta.DepartmentTasks)
+                    .ThenInclude(e => e.Employee)
+                .Include(ti => ti.DepartmentTitles)
+                    .ThenInclude(e => e.Employee)
                 .SingleOrDefaultAsync(p => p.DepartmentCode == departmentCode);
         }
 
         public async Task<Department> SearchByIDAsync(int? departmentID)
         {
             return await context.Departments
+                .Include(ta => ta.DepartmentTasks)
+                    .ThenInclude(e => e.Employee)
+                .Include(ti => ti.DepartmentTitles)
+                    .ThenInclude(e => e.Employee)
                 .SingleOrDefaultAsync(p => p.DepartmentCode == departmentID);
         }
 
         public async Task<Department> SearchByIDAsync(int departmentID)
         {
             return await context.Departments
+                .Include(ta => ta.DepartmentTasks)
+                    .ThenInclude(e => e.Employee)
+                .Include(ti => ti.DepartmentTitles)
+                    .ThenInclude(e => e.Employee)
                 .SingleOrDefaultAsync(p => p.DepartmentCode == departmentID);
         }
 
         public async Task<DepartmentTask> SearchTaskAsync(int departmentTaskID)
         {
             return await context.DepartmentTasks
-                .Include(e => e.Department)
-                .Include(e => e.Employee)
+                .Include(ta => ta.Employee)
+                .Include(ta => ta.Department)
                 .SingleOrDefaultAsync(t => t.DepartmentTaskID == departmentTaskID);
         }
 

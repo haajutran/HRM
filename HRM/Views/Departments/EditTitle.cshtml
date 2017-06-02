@@ -1,4 +1,4 @@
-﻿@model HRM.Models.DepartmentTitle
+﻿@model DepartmentTitle
 
 @{
     ViewData["Title"] = "Chỉnh sửa chức danh";
@@ -6,13 +6,13 @@
 
 <h2>Edit</h2>
 
-<form asp-action="EditTitle">
+<form asp-action="EditTitle" asp-route-titleID="@Model.DepartmentTitleID">
     <div class="form-horizontal">
         <h4>DepartmentTitle</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="DepartmentTitleID" />
-    <input type="hidden" asp-for="EmployeeCode" />
+        <input type="hidden" asp-for="DepartmentTitleID" />
+        <input type="hidden" asp-for="EmployeeCode" />
         <div class="form-group">
             <label asp-for="Title" class="col-md-2 control-label"></label>
             <div class="col-md-10">

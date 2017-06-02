@@ -14,10 +14,12 @@ namespace HRM.Controllers
     {
         private readonly ApplicationDbContext _context;
         private IEmployeeRepository _employeeRepository;
-        public SalariesController(ApplicationDbContext context, IEmployeeRepository employeeRepository)
+        private IDepartmentRepository _departmentRepository;
+        public SalariesController(ApplicationDbContext context, IEmployeeRepository employeeRepository, IDepartmentRepository departmentRepository)
         {
             _context = context;
             _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
         }
 
         // GET: Salaries
@@ -47,14 +49,21 @@ namespace HRM.Controllers
         // GET: Salaries/Create
         public async Task<IActionResult> AddSalary(int employeeID)
         {
-            var emp = await _employeeRepository.SearchAsync(employeeID);
             Salary salary = new Salary();
-            salary.Employee = emp;
-
-            foreach (var task in emp.DepartmentTasks)
+            salary.EmployeeID = employeeID;
+            var emp = await _employeeRepository.SearchAsync(employeeID);
+            salary.PayPerHour = emp.Contract.PayPerHour;
+            long workHoursSum = 0;
+            var tasks = _context.DepartmentTasks
+                .Include(d => d.Employee)
+                .Select(e => e).Where(e => e.Employee.EmployeeID == employeeID);
+            foreach (var t in tasks)
             {
-                salary.Earned += task.WorkHours;
+                workHoursSum += t.WorkHours;
             }
+
+            salary.Earned = workHoursSum*emp.Contract.PayPerHour;
+            ViewData["Contract"] = emp.Contract.Title;
 
             return View(salary);
         }
@@ -64,16 +73,16 @@ namespace HRM.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddSalary([Bind("SalaryID,RecordDate,Earned")] Salary salary, int employeeID)
+        public async Task<IActionResult> AddSalary([Bind("SalaryID,RecordDate,Earned,PayPerHour")] Salary salary, int employeeID)
         {
             if (ModelState.IsValid)
             {
                 salary.Employee = await _employeeRepository.SearchAsync(employeeID);
+                salary.RecordDate = DateTime.Now.ToString();
                 _context.Add(salary);
 
-
                 await _context.SaveChangesAsync();
-                return Redirect("Employees/EditEmployee?employeeID=" + employeeID);
+                return RedirectToAction("EditEmployee", "Employees", new { employeeID = employeeID });
             }
             return View(salary);
         }
