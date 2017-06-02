@@ -1,0 +1,59 @@
+﻿@model WorkHoursManagement
+@{
+    ViewBag.Title = ViewBag.DepartmentName;
+}
+
+
+@*@if (User.IsInRole("Manager"))
+    {
+        <a class="btn btn-primary" asp-controller="Departments" asp-action="AddEmployee">Thêm Phòng Ban</a>
+    }*@
+
+<div id="content-header">
+    <div id="breadcrumb"><a asp-controller="Departments" asp-action="Index" title="@ViewBag.DepartmentName" class="tip-bottom"> @ViewBag.DepartmentName </a> </div>
+</div>
+<!--End-breadcrumbs-->
+<!--Action boxes-->
+<div class="container-fluid">
+    <div>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div style="text-align: center; margin: 2em;">
+            <h3><b>QUẢN LÝ CÔNG VIỆC</b></h3>
+        </div>
+
+        <div style="margin: auto; width:60%;">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th class="col-md-3"><span>MSNV</span></th>
+                        <th><span>Tên nhân viên</span></th>
+                        <th><span>Công việc</span></th>
+                        <th><span>Mô tả</span></th>
+                        <th><span>Giờ làm</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var task in Model.DepartmentTasks)
+                    {
+                        <tr>
+                            <td class="col-md-3"><span>@task.Employee.EmployeeCode</span></td>
+                            <td>@task.Employee.FullName</td>
+                            <td>@task.Title</td>
+                            <td>@task.Description</td>
+                            <td>
+                                <a asp-route-departmentTaskID="@task.DepartmentTaskID" asp-action="UpdateWorkHours" class="btn" style="width:100%">
+                                    @task.WorkHours
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+

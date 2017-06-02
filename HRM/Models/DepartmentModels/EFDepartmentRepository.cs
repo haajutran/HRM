@@ -29,7 +29,13 @@ namespace HRM.Models
         public async Task<Department> SearchAsync(int departmentCode)
         {
             return await context.Departments
-                .FirstOrDefaultAsync(p => p.DepartmentCode == departmentCode);
+                .SingleOrDefaultAsync(p => p.DepartmentCode == departmentCode);
+        }
+
+        public async Task<Department> SearchByIDAsync(int departmentID)
+        {
+            return await context.Departments
+                .SingleOrDefaultAsync(p => p.DepartmentCode == departmentID);
         }
 
         public async Task<DepartmentTask> SearchTaskAsync(int departmentTaskID)

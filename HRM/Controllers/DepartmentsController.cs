@@ -34,9 +34,9 @@ namespace HRM.Controllers
             return View(departments);
         }
 
-        #region Update Work Hours
+        #region Manage Work Hours
 
-        public IActionResult UpdateWorkHours(int departmentID)
+        public IActionResult ManageWorkHours(int departmentID)
         {
             WorkHoursManagement whm = new WorkHoursManagement();
 
@@ -46,6 +46,27 @@ namespace HRM.Controllers
                 .Select(a => a).Where(a => a.Department.DepartmentID == departmentID);
 
             return View(whm);
+        }
+
+        public async Task<IActionResult> UpdateWorkHours(int departmentTaskID)
+        {
+            var dTask = await _departmentRepository.SearchTaskAsync(departmentTaskID);
+
+            ViewBag.DepartmentName = (await _departmentRepository.SearchByIDAsync(dTask.Department.DepartmentID)).DepartmentName;
+
+            return View(dTask);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateWorkHours([Bind("DepartmentTaskID, WorkHours")]DepartmentTask departmentTask)
+        {
+            var dT = await _departmentRepository.SearchTaskAsync(departmentTask.DepartmentTaskID);
+            dT.WorkHours = departmentTask.WorkHours;
+            _context.Update(dT);
+            await _context.SaveChangesAsync();
+
+            return View(dT);
         }
 
         #endregion
@@ -94,11 +115,16 @@ namespace HRM.Controllers
 
             if (ModelState.IsValid)
             {
+                var employee = await _employeeRepository.SearchAsync(departmentTitle.Employee.EmployeeCode);
+                if (employee == null)
+                {
+                    return Redirect("EmployeeNull");
+                }
                 var dT = new DepartmentTitle()
                 {
                     Title = departmentTitle.Title,
                     Description = departmentTitle.Description,
-                    Employee = await _employeeRepository.SearchAsync(departmentTitle.Employee.EmployeeCode),
+                    Employee = employee,
                     Department = await _departmentRepository.SearchAsync(departmentTitle.Department.DepartmentCode)
                 };
 
@@ -111,6 +137,36 @@ namespace HRM.Controllers
 
             return View(departmentTitle);
         }
+        #endregion
+
+        #region Edit Task
+
+        public async Task<IActionResult> EditTask(int departmentTaskID)
+        {
+            var departmentTask = await _departmentRepository.SearchTaskAsync(departmentTaskID);
+
+            return View(departmentTask);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditTask(DepartmentTask departmentTask)
+        {
+
+            if (departmentTask == null) { return NotFound(); }
+
+            if (await TryUpdateModelAsync<DepartmentTask>(departmentTask, ""))
+            {
+                _context.Update(departmentTask);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            ListOfTitles();
+
+            return View(departmentTask);
+        }
+
         #endregion
 
         #region Add Task
@@ -143,6 +199,10 @@ namespace HRM.Controllers
             {
                 var employee = _context.Employees.SingleOrDefault(e => e.EmployeeCode == employeeCode);
                 var department = _context.Departments.SingleOrDefault(d => d.DepartmentID == departmentID);
+                if (employee == null)
+                {
+                    return Redirect("EmployeeNull");
+                }
                 //var dT = new DepartmentTask()
                 //{
                 //    Title = departmentTask.Title,
@@ -318,5 +378,15 @@ namespace HRM.Controllers
             ViewData["Departments"] = new SelectList(departments, "DepartmentID", "DepartmentName");
         }
         #endregion
+
+        #region Employee Null
+
+        public IActionResult EmployeeNull()
+        {
+            return View();
+        }
+
+        #endregion
+
     }
 }

@@ -72,7 +72,6 @@
                     <th>Tên công việc</th>
                     <th>Mô tả</th>
                     <th>Giờ làm</th>
-                    <th><a asp-for="UpdateWorkHours" asp-route-departmentID="@Model.DepartmentID" class="btn btn-fill btn-block">Quản lý giờ làm</a></th>
                 </tr>
             </thead>
             <tbody>
@@ -85,18 +84,20 @@
                         <td>@thisEmployeeTitle</td>
                         <td>@task.Title</td>
                         <td>@task.Description</td>
-                        <td>@task.WorkHours</td>
                         <td>
-                            <form method="post">
-                                <a class="btn btn-sm btn-primary" href="#">
-                                    <i style="font-size: 20px" class="fa fa-pencil"></i>
-                                </a>
+                            <a asp-route-departmentTaskID="@task.DepartmentTaskID" asp-action="UpdateWorkHours" class="btn" style="width:100%">
+                                @task.WorkHours
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" asp->
+                                <i style="font-size: 20px" class="fa fa-pencil"></i>
+                            </a>
 
-                                <button type="submit"
-                                        class="btn btn-sm btn-danger">
-                                    <i style="font-size: 20px" class="fa fa-trash"></i>
-                                </button>
-                            </form>
+                            <button type="submit"
+                                    class="btn btn-sm btn-danger">
+                                <i style="font-size: 20px" class="fa fa-trash"></i>
+                            </button>
                         </td>
                     </tr>
                 }
