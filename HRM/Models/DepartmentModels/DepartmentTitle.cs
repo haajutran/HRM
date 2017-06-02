@@ -8,7 +8,9 @@ namespace HRM.Models
 {
     public class DepartmentTitle
     {   
+        [Key]
         public int DepartmentTitleID { get; set; }
+        [Required]
         [Display(Name="Chức danh")]
         public string Title { get; set; }
         [Display(Name = "Mô tả")]

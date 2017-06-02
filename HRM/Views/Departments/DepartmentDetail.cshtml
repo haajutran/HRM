@@ -1,69 +1,80 @@
 ﻿@model Department
+
 @{
     ViewBag.Title = ViewData["DepartmentName"];
 }
 
-
-<div id="content-header">
-    <div id="breadcrumb"><a asp-controller="Employees" asp-action="Index" title="Quản lý nhân viên" class="tip-bottom"> Quản lý nhân viên </a></div>
-</div>
-
 <!--End-breadcrumbs-->
 <!--Action boxes-->
 <div class="container-fluid">
-    <div style="text-align: center;margin: 2em;">
-        <h2><b>@ViewData["DepartmentName"]</b></h2>
-    </div>
-    <div style="margin: auto;">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div style="text-align: center;margin: 2em;">
-            <h3><b>DANH SÁCH NHÂN VIÊN</b></h3>
-        </div>
-        <a class="btn btn-primary" asp-controller="Employees" asp-action="AddEmployee" style="margin-bottom: 2em;">Thêm Nhân Viên</a>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>MSNV</th>
-                    <th>Tên nhân viên</th>
-                    <th>Chức danh</th>
-                    <th>Công việc</th>
-                    <th>Mô tả</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var departmentTitle in Model.DepartmentTitles)
-                {
-                    <tr>
-                        <td><a asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@departmentTitle.Employee.EmployeeID">@departmentTitle.Employee.EmployeeCode</a></td>
-                        <td>@departmentTitle.Employee.FullName</td>
-                        <td>@departmentTitle.Title</td>
-                        <td>@departmentTitle.Employee.DepartmentTasks.Count</td>
-                        <td>@departmentTitle.Description</td>
-                        <td>
-                            <form method="post">
-                                <a class="btn btn-sm btn-primary" href="#">
-                                    <i style="font-size: 20px" class="fa fa-pencil"></i>
-                                </a>
+    <div>
+        <div class="card">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="header">
+                <div class="col-md-9" style="padding-left: 0">
+                    <h4 class="title"><b>DANH SÁCH NHÂN VIÊN</b></h4>
+                    <p class="category">Danh sách các phòng ban trong công ty</p>
+                </div>
+                <div class="pull-right col-md-3">
+                    <a class="btn btn-primary" asp-controller="Employees" asp-action="AddEmployee" style="margin-bottom: 2em;">Thêm Nhân Viên</a>
+                </div>
+            </div>
+            <div class="content table-responsive table-full-width">
+       
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>MSNV</th>
+                            <th>Tên nhân viên</th>
+                            <th>Chức danh</th>
+                            <th>Công việc</th>
+                            <th>Mô tả</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var departmentTitle in Model.DepartmentTitles)
+                        {
+                            <tr>
+                                <td><a asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@departmentTitle.Employee.EmployeeID">@departmentTitle.Employee.EmployeeCode</a></td>
+                                <td>@departmentTitle.Employee.FullName</td>
+                                <td>@departmentTitle.Title</td>
+                                <td>@departmentTitle.Employee.DepartmentTasks.Count</td>
+                                <td>@departmentTitle.Description</td>
+                                <td>
+                                    <form method="post">
+                                        <a class="btn btn-sm btn-primary" href="#">
+                                            <i style="font-size: 20px" class="fa fa-pencil"></i>
+                                        </a>
 
-                                <button type="submit"
-                                        class="btn btn-sm btn-danger">
-                                    <i style="font-size: 20px" class="fa fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger">
+                                            <i style="font-size: 20px" class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
-    <div style="margin: auto;">
+
+    <div class="card">
         <div asp-validation-summary="All" class="text-danger"></div>
-        <div style="text-align: center;margin: 2em;">
-            <h3><b>DANH SÁCH CÔNG VIỆC</b></h3>
+
+        <div class="header">
+            <div class="col-md-9" style="padding-left: 0">
+                <h4 class="title"><b>DANH SÁCH NHÂN VIÊN</b></h4>
+                <p class="category">Danh sách các phòng ban trong công ty</p>
+            </div>
+            <div class="pull-right col-md-3">
+                <a class="btn btn-primary" asp-action="AddTask" asp-route-departmentID="@Model.DepartmentID" style="margin-bottom: 2em;">Thêm Công Việc</a>
+            </div>
         </div>
-        <a class="btn btn-primary" asp-action="AddTask" asp-route-departmentID="@Model.DepartmentID" style="margin-bottom: 2em;">Thêm Công Việc</a>
-        <table class="table table-bordered">
+     
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>MSNV</th>

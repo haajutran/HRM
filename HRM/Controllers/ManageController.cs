@@ -13,7 +13,7 @@ using HRM.Services;
 
 namespace HRM.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Manager")]
     public class ManageController : Controller
     {
         private readonly UserManager<AppUser> _userManager;

@@ -9,16 +9,16 @@
 
 <div class="row">
     <div class="col-12" style="text-align: center; margin-top: 2em;">
-        <h1><strong>ĐĂNG KÝ</strong></h1>
+        <h1><strong>Chỉnh sửa tài khoản</strong></h1>
     </div>
 </div>
 
 <div class="accountBody">
-    <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <form asp-controller="Account" asp-action="Edit" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
         <hr />
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
-            <label class="control-label">Tên đăng nhập</label>
+            <label asp-for="AccountID" class="control-label"></label>
             <div>
                 <input asp-for="AccountID" class="form-control" />
                 <span asp-validation-for="AccountID" class="text-danger"></span>

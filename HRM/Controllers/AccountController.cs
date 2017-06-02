@@ -14,6 +14,7 @@ using HRM.Services;
 
 namespace HRM.Controllers
 {
+
     public class AccountController : Controller
     {
         #region Requires
@@ -37,9 +38,12 @@ namespace HRM.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
         #endregion
+        [Authorize(Roles = "Manager")]
+        public IActionResult Index() => View(_userManager.Users);
 
         #region Actions
         /*--- Get Login ---*/
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
@@ -64,7 +68,7 @@ namespace HRM.Controllers
                 {
                     _logger.LogInformation(1, "Logged in successful!");
                     return RedirectToAction("Index", "Employees");
-                 
+
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -89,6 +93,7 @@ namespace HRM.Controllers
         /*--- Get Register ---*/
         [HttpGet]
         [AllowAnonymous]
+        [Authorize(Roles = "Manager")]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -96,6 +101,7 @@ namespace HRM.Controllers
         }
 
         /*--- Post Register ---*/
+        [Authorize(Roles = "Manager")]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -114,9 +120,8 @@ namespace HRM.Controllers
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToAction("Index", "Employees");
+                    return RedirectToAction("Index", "Account");
                 }
                 AddErrors(result);
             }
@@ -126,14 +131,36 @@ namespace HRM.Controllers
         }
 
         /*--- Log Out ---*/
-        [Authorize]
+
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
+
+        /*--- Edit Account ---*/
+        [Authorize(Roles = "Manager")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult EditAccount(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+        
+
+
+        private void AddErrorsFromResult(IdentityResult result)
+        {
+            foreach (IdentityError error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+        }
+
         #endregion
+
 
         #region Unused
 

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HRM.Controllers
 {
-    [Authorize(Roles = "Admins")]
+    [Authorize(Roles = "Manager")]
 
     public class RoleController : Controller
     {

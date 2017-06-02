@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using HRM.Models.ViewModels;
 using HRM.Models;
 using HRM.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HRM.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class HomeController : Controller
     {
         private IEmployeeRepository _employeeRepository;

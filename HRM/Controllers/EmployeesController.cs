@@ -15,6 +15,7 @@ using System;
 
 namespace HRM.Controllers
 {
+    [Authorize(Roles = "Manager, Staff")]
     public class EmployeesController : Controller
     {
 
@@ -81,10 +82,12 @@ namespace HRM.Controllers
             {
                 var department = _context.Departments.Include(d => d.DepartmentTitles).SingleOrDefault(d => d.DepartmentCode == employee.DepartmentCode);
                 var departments = new List<Department>();
-                DepartmentTitle departmentTitle = new DepartmentTitle();
-                departmentTitle.Employee = employee;
-                departmentTitle.Department = department;
-                departmentTitle.Title = employee.DepartmentTitle;
+                DepartmentTitle departmentTitle = new DepartmentTitle()
+                {
+                    Employee = employee,
+                    Department = department,
+                    Title = employee.DepartmentTitle
+                };
                 _context.DepartmentTitles.Add(departmentTitle);
                 employee.EmployeeCode = CodeGenerator(employee, department);
                 employee.Active = true;
@@ -195,11 +198,13 @@ namespace HRM.Controllers
 
             return View(employee);
         }
-        [HttpPost]
+
+        [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int employeeID)
         {
             var employee = await _employeeRepository.SearchAsync(employeeID);
+
             if (employee == null)
             {
                 return Redirect("Index");
@@ -337,7 +342,7 @@ namespace HRM.Controllers
             return View(familyRelation);
         }
 
-        [HttpPost, ActionName("DeleteConfirmed")]
+        [HttpPost, ActionName("DeleteFamilyConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteFamilyConfirmed(int id)
         {

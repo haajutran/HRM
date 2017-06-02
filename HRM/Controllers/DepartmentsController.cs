@@ -6,11 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HRM.Controllers
 {
+    [Authorize(Roles = "Manager, Staff")]
     public class DepartmentsController : Controller
     {
 
@@ -38,13 +40,13 @@ namespace HRM.Controllers
 
         public IActionResult ManageWorkHours(int departmentID)
         {
-            WorkHoursManagement whm = new WorkHoursManagement();
-
-            whm.DepartmentTasks = _context.DepartmentTasks
+            WorkHoursManagement whm = new WorkHoursManagement()
+            {
+                DepartmentTasks = _context.DepartmentTasks
                 .Include(d => d.Department)
                 .Include(d => d.Employee)
-                .Select(a => a).Where(a => a.Department.DepartmentID == departmentID);
-
+                .Select(a => a).Where(a => a.Department.DepartmentID == departmentID)
+            };
             return View(whm);
         }
 
@@ -83,14 +85,23 @@ namespace HRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddDepartment([Bind("DepartmentCode, DepartmentName")] Department department)
         {
-
             if (ModelState.IsValid)
             {
+                var departmentTest = _context.Departments.SingleOrDefault(d => d.DepartmentCode == department.DepartmentCode);
+                if(departmentTest != null)
+                {
+                    return Redirect("DepartmentCodeError");
+                }
                 _context.Add(department);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Departments");
             }
             return View(department);
+        }
+
+        public IActionResult DepartmentCodeError()
+        {
+            return View();
         }
 
         #endregion
@@ -228,14 +239,14 @@ namespace HRM.Controllers
 
         #region Edit Department
         //[Authorize(Roles = "Manager")]
-        public async Task<IActionResult> EditDepartment(int? departmentCode)
+        public async Task<IActionResult> EditDepartment(int? departmentID)
         {
-            if (departmentCode == null)
+            if (departmentID == null)
             {
                 return NotFound();
             }
 
-            var department = await _context.Departments.SingleOrDefaultAsync(m => m.DepartmentCode == departmentCode);
+            var department = await _context.Departments.SingleOrDefaultAsync(m => m.DepartmentID == departmentID);
 
             ListOfTitles();
 
@@ -295,35 +306,35 @@ namespace HRM.Controllers
         #endregion
 
         #region Delete Employee
-        //[Authorize(Roles = "Manager")]
-        //public async Task<IActionResult> DeleteEmployee(int? employeeID, bool? saveChangesError = false)
-        //{
-        //    if (employeeID == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var employee = await _context.Employees.SingleOrDefaultAsync(m => m.EmployeeID == employeeID);
-        //    if (employee == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (saveChangesError.GetValueOrDefault())
-        //    {
-        //        ViewData["ErrorMessage"] =
-        //            "Failed!";
-        //    }
-
-        //    return View(employee);
-        //}
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int departmentCode)
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> DeleteDepartment(int? departmentID, bool? saveChangesError = false)
         {
-            var department = await _departmentRepository.SearchAsync(departmentCode);
+            if (departmentID == null)
+            {
+                return NotFound();
+            }
+            var department = await _context.Departments.SingleOrDefaultAsync(d => d.DepartmentID == departmentID);
             if (department == null)
             {
-                return RedirectToAction("EmployeesManagement", "Main");
+                return NotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Failed!";
+            }
+
+            return View(department);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int departmentID)
+        {
+            var department = await _context.Departments.SingleOrDefaultAsync(d => d.DepartmentID == departmentID);
+            if (department == null)
+            {
+                return RedirectToAction("Index", "Departments");
             }
 
             try
@@ -336,7 +347,7 @@ namespace HRM.Controllers
             catch (DbUpdateException /* ex */)
             {
                 //Log the error (uncomment ex variable name and write a log.)
-                return RedirectToAction("DeleteEmployee", new { id = departmentCode, saveChangesError = true });
+                return RedirectToAction("DeleteEmployee", new { id = departmentID, saveChangesError = true });
             }
         }
         #endregion
