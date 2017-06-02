@@ -10,7 +10,7 @@
     }*@
 
 <div id="content-header">
-    <div id="breadcrumb"><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@Model.Department.DepartmentID" title="@Model.Department.DepartmentName" class="tip-bottom"> @ViewBag.DepartmentName </a> </div>
+    <div id="breadcrumb"><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@Model.Department.DepartmentID" title="@ViewBag.DepartmentName" class="tip-bottom"> @ViewBag.DepartmentName </a> </div>
 </div>
 <!--End-breadcrumbs-->
 <!--Action boxes-->
@@ -21,7 +21,7 @@
             <h3><b>QUẢN LÝ CÔNG VIỆC</b></h3>
         </div>
 
-        <form asp-action="UpdateWorkHours" method="post">
+        <form asp-action="UpdateWorkHours" asp-route-departmentID="Department.DepartmentID" method="post">
             <input type="hidden" asp-for="DepartmentTaskID"/>
             <div style="margin: auto; width:60%;">
                 <table class="table table-striped table-bordered">

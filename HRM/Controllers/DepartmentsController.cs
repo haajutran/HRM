@@ -55,21 +55,24 @@ namespace HRM.Controllers
         {
             var dTask = await _departmentRepository.SearchTaskAsync(departmentTaskID);
 
-            ViewBag.DepartmentName = (await _departmentRepository.SearchByIDAsync(dTask.Department.DepartmentID)).DepartmentName;
+            ViewBag.DepartmentName = (await _departmentRepository.SearchAsync(dTask.Department.DepartmentCode)).DepartmentName;
 
             return View(dTask);
         }
 
+        //bien thi phai copy+paste
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateWorkHours([Bind("DepartmentTaskID, WorkHours")]DepartmentTask departmentTask)
+        public async Task<IActionResult> UpdateWorkHours([Bind("DepartmentTaskID, WorkHours")]DepartmentTask departmentTask, int departmentID)
         {
             var dT = await _departmentRepository.SearchTaskAsync(departmentTask.DepartmentTaskID);
             dT.WorkHours = departmentTask.WorkHours;
             _context.Update(dT);
             await _context.SaveChangesAsync();
 
-            return View(dT);
+            ViewBag.DepartmentName = (await _departmentRepository.SearchByIDAsync(dT.Department.DepartmentID)).DepartmentName;
+            
+            return Redirect("UpdateWorkHours" + "?departmentTaskID=" + dT.DepartmentTaskID);
         }
 
         #endregion
