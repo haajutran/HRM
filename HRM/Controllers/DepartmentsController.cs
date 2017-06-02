@@ -29,6 +29,7 @@ namespace HRM.Controllers
             _employeeRepository = employeeRepository;
         }
 
+        //ABC
         // GET: /<controller>/
         public async Task<ViewResult> Index()
         {
