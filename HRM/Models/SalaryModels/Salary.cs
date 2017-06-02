@@ -14,6 +14,10 @@ namespace HRM.Models
 
         public long Earned { get; set; }
 
+        public long PayPerHour { get; set; }
+
+        public string Comment { get; set; }
+
         public Employee Employee { get; set; }
     }
 }

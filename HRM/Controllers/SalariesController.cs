@@ -50,7 +50,13 @@ namespace HRM.Controllers
             var emp = await _employeeRepository.SearchAsync(employeeID);
             Salary salary = new Salary();
             salary.Employee = emp;
-            return View(emp);
+
+            foreach (var task in emp.DepartmentTasks)
+            {
+                salary.Earned += task.WorkHours;
+            }
+
+            return View(salary);
         }
 
         // POST: Salaries/Create
@@ -58,13 +64,16 @@ namespace HRM.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddSalary([Bind("SalaryID,RecordDate,Earned")] Salary salary)
+        public async Task<IActionResult> AddSalary([Bind("SalaryID,RecordDate,Earned")] Salary salary, int employeeID)
         {
             if (ModelState.IsValid)
             {
+                salary.Employee = await _employeeRepository.SearchAsync(employeeID);
                 _context.Add(salary);
+
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return Redirect("Employees/EditEmployee?employeeID=" + employeeID);
             }
             return View(salary);
         }

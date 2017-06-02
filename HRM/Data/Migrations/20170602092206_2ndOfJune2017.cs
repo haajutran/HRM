@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace HRM.Data.Migrations
 {
-    public partial class HRM : Migration
+    public partial class _2ndOfJune2017 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,23 +18,23 @@ namespace HRM.Data.Migrations
                     Active = table.Column<bool>(nullable: false),
                     Address = table.Column<string>(nullable: true),
                     Avatar = table.Column<string>(nullable: true),
-                    CitizenID = table.Column<string>(nullable: true),
+                    CitizenID = table.Column<string>(maxLength: 9, nullable: false),
                     City = table.Column<string>(nullable: true),
-                    DateOfBirth = table.Column<string>(nullable: true),
+                    DateOfBirth = table.Column<string>(nullable: false),
                     DateOfJoining = table.Column<DateTime>(nullable: false),
                     DepartmentCode = table.Column<int>(nullable: false),
                     DepartmentTitle = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: false),
                     EmployeeCode = table.Column<int>(nullable: false),
                     ExitDate = table.Column<DateTime>(nullable: false),
-                    FullName = table.Column<string>(nullable: true),
+                    FullName = table.Column<string>(nullable: false),
                     Gender = table.Column<string>(nullable: true),
                     HomeTown = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     PlaceOfBirth = table.Column<string>(nullable: true),
                     PlaceOfProvide = table.Column<string>(nullable: true),
                     Region = table.Column<string>(nullable: true),
-                    TempAddress = table.Column<string>(nullable: true)
+                    TempAddress = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,7 +48,7 @@ namespace HRM.Data.Migrations
                     DepartmentID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DepartmentCode = table.Column<int>(nullable: false),
-                    DepartmentName = table.Column<string>(nullable: true),
+                    DepartmentName = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     EmployeeID = table.Column<int>(nullable: true)
                 },
@@ -96,8 +96,10 @@ namespace HRM.Data.Migrations
                 {
                     SalaryID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Comment = table.Column<string>(nullable: true),
                     Earned = table.Column<long>(nullable: false),
                     EmployeeID = table.Column<int>(nullable: true),
+                    PayPerHour = table.Column<long>(nullable: false),
                     RecordDate = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -120,7 +122,7 @@ namespace HRM.Data.Migrations
                     DepartmentID = table.Column<int>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     EmployeeID = table.Column<int>(nullable: true),
-                    Title = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(nullable: false),
                     WorkHours = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -149,7 +151,7 @@ namespace HRM.Data.Migrations
                     DepartmentID = table.Column<int>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     EmployeeID = table.Column<int>(nullable: true),
-                    Title = table.Column<string>(nullable: true)
+                    Title = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

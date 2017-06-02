@@ -1,12 +1,12 @@
-@model HRM.Models.Salary
+﻿@model HRM.Models.Salary
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Tính lương";
 }
 
 <h2>Create</h2>
 
-<form asp-action="AddSalary">
+<form asp-action="AddSalary" asp-route-employeeID="@Model.Employee.EmployeeID">
     <div class="form-horizontal">
         <h4>Salary</h4>
         <hr />
@@ -27,7 +27,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Lưu" class="btn btn-default" />
             </div>
         </div>
     </div>
