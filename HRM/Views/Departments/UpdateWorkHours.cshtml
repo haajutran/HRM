@@ -1,6 +1,6 @@
-﻿@model IEnumerable<DepartmentTask>
-@{  
-    ViewBag.Title = "Quản lý công việc";
+﻿@model DepartmentTask
+@{
+    ViewBag.Title = ViewBag.DepartmentName;
 }
 
 
@@ -10,8 +10,7 @@
     }*@
 
 <div id="content-header">
-    <div id="breadcrumb"><a asp-controller="Departments" asp-action="Index" title="Quản lý phòng ban" class="tip-bottom"> Quản lý phòng ban </a> </div>
-
+    <div id="breadcrumb"><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@Model.Department.DepartmentID" title="@ViewBag.DepartmentName" class="tip-bottom"> @ViewBag.DepartmentName </a> </div>
 </div>
 <!--End-breadcrumbs-->
 <!--Action boxes-->
@@ -22,25 +21,37 @@
             <h3><b>QUẢN LÝ CÔNG VIỆC</b></h3>
         </div>
 
-        <div  style="margin: auto; width:60%;">
-            <table class="table table-striped table-bordered">
-                <thead class="thead-inverse">
-                    <tr>
-                        <th class="col-md-3"><span>Mã Số Phòng Ban</span></th>
-                        <th><span>Tên Phòng Ban</span></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>
-
+        <form asp-action="UpdateWorkHours" asp-route-departmentID="Department.DepartmentID" method="post">
+            <input type="hidden" asp-for="DepartmentTaskID"/>
+            <div style="margin: auto; width:60%;">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th class="col-md-3"><span>MSNV</span></th>
+                            <th><span>Tên nhân viên</span></th>
+                            <th><span>Công việc</span></th>
+                            <th><span>Mô tả</span></th>
+                            <th><span>Giờ làm</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-md-3"><span>@Model.Employee.EmployeeCode</span></td>
+                            <td>@Model.Employee.FullName</td>
+                            <td>@Model.Title</td>
+                            <td>@Model.Description</td>
+                            <td><input type="number" asp-for="WorkHours" style="" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            @if (ViewBag.IsSuccessful != null)
+            {
+                <span class="text-danger">@ViewBag.IsSuccessful</span>
+            }
+            <div style="margin: auto">
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </div>
+        </form>
     </div>
 </div>
-
-
-
-
-

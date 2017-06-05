@@ -8,8 +8,8 @@ using HRM.Data;
 namespace HRM.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170531062628_HRM")]
-    partial class HRM
+    [Migration("20170602212537_2ndOfJune2017")]
+    partial class _2ndOfJune2017
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -66,6 +66,20 @@ namespace HRM.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("HRM.Models.Contract", b =>
+                {
+                    b.Property<int>("ContractID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<long>("PayPerHour");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("ContractID");
+
+                    b.ToTable("Contract");
+                });
+
             modelBuilder.Entity("HRM.Models.Department", b =>
                 {
                     b.Property<int>("DepartmentID")
@@ -73,7 +87,8 @@ namespace HRM.Data.Migrations
 
                     b.Property<int>("DepartmentCode");
 
-                    b.Property<string>("DepartmentName");
+                    b.Property<string>("DepartmentName")
+                        .IsRequired();
 
                     b.Property<string>("Description");
 
@@ -97,7 +112,8 @@ namespace HRM.Data.Migrations
 
                     b.Property<int?>("EmployeeID");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.Property<int>("WorkHours");
 
@@ -119,9 +135,12 @@ namespace HRM.Data.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int?>("EmployeeCode");
+
                     b.Property<int?>("EmployeeID");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.HasKey("DepartmentTitleID");
 
@@ -143,11 +162,16 @@ namespace HRM.Data.Migrations
 
                     b.Property<string>("Avatar");
 
-                    b.Property<string>("CitizenID");
+                    b.Property<string>("CitizenID")
+                        .IsRequired()
+                        .HasMaxLength(9);
 
                     b.Property<string>("City");
 
-                    b.Property<string>("DateOfBirth");
+                    b.Property<int?>("ContractID");
+
+                    b.Property<string>("DateOfBirth")
+                        .IsRequired();
 
                     b.Property<DateTime>("DateOfJoining");
 
@@ -155,19 +179,22 @@ namespace HRM.Data.Migrations
 
                     b.Property<string>("DepartmentTitle");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
                     b.Property<int>("EmployeeCode");
 
                     b.Property<DateTime>("ExitDate");
 
-                    b.Property<string>("FullName");
+                    b.Property<string>("FullName")
+                        .IsRequired();
 
                     b.Property<string>("Gender");
 
                     b.Property<string>("HomeTown");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(13);
 
                     b.Property<string>("PlaceOfBirth");
 
@@ -175,9 +202,14 @@ namespace HRM.Data.Migrations
 
                     b.Property<string>("Region");
 
-                    b.Property<string>("TempAddress");
+                    b.Property<string>("TempAddress")
+                        .IsRequired();
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("EmployeeID");
+
+                    b.HasIndex("ContractID");
 
                     b.ToTable("Employee");
                 });
@@ -218,9 +250,13 @@ namespace HRM.Data.Migrations
                     b.Property<int>("SalaryID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Comment");
+
                     b.Property<long>("Earned");
 
                     b.Property<int?>("EmployeeID");
+
+                    b.Property<long>("PayPerHour");
 
                     b.Property<string>("RecordDate");
 
@@ -365,6 +401,13 @@ namespace HRM.Data.Migrations
                     b.HasOne("HRM.Models.Employee", "Employee")
                         .WithMany("DepartmentTitles")
                         .HasForeignKey("EmployeeID");
+                });
+
+            modelBuilder.Entity("HRM.Models.Employee", b =>
+                {
+                    b.HasOne("HRM.Models.Contract", "Contract")
+                        .WithMany("Employees")
+                        .HasForeignKey("ContractID");
                 });
 
             modelBuilder.Entity("HRM.Models.FamilyRelation", b =>

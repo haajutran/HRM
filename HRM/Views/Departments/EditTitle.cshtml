@@ -1,0 +1,53 @@
+﻿@model DepartmentTitle
+
+@{
+    ViewData["Title"] = "Chỉnh sửa chức danh";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="EditTitle" asp-route-titleID="@Model.DepartmentTitleID">
+    <div class="form-horizontal">
+        <h4>DepartmentTitle</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="DepartmentTitleID" />
+        <input type="hidden" asp-for="EmployeeCode" />
+        <div class="form-group">
+            <label asp-for="Title" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select class="form-control border-input" asp-for="Title" asp-items="ViewBag.DepartmentTitles">
+                    <option value="">-- Chọn chức danh --</option>
+                </select>
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DepartmentID" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="DepartmentID" class="form-control" asp-items="ViewBag.DepartmentID"></select>
+                <span asp-validation-for="DepartmentID" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Lưu" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Trở lại</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

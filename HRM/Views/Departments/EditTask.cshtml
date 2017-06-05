@@ -1,24 +1,24 @@
-﻿@model HRM.Models.DepartmentTask
+﻿@model DepartmentTask
 
-@{  
+@{
     var a = Model;
-    ViewData["Title"] = "Thêm công việc";
+    ViewData["Title"] = "Sửa công việc";
 }
 
 
 
-<h2>Thêm công việc</h2>
+<h2>Sửa công việc</h2>
 
-<form asp-action="AddTask" method="post" asp-route-departmentID="@ViewBag.DepartmentID">
+<form asp-action="EditTask" method="post" asp-route-departmentID="@Model.Department.DepartmentID">
     <div class="form-horizontal">
         <h4>công việc</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-       
+
         <div class="form-group">
             <label class="col-md-2 control-label">Mã số nhân viên</label>
             <div class="col-md-10">
-                <input class="form-control border-input" type="text" name="employeeCode"/>
+                <input class="form-control border-input" type="text" name="employeeCode" />
             </div>
         </div>
 
@@ -38,7 +38,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Thêm công việc" class="btn btn-default" />
+                <input type="submit" value="Sửa công việc" class="btn btn-default" />
             </div>
         </div>
     </div>

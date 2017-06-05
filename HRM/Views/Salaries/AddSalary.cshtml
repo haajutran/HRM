@@ -1,0 +1,56 @@
+﻿@model HRM.Models.Salary
+
+@{
+    ViewData["Title"] = "Tính lương";
+}
+
+<h2>Create</h2>
+
+<form asp-action="AddSalary" asp-route-employeeID="@Model.EmployeeID">
+    <div class="form-horizontal">
+        <h4>Lương</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="RecordDate" />
+        <div class="form-group">
+            <label class="col-md-2 control-label">Loại hợp đồng</label>
+            <div class="col-md-10">
+                <input disabled="" value="@ViewData["Contract"]" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PayPerHour" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input disabled="" asp-for="PayPerHour" class="form-control" />
+                <span asp-validation-for="PayPerHour" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Comment" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Comment" class="form-control" />
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Earned" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input type="number" asp-for="Earned" class="form-control" />
+                <span asp-validation-for="Earned" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Lưu" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

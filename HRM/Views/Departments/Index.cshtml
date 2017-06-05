@@ -7,58 +7,63 @@
 <!--End-breadcrumbs-->
 <!--Action boxes-->
 <div class="container-fluid">
-    <div>
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div style="text-align: center; margin: 2em;">
-            <h3><b>DANH SÁCH PHÒNG BAN</b></h3>
-        </div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div asp-validation-summary="All" class="text-danger"></div>
+          
+            <div class="header">
+                <div class="col-md-8 col-sm-7" style="padding-left: 0">
+                    <h4 class="title"><b>DANH SÁCH PHÒNG BAN</b></h4>
+                    <p class="category">Danh sách các phòng ban trong công ty</p>
+                </div>
+                <div class="pull-right col-md-4 col-sm-5">
+                    <a class="btn btn-primary" asp-controller="Departments" asp-action="AddDepartment">Thêm Phòng Ban</a>
+                </div>
+            </div>
 
-        <div style="width: 100px; position: relative; margin:auto; margin-bottom: 2em;">
-            <a class="btn btn-primary" asp-controller="Departments" asp-action="AddDepartment">Thêm Phòng Ban</a>
-        </div>
-
-        <div  style="margin: auto; width:60%;">
-            <table class="table table-striped table-bordered">
-                <thead class="thead-inverse">
-                    <tr>
-                        <th class="col-md-3"><span>Mã Số Phòng Ban</span></th>
-                        <th><span>Tên Phòng Ban</span></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
+            <div class="content table-responsive table-full-width">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
-
-                            <td style="text-align: center; padding: 0">
-                                <a style="color: #dd8787;" asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@item.DepartmentID">
-                                    <div style="padding-top: 1em;">
-                                        @item.DepartmentCode
-                                    </div>
-                                </a>
-                            </td>
-
-                            <td>@item.DepartmentName</td>
-                            <td>                               
-                                <div>
-                                    <a class="btn btn-sm btn-primary" asp-action="EditDepartment" asp-route-departmentID="@item.DepartmentID">
-                                        <i style="font-size: 20px" class="fa fa-pencil"></i>
-                                    </a>
-
-                                    <a asp-action="DeleteDepartment" asp-route-departmentID="@item.DepartmentID"
-                                            class="btn btn-sm btn-danger">
-                                        <i style="font-size: 20px" class="fa fa-trash"></i>
-                                    </a>
-                                </div>                               
-
-                            </td>
+                            <th class="col-md-3"><span>Mã Số Phòng Ban</span></th>
+                            <th><span>Tên Phòng Ban</span></th>
+                            <th></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
 
+                                <td style="text-align: center; padding: 0">
+                                    <a style="color: #dd8787;" asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@item.DepartmentID">
+                                        <div style="padding-top: 1em;">
+                                            @item.DepartmentCode
+                                        </div>
+                                    </a>
+                                </td>
+
+                                <td>@item.DepartmentName</td>
+                                <td>
+                                    <div>
+                                        <a class="btn btn-sm btn-primary" asp-action="EditDepartment" asp-route-departmentID="@item.DepartmentID">
+                                            <i style="font-size: 20px" class="fa fa-pencil"></i>
+                                        </a>
+
+                                        <a asp-action="DeleteDepartment" asp-route-departmentID="@item.DepartmentID"
+                                           class="btn btn-sm btn-danger">
+                                            <i style="font-size: 20px" class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
 </div>
 
