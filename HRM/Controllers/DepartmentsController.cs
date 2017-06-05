@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using Microsoft.AspNetCore.Identity;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,11 +20,13 @@ namespace HRM.Controllers
 
         private ApplicationDbContext _context;
         private IDepartmentRepository _departmentRepository;
+        private readonly UserManager<AppUser> _userManager;
         private IEmployeeRepository _employeeRepository;
         private IHostingEnvironment _environment;
 
-        public DepartmentsController(IDepartmentRepository repo, ApplicationDbContext context, IHostingEnvironment environment, IEmployeeRepository employeeRepository)
+        public DepartmentsController(UserManager<AppUser> userManager, IDepartmentRepository repo, ApplicationDbContext context, IHostingEnvironment environment, IEmployeeRepository employeeRepository)
         {
+            _userManager = userManager;
             _departmentRepository = repo;
             _context = context;
             _environment = environment;
@@ -318,6 +321,28 @@ namespace HRM.Controllers
             {
                 try
                 {
+                    var employee = dT.Employee;
+                    var userID = employee.UserId;
+                    var user = await _userManager.FindByIdAsync(userID);
+                    var roles = await _userManager.GetRolesAsync(user);
+                    await _userManager.RemoveFromRolesAsync(user, roles.ToArray());
+
+                    foreach (var item in employee.DepartmentTitles)
+                    {
+                        if (item.Title == "Trưởng phòng")
+                        {
+                            await _userManager.AddToRoleAsync(user, item.Department.Role + "Manager");
+                        }
+                        else if (item.Title == "Phó phòng")
+                        {
+                            var aaa = item.Department.Role.ToString();
+                            await _userManager.AddToRoleAsync(user, item.Department.Role + "Deputy");
+                        }
+                        else
+                        {
+                            await _userManager.AddToRoleAsync(user, item.Department.Role);
+                        }
+                    }
                     _context.Update(departmentTitle);
                     await _context.SaveChangesAsync();
                 }

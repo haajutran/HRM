@@ -69,6 +69,8 @@ namespace HRM.Models
         {
             return await context.DepartmentTitles
                 .Include(d => d.Employee)
+                    .ThenInclude(dt => dt.DepartmentTitles)
+                        .ThenInclude(d => d.Department)
                 .Include(d => d.Department)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.DepartmentTitleID == departmentTitleID);

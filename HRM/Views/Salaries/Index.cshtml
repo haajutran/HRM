@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HRM.Models.Salary>
+﻿@model IEnumerable<Salary>
 
 @{
     ViewData["Title"] = "Bảng Lương";
@@ -29,6 +29,8 @@
                             <th>@Model.ElementAt(0).Employee</th>
                             <th>@Model.ElementAt(0).PayPerHour</th>
                             <th>@Model.ElementAt(0).RecordDate</th>
+                            <th>@Model.ElementAt(0).Employee.Contract</th>
+                            <th>@Model.ElementAt(0).Employee.</th>
                             <th style="width: 9em"></th>
                         </tr>
                     </thead>
