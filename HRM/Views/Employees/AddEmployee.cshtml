@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "Thêm nhân viên";
 }
+
+<h4 class="text-danger">@ViewData["ErrorMessage"]</h4>
+
+<h4 class="text-danger">@TempData["ErrorMessage"]</h4>
+
 <span asp-validation-summary="All"></span>
 
 <form asp-action="AddEmployee" method="post">
@@ -28,13 +33,13 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Công ty</label>
-                                    <input type="text" class="form-control border-input" disabled="" placeholder="Company" value="TNHH Tứ thành viên Huy Nghĩa Thương Hậu" />
+                                    <input type="text" class="form-control border-input" disabled="" placeholder="Company" value="TNHH Tứ thành viên Huy Nghĩa Thương Hậu">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Họ & Tên</label>
-                                    <input type="text" asp-for="FullName" class="form-control border-input" placeholder="Họ và Tên">
+                                    <input type="text" asp-for="FullName" maxlength="100" class="form-control border-input" placeholder="Họ và Tên">
                                     <span asp-validation-for="FullName" class="text-danger"></span>
                                 </div>
                             </div>
@@ -44,39 +49,38 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="email" asp-for="Email" class="form-control border-input" placeholder="Email">
+                                    <input type="email" maxlength="50" asp-for="Email" class="form-control border-input" placeholder="Email">
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Điện thoại</label>
-                                    <input type="tel" asp-for="PhoneNumber" class="form-control border-input" placeholder="Số điện thoại">
+                                    <input type="tel" asp-for="PhoneNumber" maxlength="13" class="form-control border-input" placeholder="Số điện thoại">
                                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>CMND</label>
-                                    <input type="text" class="form-control border-input" placeholder="Chứng minh nhân dân" asp-for="@Model.CitizenID">
+                                    <input type="text" class="form-control border-input" maxlength="9" placeholder="Chứng minh nhân dân" asp-for="@Model.CitizenID">
                                     <span asp-validation-for="CitizenID" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
 
-
                         <div class="row">
                             <div class="col-lg-8">
                                 <div class="form-group">
                                     <label>Tạm trú</label>
-                                    <input type="text" asp-for="TempAddress" class="form-control border-input" placeholder="Địa chỉ tạm trú">
+                                    <input type="text" asp-for="TempAddress" maxlength="100" class="form-control border-input" placeholder="Địa chỉ tạm trú">
                                     <span asp-validation-for="TempAddress" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Địa chỉ</label>
-                                    <input type="text" class="form-control border-input" placeholder="Địa chỉ" asp-for="Address">
+                                    <input type="text" maxlength="100" class="form-control border-input" placeholder="Địa chỉ" asp-for="@Model.Address">
                                     <span asp-validation-for="Address" class="text-danger"></span>
                                 </div>
                             </div>
@@ -93,14 +97,14 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Thành phố</label>
-                                    <input type="text" class="form-control border-input" placeholder="Thành phố" asp-for="City">
+                                    <input type="text" maxlength="50" class="form-control border-input" placeholder="Thành phố" asp-for="@Model.City">
                                     <span asp-validation-for="City" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Tỉnh</label>
-                                    <input type="text" class="form-control border-input" asp-for="PlaceOfProvide" placeholder="Tỉnh" />
+                                    <input type="text" maxlength="50" class="form-control border-input" asp-for="@Model.PlaceOfProvide" placeholder="Tỉnh" />
                                     <span asp-validation-for="PlaceOfProvide" class="text-danger"></span>
                                 </div>
                             </div>
@@ -110,7 +114,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Quê quán</label>
-                                    <input type="text" class="form-control border-input" placeholder="Quê quán" asp-for="HomeTown">
+                                    <input type="text" maxlength="50" class="form-control border-input" placeholder="Quê quán" asp-for="@Model.HomeTown">
                                     <span asp-validation-for="HomeTown" class="text-danger"></span>
                                 </div>
                             </div>
@@ -148,37 +152,7 @@
                     </div>
                 </div>
                 <hr>
-
             </div>
-
-            @*<div class="card">
-                <div class="header">
-                    <h4 class="title col-lg-6"> Thân Nhân</h4>
-                    <div col-lg-2>
-                        <a class="btn btn-success pull-right" style="width: 5em" asp-action="AddFamily"><i class="fa fa-plus"></i></a>
-                    </div>
-                </div>
-                <div class="card-content table-responsive">
-                    <table class="table-striped table-hover" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th>Họ và Tên</th>
-                                <th>Ngày sinh</th>
-                                <th>Nghề nghiệp</th>
-                                <th>Quan hệ</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="7">Không có thân nhân</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>*@
-        </div>
-
         <div class="col-lg-5">
             <div class="card">
                 <div class="content">
@@ -251,17 +225,6 @@
                                     <div class="col-xs-6">
                                         <input type="date" class="form-control border-input" asp-for="DateOfJoining">
                                         <span asp-validation-for="DateOfJoining" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="row">
-                                    <div class="col-xs-3" style="padding-top: 0.5em">
-                                        <p class="pull-right">Ngày nghỉ</p>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <input type="date" class="form-control border-input" disabled="" asp-for="ExitDate" value="">
                                     </div>
                                 </div>
                             </li>

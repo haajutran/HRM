@@ -3,15 +3,13 @@
     ViewBag.Title = "Quản lý nhân viên";
 }
 
+<h4 class="text-danger">@ViewData["ErrorMessage"]</h4>
 
 <!--End-breadcrumbs-->
 <!--Action boxes-->
 <div class="container-fluid">
     <div style="margin: auto;">
         <div asp-validation-summary="All" class="text-danger"></div>
-        <div style="text-align: center;margin: 2em;">
-            <h3><b>DANH SÁCH NHÂN VIÊN</b></h3>
-        </div>
         <a class="btn btn-primary" asp-controller="Employees" asp-action="AddEmployee" style="margin-bottom: 2em;">Thêm Nhân Viên</a>
 
         <div class="card">
@@ -19,8 +17,8 @@
                 <h4 class="title">DANH SÁCH NHÂN VIÊN</h4>
                 <p class="category">Danh sách các nhân viên trong công ty</p>
             </div>
-            <div class="content table-responsive table-full-width">
-                <table class="table table-striped">
+            <div class="content table-responsive table-full-width">           
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>MSNV</th>
@@ -54,9 +52,7 @@
                                         <a class="btn btn-simple btn-danger" asp-controller="Employees" asp-action="DeleteEmployee" asp-route-employeeID="@employee.EmployeeID">
                                             <i style="font-size: 20px" class="fa fa-trash"></i>
                                         </a>
-
                                     </div>
-
                                 </td>
                             </tr>
                         }

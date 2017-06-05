@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -14,23 +12,32 @@ using HRM.Services;
 
 namespace HRM.Controllers
 {
-
+   
     public class AccountController : Controller
     {
         #region Requires
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private IPasswordHasher<AppUser> _passwordHasher;
+        private IPasswordValidator<AppUser> _passwordValidator;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private IUserValidator<AppUser> _userValidator;
 
         public AccountController(
+            IPasswordValidator<AppUser> passwordValidator,
+        IUserValidator<AppUser> userValidator,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IPasswordHasher<AppUser> passwordHasher)
         {
+            _passwordValidator = passwordValidator;
+            _userValidator = userValidator;
+            _passwordHasher = passwordHasher;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -38,12 +45,14 @@ namespace HRM.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
         #endregion
-        [Authorize(Roles = "Manager")]
+
+        [Authorize(Roles = "Master, HRDepartment")]
         public IActionResult Index() => View(_userManager.Users);
 
         #region Actions
         /*--- Get Login ---*/
 
+        [Authorize]
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
@@ -52,6 +61,7 @@ namespace HRM.Controllers
             return View();
         }
 
+        [Authorize]
         /*--- Post Login ---*/
         [HttpPost]
         [AllowAnonymous]
@@ -93,7 +103,7 @@ namespace HRM.Controllers
         /*--- Get Register ---*/
         [HttpGet]
         [AllowAnonymous]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Master")]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -101,7 +111,7 @@ namespace HRM.Controllers
         }
 
         /*--- Post Register ---*/
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Master")]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -140,15 +150,114 @@ namespace HRM.Controllers
 
 
         /*--- Edit Account ---*/
-        [Authorize(Roles = "Manager")]
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult EditAccount(string returnUrl = null)
+        [Authorize]
+        public async Task<IActionResult> EditAccount(string id)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            AppUser user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Contains("Master"))
+                {
+                    var currentUser = await GetCurrentUserAsync();
+                    var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
+                    if (currentUserRoles.Contains("Master"))
+                    {
+                        return View(user);
+                    }
+                    return Redirect("AccessDenied");
+                }
+                return View(user);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
-        
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> EditAccount(string id, string username, string email, string password)
+        {
+            AppUser user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                user.Email = email;
+                user.UserName = username;
+                IdentityResult validEmail
+                      = await _userValidator.ValidateAsync(_userManager, user);
+                if (!validEmail.Succeeded)
+                {
+                    AddErrorsFromResult(validEmail);
+                }
+                IdentityResult validPass = null;
+                if (!string.IsNullOrEmpty(password))
+                {
+                    validPass = await _passwordValidator.ValidateAsync(_userManager,
+                    user, password);
+                    if (validPass.Succeeded)
+                    {
+                        user.PasswordHash = _passwordHasher.HashPassword(user,
+                        password);
+                    }
+                    else
+                    {
+                        AddErrorsFromResult(validPass);
+                    }
+                }
+                if ((validEmail.Succeeded && validPass == null)
+                || (validEmail.Succeeded
+                && password != string.Empty && validPass.Succeeded))
+                {
+                    IdentityResult result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        AddErrorsFromResult(result);
+                    }
+                }
+
+                return Redirect("Index");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Không tìm thấy người dùng.");
+            }
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteAccount(string id)
+        {
+            AppUser user = await _userManager.FindByIdAsync(id);
+            //var roles = await _userManager.GetRolesAsync(user);
+            //if (roles.Count != 0)
+            //{
+            //    return View("RoleError");
+            //}
+            if (user != null)
+            {
+                IdentityResult result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    AddErrorsFromResult(result);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Không tìm thấy người dùng.");
+            }
+            return View("Index", _userManager.Users);
+        }
 
 
         private void AddErrorsFromResult(IdentityResult result)

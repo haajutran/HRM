@@ -19,11 +19,11 @@ namespace HRM.Models
             {
                 return;
             }
-                    
+
             context.Departments.AddRange(
-                new Department { DepartmentCode = 1, DepartmentName = "Bộ phận nhân sự",    Description = "Chịu trách nhiệm về mảng nhân sự"    },
-                new Department { DepartmentCode = 2, DepartmentName = "Bộ phận tài chính",  Description = "Chịu trách nhiệm về mảng tài chính"  },
-                new Department { DepartmentCode = 3, DepartmentName = "Bộ phận kỹ thuật",   Description = "Chịu trách nhiệm về mảng kỹ thuật"   }
+                new Department { DepartmentCode = 1, DepartmentName = "Bộ phận nhân sự", Role = "HRDepartment" },
+                new Department { DepartmentCode = 2, DepartmentName = "Bộ phận tài chính", Role = "FinanceDepartment" },
+                new Department { DepartmentCode = 3, DepartmentName = "Bộ phận kỹ thuật", Role = "ITDepartment" }
                 );
 
             if (context.DepartmentTitles.Any())
@@ -32,20 +32,10 @@ namespace HRM.Models
             }
 
             context.DepartmentTitles.AddRange(
-                new DepartmentTitle { Title = "Trưởng phòng"},
-                new DepartmentTitle { Title = "Thư ký"},
-                new DepartmentTitle { Title = "Phòng viên"},
-                new DepartmentTitle { Title = "Thử việc" }
-                );
-
-            if (context.Contracts.Any())
-            {
-                return;
-            }
-
-            context.Contracts.AddRange(
-                new Contract {  Title = "Chính thức",   PayPerHour = 100_000},
-                new Contract {  Title = "Thử việc",     PayPerHour = 50_000}
+                new DepartmentTitle { Title = "Trưởng phòng" },
+                new DepartmentTitle { Title = "Phó phòng" },
+                new DepartmentTitle { Title = "Thư ký" },
+                new DepartmentTitle { Title = "Phòng viên" }
                 );
 
             context.SaveChanges();

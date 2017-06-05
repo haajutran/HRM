@@ -25,6 +25,7 @@ namespace HRM.Models
         public string DateOfBirth { get; set; }
         public string PlaceOfBirth { get; set; }
         public string HomeTown { get; set; }
+        public bool Limited { get; set; }
         public string City { get; set; }
         public string Region { get; set; }
         [Required(ErrorMessage = "Không để trống CMND.")]
@@ -41,17 +42,19 @@ namespace HRM.Models
         public int DepartmentCode { get; set; }
         public string DepartmentTitle { get; set; }
         public string UserId { get; set; }
-        public int? ContractID { get; set; }
         [Required(ErrorMessage = "Không để trống ngày tham gia.")]
         public DateTime DateOfJoining { get; set; }
+        [DataType(DataType.Date)]       
         public DateTime ExitDate { get; set; }
+        public int? ContractID { get; set; }
         public ICollection<Salary> SalaryRecords { get; set; }
         public ICollection<DepartmentTitle> DepartmentTitles { get; set; }
         public ICollection<DepartmentTask> DepartmentTasks { get; set; }
         public ICollection<FamilyRelation> FamilyRelations { get; set; }
         public ICollection<Department> Departments { get; set; }
         public Contract Contract { get; set; }
-
+        public ICollection<DepartmentAssignment> DepartmentAssignments { get; set; }
+  
         public static implicit operator Employee(int v)
         {
             throw new NotImplementedException();
