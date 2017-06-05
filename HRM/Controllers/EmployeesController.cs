@@ -76,7 +76,7 @@ namespace HRM.Controllers
         {
             var currentUser = await GetCurrentUserAsync();
             var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
-
+            
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();
             ContractsDropDownList();
@@ -213,7 +213,7 @@ namespace HRM.Controllers
                 DepartmentAssignment deA = new DepartmentAssignment { Department = department, Employee = _context.Employees.FirstOrDefault(e => e.EmployeeCode == employee.EmployeeCode) };
                 _context.Add(deA);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Employees");
+                return RedirectToAction("Index", "Employees", new { });
             }
             ContractsDropDownList();
             DepartmentsDropDownList();
@@ -281,9 +281,9 @@ namespace HRM.Controllers
                         ViewData["Limited"] = "true";
                     }
                 }
-              
+
             }
-            
+
             return View(employee);
         }
         #endregion
@@ -358,7 +358,7 @@ namespace HRM.Controllers
                         }
 
                     }
-                    
+
                     employeeToUpdate.Gender = gender;
 
                     //var dT = await _context.Employees.;
@@ -371,9 +371,9 @@ namespace HRM.Controllers
                     var roles = await _userManager.GetRolesAsync(user);
                     await _userManager.RemoveFromRolesAsync(user, roles.ToArray());
 
-                    foreach(var item in employeeToUpdate.DepartmentTitles)
+                    foreach (var item in employeeToUpdate.DepartmentTitles)
                     {
-                        if(item.Title == "Trưởng phòng")
+                        if (item.Title == "Trưởng phòng")
                         {
                             await _userManager.AddToRoleAsync(user, item.Department.Role + "Manager");
                         }

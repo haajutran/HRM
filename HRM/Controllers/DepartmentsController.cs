@@ -145,8 +145,8 @@ namespace HRM.Controllers
 
             if (ModelState.IsValid)
             {
-                var employee = await _employeeRepository.SearchCodeAsync(departmentTitle.EmployeeCode);
-                if (employee == null)
+                var emp = await _employeeRepository.SearchCodeAsync(departmentTitle.EmployeeCode);
+                if (emp == null)
                 {
                     return Redirect("EmployeeNull");
                 }
@@ -163,11 +163,100 @@ namespace HRM.Controllers
                 {
                     Title = departmentTitle.Title,
                     Description = departmentTitle.Description,
-                    Employee = employee,
+                    Employee = emp,
                     Department = await _departmentRepository.SearchByIDAsync(departmentTitle.DepartmentID)
                 };
 
                 _context.Add(dT);
+
+                dT.DepartmentID = departmentTitle.DepartmentID;
+                dT.Description = departmentTitle.Description;
+                dT.Title = departmentTitle.Title;
+
+                var employee = dT.Employee;
+                var userID = employee.UserId;
+                var department = _context.Departments.Include(d => d.DepartmentTitles).SingleOrDefault(d => d.DepartmentCode == employee.DepartmentCode);
+                var currentUser = await GetCurrentUserAsync();
+                var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
+
+
+                if (departmentTitle.Title.Equals("Trưởng phòng"))
+                {
+                    var departmentManagerCount = 0;
+                    foreach (var dpm in department.DepartmentTitles)
+                    {
+                        if (dpm.Title == "Trưởng phòng")
+                        {
+                            departmentManagerCount++;
+                        }
+                    }
+                    if (departmentManagerCount >= 2)
+                    {
+                        TempData["ErrorMessage"] = "Số lượng chức vụ trưởng phòng trong một phòng ban không thể lớn hơn 1.";
+                        return Redirect("Error");
+                    }
+                }
+
+                else if (departmentTitle.Title.Equals("Phó phòng"))
+                {
+                    if (!currentUserRoles.Contains("HRDepartmentManager")
+                        && !currentUserRoles.Contains("Master"))
+                    {
+                        var employeeUser = _context.Employees
+                          .Include(d => d.DepartmentAssignments)
+                          .SingleOrDefault(u => u.UserId == currentUser.Id);
+                        var hasDepartment = false;
+                        foreach (var dad in employeeUser.DepartmentAssignments)
+                        {
+                            if (dad.Department == department)
+                            {
+                                hasDepartment = true;
+                                break;
+                            }
+                        }
+                        if (hasDepartment == false)
+                        {
+                            TempData["ErrorMessage"] = "Bạn không có quyền thêm chức vụ Phó Phòng.";
+                            return Redirect("Error");
+                        }
+                    }
+                    var departmentManagerCount = 0;
+                    foreach (var dpm in department.DepartmentTitles)
+                    {
+                        if (dpm.Title == "Phó phòng")
+                        {
+                            departmentManagerCount++;
+                        }
+                    }
+                    if (departmentManagerCount >= 3)
+                    {
+                        TempData["ErrorMessage"] = "Số lượng chức vụ phó phòng trong một phòng ban không thể lớn hơn 2.";
+                        return Redirect("Error");
+                    }
+                }
+
+                var user = await _userManager.FindByIdAsync(userID);
+                var roles = await _userManager.GetRolesAsync(user);
+                await _userManager.RemoveFromRolesAsync(user, roles.ToArray());
+
+                foreach (var item in employee.DepartmentTitles)
+                {
+                    if (item.Title == "Trưởng phòng")
+                    {
+                        await _userManager.AddToRoleAsync(user, item.Department.Role + "Manager");
+                    }
+                    else if (item.Title == "Phó phòng")
+                    {
+                        var aaa = item.Department.Role.ToString();
+                        await _userManager.AddToRoleAsync(user, item.Department.Role + "Deputy");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, item.Department.Role);
+                    }
+                }
+
+                await _context.SaveChangesAsync();
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Departments");
             }

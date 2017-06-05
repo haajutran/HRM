@@ -154,6 +154,8 @@ namespace HRM.Data.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int?>("EmployeeCode");
+
                     b.Property<int?>("EmployeeID");
 
                     b.Property<string>("Title")
