@@ -211,6 +211,8 @@ namespace HRM.Controllers
                 || (validEmail.Succeeded
                 && password != string.Empty && validPass.Succeeded))
                 {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    await _userManager.ResetPasswordAsync(user, token, password);
                     IdentityResult result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
