@@ -211,7 +211,7 @@
                                         <p class="pull-right">Loại hợp đồng</p>
                                     </div>
                                     <div class="col-xs-6">
-                                        <select class="form-control border-input" asp-for="ContractID" asp-items="ViewBag.Contracts">
+                                        <select class="form-control border-input" asp-for="ContractID" asp-items="ViewBag.Contracts" required>
                                             <option value="">-- Chọn hợp đồng --</option>
                                         </select>
                                         <span asp-validation-for="DepartmentTitle" class="text-danger"></span>
