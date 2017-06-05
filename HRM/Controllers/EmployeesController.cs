@@ -76,7 +76,34 @@ namespace HRM.Controllers
         {
             var currentUser = await GetCurrentUserAsync();
             var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
-            
+
+            if (!currentUserRoles.Contains("Master"))
+            {
+                int count = 0;
+                foreach (var role in currentUserRoles)
+                {
+                    if (role.Contains("HR"))
+                    {
+                        count++;
+                    }
+                }
+                if (count == 0)
+                {
+                    return RedirectToAction("AccessDenied", "Account");
+                }
+            }
+            //if (!currentUserRoles.Contains("HRDepartment")
+            //    && !currentUserRoles.Contains("HRDepartmentDebuty")
+            //    && !currentUserRoles.Contains("HRDepartmentManager")
+            //    && !currentUserRoles.Contains("Master")
+            //    && !currentUserRoles.Contains("ITDepartmentManager")
+            //    && !currentUserRoles.Contains("ITDepartmentDebuty")
+            //    && !currentUserRoles.Contains("FinanceDepartmentDebuty")
+            //    && !currentUserRoles.Contains("FinanceDepartmentManager"))
+            //{
+            //    return RedirectToAction("AccessDenied", "Account");
+            //}
+
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();
             ContractsDropDownList();
@@ -86,7 +113,7 @@ namespace HRM.Controllers
         [Authorize(Roles = "Master, HRDepartmentManager, ITDepartmentManager, FinanceDepartmentManager, HRDepartment, HRDepartmentDeputy")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEmployee([Bind("FullName, ContractID, Address, DateOfBirth, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, DepartmentCode, DateOfJoining, DepartmentTitle")] Employee employee, string gender)
+        public async Task<IActionResult> AddEmployee([Bind("FullName, ContractID, Address, DateOfBirth, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, DateOfJoining")] Employee employee, string gender)
         {
 
             if (ModelState.IsValid)
@@ -95,96 +122,96 @@ namespace HRM.Controllers
                 {
                     ViewData["ErrorMessage"] = "Email đã bị trùng.";
                     ContractsDropDownList();
-                    DepartmentsDropDownList();
-                    DepartmentTitlesDropDownList();
+                    //DepartmentsDropDownList();
+                    //DepartmentTitlesDropDownList();
                     return View(employee);
                 }
-                var department = _context.Departments.Include(d => d.DepartmentTitles).SingleOrDefault(d => d.DepartmentCode == employee.DepartmentCode);
+                //var department = _context.Departments.Include(d => d.DepartmentTitles).SingleOrDefault(d => d.DepartmentCode == employee.DepartmentCode);
 
                 var currentUser = await GetCurrentUserAsync();
                 var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
 
-                if (employee.DepartmentTitle == "Trưởng phòng")
-                {
+                //if (employee.DepartmentTitle == "Trưởng phòng")
+                //{
 
-                    if (!currentUserRoles.Contains("HRDepartmentManager")
-                        && !currentUserRoles.Contains("Master"))
-                    {
-                        TempData["ErrorMessage"] = "Bạn không có quyền thêm chức vụ Trưởng Phòng.";
-                        return Redirect("Error");
-                    }
-                    var departmentManagerCount = 0;
-                    foreach (var dpm in department.DepartmentTitles)
-                    {
-                        if (dpm.Title == "Trưởng phòng")
-                        {
-                            departmentManagerCount++;
-                        }
-                    }
-                    if (departmentManagerCount >= 1)
-                    {
-                        ViewData["ErrorMessage"] = "Số lượng chức vụ trưởng phòng trong một phòng ban không thể lớn hơn 2.";
-                        ContractsDropDownList();
-                        DepartmentsDropDownList();
-                        DepartmentTitlesDropDownList();
-                        return View(employee);
-                    }
-                }
+                //    if (!currentUserRoles.Contains("HRDepartmentManager")
+                //        && !currentUserRoles.Contains("Master"))
+                //    {
+                //        TempData["ErrorMessage"] = "Bạn không có quyền thêm chức vụ Trưởng Phòng.";
+                //        return Redirect("Error");
+                //    }
+                //    var departmentManagerCount = 0;
+                //    foreach (var dpm in department.DepartmentTitles)
+                //    {
+                //        if (dpm.Title == "Trưởng phòng")
+                //        {
+                //            departmentManagerCount++;
+                //        }
+                //    }
+                //    if (departmentManagerCount >= 1)
+                //    {
+                //        ViewData["ErrorMessage"] = "Số lượng chức vụ trưởng phòng trong một phòng ban không thể lớn hơn 2.";
+                //        ContractsDropDownList();
+                //        DepartmentsDropDownList();
+                //        DepartmentTitlesDropDownList();
+                //        return View(employee);
+                //    }
+                //}
 
-                else if (employee.DepartmentTitle.Equals("Phó phòng"))
-                {
+                //else if (employee.DepartmentTitle.Equals("Phó phòng"))
+                //{
 
-                    if (!currentUserRoles.Contains("HRDepartmentManager")
-                      && !currentUserRoles.Contains("Master"))
-                    {
-                        var employeeUser = _context.Employees
-                          .Include(d => d.DepartmentAssignments)
-                          .SingleOrDefault(u => u.UserId == currentUser.Id);
-                        var hasDepartment = false;
-                        foreach (var dad in employeeUser.DepartmentAssignments)
-                        {
-                            if (dad.Department == department)
-                            {
-                                hasDepartment = true;
-                                break;
-                            }
-                        }
-                        if (hasDepartment == false)
-                        {
-                            TempData["ErrorMessage"] = "Bạn không có quyền thêm chức vụ Phó Phòng.";
-                            return Redirect("Error");
-                        }
-                    }
-                    var departmentManagerCount = 0;
-                    foreach (var dpm in department.DepartmentTitles)
-                    {
-                        if (dpm.Title == "Phó phòng")
-                        {
-                            departmentManagerCount++;
-                        }
-                    }
-                    if (departmentManagerCount >= 2)
-                    {
-                        TempData["ErrorMessage"] = "Số lượng chức vụ phó phòng trong một phòng ban không thể lớn hơn 3.";
-                        return Redirect("Error");
-                    }
-                }
+                //    if (!currentUserRoles.Contains("HRDepartmentManager")
+                //      && !currentUserRoles.Contains("Master"))
+                //    {
+                //        var employeeUser = _context.Employees
+                //          .Include(d => d.DepartmentAssignments)
+                //          .SingleOrDefault(u => u.UserId == currentUser.Id);
+                //        var hasDepartment = false;
+                //        foreach (var dad in employeeUser.DepartmentAssignments)
+                //        {
+                //            if (dad.Department == department)
+                //            {
+                //                hasDepartment = true;
+                //                break;
+                //            }
+                //        }
+                //        if (hasDepartment == false)
+                //        {
+                //            TempData["ErrorMessage"] = "Bạn không có quyền thêm chức vụ Phó Phòng.";
+                //            return Redirect("Error");
+                //        }
+                //    }
+                //    var departmentManagerCount = 0;
+                //    foreach (var dpm in department.DepartmentTitles)
+                //    {
+                //        if (dpm.Title == "Phó phòng")
+                //        {
+                //            departmentManagerCount++;
+                //        }
+                //    }
+                //    if (departmentManagerCount >= 2)
+                //    {
+                //        TempData["ErrorMessage"] = "Số lượng chức vụ phó phòng trong một phòng ban không thể lớn hơn 3.";
+                //        return Redirect("Error");
+                //    }
+                //}
 
-                DepartmentTitle departmentTitle = new DepartmentTitle()
-                {
-                    Employee = employee,
-                    Department = department,
-                    Title = employee.DepartmentTitle
-                };
+                //DepartmentTitle departmentTitle = new DepartmentTitle()
+                //{
+                //    Employee = employee,
+                //    Department = department,
+                //    Title = employee.DepartmentTitle
+                //};
 
                 #region Add
-                _context.DepartmentTitles.Add(departmentTitle);
-                employee.EmployeeCode = CodeGenerator(employee, department);
+                //_context.DepartmentTitles.Add(departmentTitle);
+                employee.EmployeeCode = CodeGenerator(employee);
                 employee.Active = true;
                 //employee.Departments =  departments;
                 employee.Gender = gender;
                 employee.Region = "Việt Nam";
-                department.DepartmentTitles.Add(departmentTitle);
+                //department.DepartmentTitles.Add(departmentTitle);
                 _context.Add(employee);
 
                 string username = employee.EmployeeCode + "";
@@ -193,27 +220,28 @@ namespace HRM.Controllers
 
                 var user = new AppUser { UserName = username, Email = email };
                 await _userManager.CreateAsync(user, password);
-                if (departmentTitle.Title.Equals("Trưởng phòng"))
-                {
-                    await _userManager.AddToRoleAsync(user, department.Role + "Manager");
-                }
-                else if (departmentTitle.Title.Equals("Phó phòng"))
-                {
-                    await _userManager.AddToRoleAsync(user, department.Role + "Deputy");
-                }
-                else
-                {
-                    await _userManager.AddToRoleAsync(user, department.Role);
-                }
+
+                //if (departmentTitle.Title.Equals("Trưởng phòng"))
+                //{
+                //    await _userManager.AddToRoleAsync(user, department.Role + "Manager");
+                //}
+                //else if (departmentTitle.Title.Equals("Phó phòng"))
+                //{
+                //    await _userManager.AddToRoleAsync(user, department.Role + "Deputy");
+                //}
+                //else
+                //{
+                //    await _userManager.AddToRoleAsync(user, department.Role);
+                //}
 
                 #endregion
 
                 employee.UserId = user.Id;
                 await _context.SaveChangesAsync();
-                DepartmentAssignment deA = new DepartmentAssignment { Department = department, Employee = _context.Employees.FirstOrDefault(e => e.EmployeeCode == employee.EmployeeCode) };
-                _context.Add(deA);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Employees", new { });
+                //DepartmentAssignment deA = new DepartmentAssignment { Department = department, Employee = _context.Employees.FirstOrDefault(e => e.EmployeeCode == employee.EmployeeCode) };
+                //_context.Add(deA);
+                //await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Employees");
             }
             ContractsDropDownList();
             DepartmentsDropDownList();
@@ -246,27 +274,28 @@ namespace HRM.Controllers
             var userId = employee.UserId;
             AppUser user = await _userManager.FindByIdAsync(userId);
             var userRoles = await _userManager.GetRolesAsync(user);
-
             var currentUser = await GetCurrentUserAsync();
             var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
-
             if (userRoles.Contains("Master"))
             {
                 if (!currentUserRoles.Contains("Master"))
                 {
                     return RedirectToAction("AccessDenied", "Account");
                 }
-
             }
 
-            if (!currentUserRoles.Contains("Master") && !currentUserRoles.Contains("HRDepartmentManager"))
+            if (!currentUserRoles.Contains("Master")
+                && !currentUserRoles.Contains("HRDepartmentManager")
+                && !currentUserRoles.Contains("HRDepartment")
+                && !currentUserRoles.Contains("HRDepartmentDeputy"))
             {
-                bool tf = false;
+                bool isManager = false;
+                bool isDeputy = false;
                 foreach (var item in currentUserRoles)
                 {
                     if (item.Contains("Manager"))
                     {
-                        tf = true;
+                        isManager = true;
                         break;
                     }
                 }
@@ -281,13 +310,26 @@ namespace HRM.Controllers
                         ViewData["Limited"] = "true";
                     }
                 }
-
+              
             }
 
             return View(employee);
         }
+
+        private bool IsItself(AppUser currentUser, Employee employee)
+        {
+            if (!currentUser.UserName.Equals(employee.EmployeeCode.ToString()))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         #endregion
 
+        #region Edit Employee Post
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
@@ -385,21 +427,6 @@ namespace HRM.Controllers
                         {
                             await _userManager.AddToRoleAsync(user, item.Department.Role);
                         }
-                        //foreach (var item2 in item.Department.DepartmentTitles)
-                        //{
-                        //    if(item2.Title == "Trưởng phòng")
-                        //    {
-                        //        await _userManager.AddToRoleAsync(user, item.Department.Role + "Manager");
-                        //    }
-                        //    if (item2.Title == "Phó phòng")
-                        //    {
-                        //        await _userManager.AddToRoleAsync(user, item.Department.Role + "Deputy");
-                        //    }
-                        //    else
-                        //    {
-                        //        await _userManager.AddToRoleAsync(user, item.Department.Role);
-                        //    }
-                        //}
                     }
                     //await _context.SaveChangesAsync();
                 }
@@ -417,7 +444,7 @@ namespace HRM.Controllers
             DepartmentTitlesDropDownList();
             return View(employeeToUpdate);
         }
-
+        #endregion
 
 
         #endregion --------------------------------------
@@ -727,12 +754,15 @@ namespace HRM.Controllers
         #endregion
 
         #region Code Generator
-        private int CodeGenerator(Employee employee, Department department)
+        private int CodeGenerator(Employee employee)
         {
-            var left = (10 + department.DepartmentCode).ToString();
-            var right = (10000 + department.DepartmentTitles.Count);
-            var right2 = right.ToString().Substring(1, 4);
-            var employeeCode = int.Parse(left + right2);
+            //var left = (10 + department.DepartmentCode).ToString();
+            //var right = (10000 + department.DepartmentTitles.Count);
+            //var right2 = right.ToString().Substring(1, 4);
+            //var employeeCode = int.Parse(left + right2);
+
+            var stt = _context.Employees.Count() + 1;
+            var employeeCode = stt + 100000;
             return employeeCode;
         }
         #endregion
