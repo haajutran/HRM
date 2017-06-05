@@ -23,6 +23,11 @@ namespace HRM.Models
                     .ThenInclude(d => d.DepartmentTasks)
                 .Include(d => d.Departments)
                     .ThenInclude(d => d.DepartmentTitles)
+                        .ThenInclude(d => d.Employee)
+                .Include(d => d.DepartmentTitles)
+                    .ThenInclude(d => d.Department)
+                .Include(d => d.DepartmentTitles)
+                    .ThenInclude(d => d.Employee)
                 .Include(f => f.FamilyRelations);
 
             return await employees.ToListAsync();

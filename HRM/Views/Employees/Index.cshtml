@@ -1,4 +1,4 @@
-@model EmployeesListViewModel
+@model IEnumerable<Employee>
 @{
     ViewBag.Title = "Quản lý nhân viên";
 }
@@ -19,7 +19,7 @@
                 <h4 class="title">DANH SÁCH NHÂN VIÊN</h4>
                 <p class="category">Danh sách các nhân viên trong công ty</p>
             </div>
-            <div class="content table-responsive table-full-width">           
+            <div class="content table-responsive table-full-width">
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -32,17 +32,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var employee in Model.Employees)
-                            {
+                        @foreach (var employee in Model)
+                        {
                             <tr>
                                 <td><a asp-action="EditEmployee" asp-route-employeeID="@employee.EmployeeID">@employee.EmployeeCode</a></td>
                                 <td>@employee.FullName</td>
                                 <td>@employee.PhoneNumber</td>
                                 <td>
-                                    @foreach (var department in employee.Departments)
-                                        {
-                                        @department.DepartmentName
-                                        }
+                                    @foreach (var departmentName in employee.DepartmentTitles.Select(dt => dt.Department.DepartmentName).Distinct())
+                                    {
+                                        @departmentName <br />
+                                    }
                                 </td>
                                 <td>@employee.Email</td>
                                 <td>
@@ -59,7 +59,7 @@
 
                                 </td>
                             </tr>
-                            }
+                        }
 
                     </tbody>
                 </table>

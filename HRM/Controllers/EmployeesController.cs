@@ -21,23 +21,22 @@ namespace HRM.Controllers
 
         private ApplicationDbContext _context;
         private IEmployeeRepository _employeeRepository;
+        private IDepartmentRepository _departmentRepository;
         private IHostingEnvironment _environment;
         string url = "EditEmployee?employeeID=";
-        public EmployeesController(IEmployeeRepository repo, ApplicationDbContext context, IHostingEnvironment environment)
+        public EmployeesController(IEmployeeRepository repo, ApplicationDbContext context, IHostingEnvironment environment, IDepartmentRepository departmentRepository)
         {
             _employeeRepository = repo;
             _context = context;
             _environment = environment;
+            _departmentRepository = departmentRepository;
         }
 
         #region Employee Management
 
         public async Task<ViewResult> Index()
         {
-            return View(new EmployeesListViewModel
-            {
-                Employees = await _employeeRepository.EmployeesAsync()
-            });
+            return View(await _employeeRepository.EmployeesAsync());
         }
 
         #region Employee Profile
@@ -69,41 +68,59 @@ namespace HRM.Controllers
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();
             ContractsDropDownList();
-            return View();
+            return View(new Employee());
         }
 
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEmployee([Bind("FullName, Address, DateOfBirth, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, DepartmentCode, DateOfJoining, DepartmentTitle, ContractID")] Employee employee, string gender)
+        public async Task<IActionResult> AddEmployee([Bind("EmployeeID, FullName, Address, DateOfBirth, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, DepartmentCode, DateOfJoining, DepartmentTitle, ContractID")] Employee employee, string gender)
         {
 
             if (ModelState.IsValid)
             {
-                var department = _context.Departments.Include(d => d.DepartmentTitles).SingleOrDefault(d => d.DepartmentCode == employee.DepartmentCode);
-                var departments = new List<Department>();
-                DepartmentTitle departmentTitle = new DepartmentTitle()
-                {
-                    Employee = employee,
-                    Department = department,
-                    Title = employee.DepartmentTitle
-                };
-                _context.DepartmentTitles.Add(departmentTitle);
+                var department = await _departmentRepository.SearchAsync(employee.DepartmentCode);
+
                 employee.EmployeeCode = CodeGenerator(employee, department);
                 employee.Active = true;
-                employee.Departments = departments;
                 employee.Gender = gender;
                 employee.Region = "Việt Nam";
                 employee.Contract = await _context.Contracts.SingleOrDefaultAsync(c => c.ContractID == employee.ContractID);
-                departments.Add(department);
-                //employee.FamilyRelations = _context.FamilyRelations.Select(f => f).Where(x => x.EmployeeId == employee.EmployeeID);
-                //Department department = await _context.Departments
-                //    .Include(d => d.Employees)
-                //    .SingleOrDefaultAsync(m => m.DepartmentCode == employee.DepartmentCode);
-                //employee.Departments = department;
-                //department.Employees.Add(employee);
-                _context.Add(employee);
+
+                _context.Employees.Add(new Employee() {
+                    FullName = employee.FullName,
+                    Address = employee.Address,
+                    DateOfBirth = employee.DateOfBirth,
+                    PhoneNumber = employee.PhoneNumber,
+                    Email = employee.Email,
+                    HomeTown = employee.HomeTown,
+                    City = employee.City,
+                    CitizenID = employee.CitizenID,
+                    TempAddress = employee.TempAddress,
+                    DepartmentCode = employee.DepartmentCode,
+                    DateOfJoining = employee.DateOfJoining,
+                    DepartmentTitle = employee.DepartmentTitle,
+                    ContractID = employee.ContractID,
+                    EmployeeCode = employee.EmployeeCode,
+                    Active = employee.Active,
+                    Gender = employee.Gender,
+                    Region = employee.Region,
+                    Contract = employee.Contract
+                });
+
+                _context.SaveChanges();
+
+                var theNewEmployee = await _employeeRepository.SearchCodeAsync(employee.EmployeeCode);
+
+                DepartmentTitle departmentTitle = new DepartmentTitle()
+                {
+                    Employee = theNewEmployee,
+                    Department = department,
+                    Title = employee.DepartmentTitle
+                };
+                _context.Add(departmentTitle);
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Employees");
             }

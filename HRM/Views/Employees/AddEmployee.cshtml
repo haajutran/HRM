@@ -28,7 +28,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Công ty</label>
-                                    <input type="text" class="form-control border-input" disabled="" placeholder="Company" value="TNHH Tứ thành viên Huy Nghĩa Thương Hậu">
+                                    <input type="text" class="form-control border-input" disabled="" placeholder="Company" value="TNHH Tứ thành viên Huy Nghĩa Thương Hậu" />
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -52,6 +52,7 @@
                                 <div class="form-group">
                                     <label>Điện thoại</label>
                                     <input type="tel" asp-for="PhoneNumber" class="form-control border-input" placeholder="Số điện thoại">
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -75,7 +76,8 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Địa chỉ</label>
-                                    <input type="text" class="form-control border-input" placeholder="Địa chỉ" asp-for="@Model.Address">
+                                    <input type="text" class="form-control border-input" placeholder="Địa chỉ" asp-for="Address">
+                                    <span asp-validation-for="Address" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -85,18 +87,21 @@
                                 <div class="form-group">
                                     <label>Quốc gia</label>
                                     <input type="text" class="form-control border-input" value="Việt Nam" readonly>
+                                    <span asp-validation-for="Region" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Thành phố</label>
-                                    <input type="text" class="form-control border-input" placeholder="Thành phố" asp-for="@Model.City">
+                                    <input type="text" class="form-control border-input" placeholder="Thành phố" asp-for="City">
+                                    <span asp-validation-for="City" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Tỉnh</label>
-                                    <input type="text" class="form-control border-input" asp-for="@Model.PlaceOfProvide" placeholder="Tỉnh" />
+                                    <input type="text" class="form-control border-input" asp-for="PlaceOfProvide" placeholder="Tỉnh" />
+                                    <span asp-validation-for="PlaceOfProvide" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +110,8 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Quê quán</label>
-                                    <input type="text" class="form-control border-input" placeholder="Quê quán" asp-for="@Model.HomeTown">
+                                    <input type="text" class="form-control border-input" placeholder="Quê quán" asp-for="HomeTown">
+                                    <span asp-validation-for="HomeTown" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -145,7 +151,7 @@
 
             </div>
 
-            <div class="card">
+            @*<div class="card">
                 <div class="header">
                     <h4 class="title col-lg-6"> Thân Nhân</h4>
                     <div col-lg-2>
@@ -170,7 +176,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div>*@
         </div>
 
         <div class="col-lg-5">

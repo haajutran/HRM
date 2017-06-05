@@ -25,7 +25,10 @@ namespace HRM.Controllers
         // GET: Salaries
         public async Task<IActionResult> Index()
         {
-            return View(await _context.SalaryRecords.ToListAsync());
+            return View(await _context.SalaryRecords
+                .Include(s => s.Employee)
+                    .ThenInclude(s => s.DepartmentTitles)
+                .ToListAsync());
         }
 
         // GET: Salaries/Details/5
