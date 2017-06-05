@@ -10,7 +10,7 @@ namespace HRM.Models
 {
     public static class RolesData
     {
-        private static readonly string[] Roles = new string[] { "Manager", "Staff", "Employee" };
+        private static readonly string[] Roles = new string[] { "Master", "HRDepartment", "HRDepartmentManager", "ITDepartment", "ITDepartmentManager", "FinanceDepartment", "FinanceDepartmentManager", "ITDepartmentDeputy", "FinanceDepartmentDeputy", "HRDepartmentDeputy" };
 
         public static async Task SeedRoles(IServiceProvider serviceProvider)
         {

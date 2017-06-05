@@ -15,8 +15,6 @@ namespace HRM.Models
         public string Title { get; set; }
         [Display(Name = "Mô tả")]
         public string Description { get; set; }
-        public int? DepartmentID { get; set; }
-        public int? EmployeeCode { get; set; }
         public Department Department { get; set; }
         public Employee Employee { get; set; }
     }

@@ -22,7 +22,6 @@ namespace HRM.Models
                 .Include(ta => ta.DepartmentTasks)
                     .ThenInclude(e => e.Employee)
                 .Include(ti => ti.DepartmentTitles)
-                    .ThenInclude(e => e.Employee)
                 .AsNoTracking();
             return await departments.ToListAsync();
         }
@@ -30,46 +29,20 @@ namespace HRM.Models
         public async Task<Department> SearchAsync(int departmentCode)
         {
             return await context.Departments
-                .Include(ta => ta.DepartmentTasks)
-                    .ThenInclude(e => e.Employee)
-                .Include(ti => ti.DepartmentTitles)
-                    .ThenInclude(e => e.Employee)
-                .SingleOrDefaultAsync(p => p.DepartmentCode == departmentCode);
-        }
-
-        public async Task<Department> SearchByIDAsync(int? departmentID)
-        {
-            return await context.Departments
-                .Include(ta => ta.DepartmentTasks)
-                    .ThenInclude(e => e.Employee)
-                .Include(ti => ti.DepartmentTitles)
-                    .ThenInclude(e => e.Employee)
-                .SingleOrDefaultAsync(p => p.DepartmentCode == departmentID);
-        }
-
-        public async Task<Department> SearchByIDAsync(int departmentID)
-        {
-            return await context.Departments
-                .Include(ta => ta.DepartmentTasks)
-                    .ThenInclude(e => e.Employee)
-                .Include(ti => ti.DepartmentTitles)
-                    .ThenInclude(e => e.Employee)
-                .SingleOrDefaultAsync(p => p.DepartmentCode == departmentID);
+                .FirstOrDefaultAsync(p => p.DepartmentCode == departmentCode);
         }
 
         public async Task<DepartmentTask> SearchTaskAsync(int departmentTaskID)
         {
             return await context.DepartmentTasks
-                .Include(ta => ta.Employee)
-                .Include(ta => ta.Department)
+                .Include(e => e.Department)
+                .Include(e => e.Employee)
                 .SingleOrDefaultAsync(t => t.DepartmentTaskID == departmentTaskID);
         }
 
         public async Task<DepartmentTitle> SearchTitleAsync(int departmentTitleID)
         {
             return await context.DepartmentTitles
-                .Include(d => d.Employee)
-                .Include(d => d.Department)
                 .SingleOrDefaultAsync(t => t.DepartmentTitleID == departmentTitleID);
         }
     }

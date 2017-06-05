@@ -1,269 +1,353 @@
 ﻿@model Employee
 
-@{ 
+@{
     ViewBag.Title = "Xem và Chỉnh sửa thông tin nhân viên";
 }
+<h4 class="text-danger">@ViewData["ErrorMessage"]</h4>
+
 
 <form asp-action="EditEmployee" asp-route-employeeID="@Model.EmployeeID" method="post">
-    <div class="row">
-        <div class="col-lg-7">
 
-            <div class="card card-user">
-                <div class="image">
-                    <img src="~/images/wall.jpg" alt="...">
-                </div>
-                <div class="content">
-                    <div class="author">
-                        <img class="avatar border-white" src="~/images/13528872_930129437096013_535751867252842230_n.jpg" alt="...">
-                        <h4 class="title">
-                            <span>@Model.FullName</span>
-                            <br>
-                            @*<a href="#"><small></small></a>*@
-                        </h4>
-                    </div>    
-                    <hr />
-                    <div>
-                        <input type="hidden" asp-for="EmployeeID" />
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Công ty</label>
-                                    <input type="text" class="form-control border-input" disabled="" placeholder="Company" value="TNHH Tứ thành viên Huy Nghĩa Thương Hậu">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Họ & Tên</label>
-                                    <input type="text" asp-for="FullName" class="form-control border-input" placeholder="Họ và Tên">
-                                    <span asp-validation-for="FullName" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
+    @if (Model.Limited == false)
+    {
+        <div class="row">
+            <div class="col-lg-7">
 
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" asp-for="Email" class="form-control border-input" placeholder="Email">
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Điện thoại</label>
-                                    <input type="tel" asp-for="PhoneNumber" class="form-control border-input" placeholder="Số điện thoại">
-                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>CMND</label>
-                                    <input type="text" class="form-control border-input" placeholder="Thành phố" asp-for="@Model.CitizenID">
-                                    <span asp-validation-for="CitizenID" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="form-group">
-                                    <label>Tạm trú</label>
-                                    <input type="text" asp-for="TempAddress" class="form-control border-input" placeholder="Địa chỉ tạm trú">
-                                    <span asp-validation-for="TempAddress" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Địa chỉ</label>
-                                    <input type="text" class="form-control border-input" placeholder="Địa chỉ" asp-for="@Model.Address">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Quốc gia</label>
-                                    <input type="text" class="form-control border-input" value="Việt Nam" readonly>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Thành phố</label>
-                                    <input type="text" class="form-control border-input" placeholder="Thành phố" asp-for="@Model.City">
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Tỉnh</label>
-                                    <input type="text" class="form-control border-input" asp-for="@Model.PlaceOfProvide" placeholder="Tỉnh" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Quê quán</label>
-                                    <input type="text" class="form-control border-input" placeholder="Quê quán" asp-for="@Model.HomeTown">
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-12">
-                                <div class="form-group">
-                                    <label>Giới tính</label>
-                                    @if (Model.Gender == "Nam")
-                                    {
-                                        <div>
-                                            <div class="btn-group" data-toggle="buttons">
-                                                <label class="btn active col-lg-6" style="border: 0.5px solid #808080;">
-                                                    <input type="radio" value="Nam" id="nam" name="gender" checked><span><i class="fa fa-male"></i></span>
-                                                </label>
-                                                <label class="btn col-lg-6" style="border: 0.5px solid #808080">
-                                                    <input type="radio" value="Nữ" id="nu" name="gender"><span><i class="fa fa-female"></i></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div>
-                                            <div class="btn-group" data-toggle="buttons">
-                                                <label class="btn col-lg-6" style="border: 0.5px solid #808080;">
-                                                    <input type="radio" value="Nam" id="nam" name="gender"><span><i class="fa fa-male"></i></span>
-                                                </label>
-                                                <label class="btn active col-lg-6" style="border: 0.5px solid #808080">
-                                                    <input type="radio" value="Nữ" id="nu" name="gender" checked><span><i class="fa fa-female"></i></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    }
-
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Ngày sinh</label>
-                                    <input type="date" class="form-control border-input" asp-for="@Model.DateOfBirth" />
-                                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-12">
-                                @*<div class="form-group">
-                        <label>About Me</label>
-                        <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" value="Mike">
-                        @foreach(var department in Model.Departments)
-                        {
-                            @department.DepartmentName
-                        }
-                        </textarea>
-                    </div>*@
-                                <div class="form-group">
-                                    <label>Phòng ban</label>
-                                    <select class="form-control border-input" asp-for="DepartmentCode" asp-items="ViewBag.Departments">
-                                        <option value="">-- Chọn phòng ban --</option>
-                                    </select>
-                                    <span asp-validation-for="DateOfJoining" class="text-danger"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-info btn-fill btn-wd">Lưu thay đổi</button>
-                        </div>
-                        <div class="clearfix"></div>
-
+                <div class="card card-user">
+                    <div class="image">
+                        <img src="~/images/wall.jpg" alt="...">
                     </div>
-                </div>
-                <hr>
-              
-            </div> @*Thông tin chi tiết nhân viên*@
+                    <div class="content">
+                        <div class="author">
+                            <img class="avatar border-white" src="~/images/13528872_930129437096013_535751867252842230_n.jpg" alt="...">
+                            <h4 class="title">
+                                <span>@Model.FullName</span>
+                                <br>
+                            </h4>
+                        </div>
+                        <hr />
+                        <div>
+                            <input type="hidden" asp-for="EmployeeID" />
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Công ty</label>
+                                        <input type="text" class="form-control border-input" disabled="" placeholder="Company" value="TNHH Tứ thành viên Huy Nghĩa Thương Hậu">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Họ & Tên</label>
+                                        <input type="text" asp-for="FullName" maxlength="100" class="form-control border-input" placeholder="Họ và Tên">
+                                        <span asp-validation-for="FullName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
 
-            <div class="card">
-                <div class="header">
-                    <h4 class="title col-lg-6">Thân Nhân</h4>
-                    <div col-lg-2>
-                        <a class="btn btn-success pull-right" style="width: 5em" asp-action="AddFamily" asp-route-employeeID="@Model.EmployeeID"><i class="fa fa-plus"></i></a>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" maxlength="50" asp-for="Email" class="form-control border-input" placeholder="Email">
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Điện thoại</label>
+                                        <input type="tel" asp-for="PhoneNumber" maxlength="13" class="form-control border-input" placeholder="Số điện thoại">
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>CMND</label>
+                                        <input type="text" class="form-control border-input" maxlength="9" placeholder="Chứng minh nhân dân" asp-for="@Model.CitizenID">
+                                        <span asp-validation-for="CitizenID" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <label>Tạm trú</label>
+                                        <input type="text" asp-for="TempAddress" maxlength="100" class="form-control border-input" placeholder="Địa chỉ tạm trú">
+                                        <span asp-validation-for="TempAddress" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Địa chỉ</label>
+                                        <input type="text" maxlength="100" class="form-control border-input" placeholder="Địa chỉ" asp-for="@Model.Address">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Quốc gia</label>
+                                        <input type="text" class="form-control border-input" value="Việt Nam" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Thành phố</label>
+                                        <input type="text" maxlength="50" class="form-control border-input" placeholder="Thành phố" asp-for="@Model.City">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Tỉnh</label>
+                                        <input type="text" maxlength="50" class="form-control border-input" asp-for="@Model.PlaceOfProvide" placeholder="Tỉnh" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Quê quán</label>
+                                        <input type="text" class="form-control border-input" placeholder="Quê quán" asp-for="@Model.HomeTown">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-12">
+                                    <div class="form-group">
+                                        <label>Giới tính</label>
+                                        @if (Model.Gender == "Nam")
+                                        {
+                                            <div>
+                                                <div class="btn-group" data-toggle="buttons">
+                                                    <label class="btn active col-lg-6" style="border: 0.5px solid #808080;">
+                                                        <input type="radio" value="Nam" id="nam" name="gender" checked><span><i class="fa fa-male"></i></span>
+                                                    </label>
+                                                    <label class="btn col-lg-6" style="border: 0.5px solid #808080">
+                                                        <input type="radio" value="Nữ" id="nu" name="gender"><span><i class="fa fa-female"></i></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div>
+                                                <div class="btn-group" data-toggle="buttons">
+                                                    <label class="btn col-lg-6" style="border: 0.5px solid #808080;">
+                                                        <input type="radio" value="Nam" id="nam" name="gender"><span><i class="fa fa-male"></i></span>
+                                                    </label>
+                                                    <label class="btn active col-lg-6" style="border: 0.5px solid #808080">
+                                                        <input type="radio" value="Nữ" id="nu" name="gender" checked><span><i class="fa fa-female"></i></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Ngày sinh</label>
+                                        <input type="date" class="form-control border-input" asp-for="@Model.DateOfBirth" />
+                                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-info btn-fill btn-wd">Lưu thay đổi</button>
+                            </div>
+                            <div class="clearfix"></div>
+
+                        </div>
                     </div>
+                    <hr>
+
                 </div>
-                <div class="card-content table-responsive">
-                    <table class="table-striped table-hover" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th>Họ và Tên</th>
-                                <th>Ngày sinh</th>
-                                <th>Nghề nghiệp</th>
-                                <th>Quan hệ</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.FamilyRelations != null)
-                            {
-                                foreach (var p in Model.FamilyRelations)
+
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title col-lg-6">Thân Nhân</h4>
+                        <div col-lg-2>
+                            <a class="btn btn-success pull-right" style="width: 5em" asp-action="AddFamily" asp-route-employeeID="@Model.EmployeeID"><i class="fa fa-plus"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-content table-responsive">
+                        <table class="table-striped table-hover" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>Họ và Tên</th>
+                                    <th>Ngày sinh</th>
+                                    <th>Nghề nghiệp</th>
+                                    <th>Quan hệ</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.FamilyRelations != null)
                                 {
-                            <tr>
-                                <td><a asp-action="FamilyDetails" asp-route-id="@p.FamilyRelationId">@p.Name</a></td>
-                                <td>@p.DateOfBirth</td>
-                                <td>@p.Occupation</td>
-                                <td>@p.Relation</td>
-                                <td>
-                                    <a class="btn btn-danger" style="width:100%" asp-action="DeleteFamily" asp-route-familyRelationID="@p.FamilyRelationId"><i class="fa fa-trash"></i></a>
-                                </td>
-                            </tr>
+                                    foreach (var p in Model.FamilyRelations)
+                                    {
+                                        <tr>
+                                            <td><a asp-action="FamilyDetails" asp-route-id="@p.FamilyRelationId">@p.Name</a></td>
+                                            <td>@p.DateOfBirth</td>
+                                            <td>@p.Occupation</td>
+                                            <td>@p.Relation</td>
+                                            <td>
+                                                <a class="btn btn-danger" style="width:100%" asp-action="DeleteFamily" asp-route-familyRelationID="@p.FamilyRelationId"><i class="fa fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    }
                                 }
-                            }
-                            else
-                            {
-                            <tr>
-                                <td colspan="7">Không có thân nhân</td>
-                            </tr>
-                            }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="7">Không có thân nhân</td>
+                                    </tr>
+                                }
 
-                        </tbody>
-                    </table>
-                </div>
-            </div> @*Thân nhân*@
-
-            <div class="card">
-                <div class="header">
-                    <h4 class="title col-lg-6">Phòng ban</h4>
-                    <div col-lg-2>
-                        <a class="btn btn-success pull-right" style="width: 5em" asp-controller="Departments" asp-action="AddTitle" asp-route-employeeCode="@Model.EmployeeCode"><i class="fa fa-plus"></i></a>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="card-content table-responsive">
-                    <table class="table-striped table-hover" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th>Phòng</th>
-                                <th>Mã phòng</th>
-                                <th>Chức danh</th>
-                                <th>Số lượng việc</th>
-                                <th>Mô tả</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{  if (Model.DepartmentTitles != null)
+
+            </div>
+
+            <div class="col-lg-5">
+
+                <div class="card">
+                    <div class="content">
+                        <div class="content">
+                            <input type="hidden" asp-for="EmployeeID" />
+                            <ul class="list-unstyled team-members">
+
+                                <li>
+                                    <div class="row">
+                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                            <p class="pull-right">Mã số nhân viên</p>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <input type="text" class="form-control border-input" disabled="" asp-for="EmployeeCode">
+                                            <br>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="row">
+                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                            <p class="pull-right">Phòng ban</p>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <select class="form-control border-input" asp-for="DepartmentCode" asp-items="ViewBag.Departments">
+                                                <option value="">-- Chọn phòng ban --</option>
+                                            </select>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="row">
+                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                            <p class="pull-right">Chức danh</p>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <select class="form-control border-input" asp-for="DepartmentTitle" asp-items="ViewBag.DepartmentTitles">
+                                                <option value="">-- Chọn chức danh --</option>
+                                            </select>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                            <p class="pull-right">Ngày tham gia</p>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <input type="date" class="form-control border-input" asp-for="DateOfJoining">
+                                            <br>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                            <p class="pull-right">Tình trạng</p>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <label class="switch">
+                                                <input class="form-control border-input" id="toggle-event" type="checkbox" data-toggle="toggle" asp-for="Active">
+                                                <span class="slider"></span>
+                                            </label>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </li>
+                                @if (Model.Active == false)
                                 {
-                                    foreach (var d in Model.DepartmentTitles)
+                                    <li class="exitDate">
+                                        <div class="row">
+                                            <div class="col-xs-4" style="padding-top: 0.5em">
+                                                <p class="pull-right">Ngày nghỉ</p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <input type="date" class="form-control border-input" asp-for="ExitDate">
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="exitDate hidden">
+                                        <div class="row">
+                                            <div class="col-xs-4" style="padding-top: 0.5em">
+                                                <p class="pull-right">Ngày nghỉ</p>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                <input type="date" class="form-control border-input" asp-for="ExitDate">
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title col-lg-6">Phòng ban</h4>
+                        <div col-lg-2>
+                            <a class="btn btn-success pull-right" style="width: 5em" asp-controller="Departments" asp-action="AddTitle" asp-route-employeeID="@Model.EmployeeID"><i class="fa fa-plus"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-content table-responsive">
+                        <table class="table-striped table-hover" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>Phòng</th>
+                                    <th>Mã phòng</th>
+                                    <th>Chức danh</th>
+                                    <th>Số lượng việc</th>
+                                    <th>Mô tả</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (Model.DepartmentTitles != null)
                                     {
-                                        var thisTitleDepartmentID = d.Department.DepartmentID;
-                                        if (Model.DepartmentTitles.FirstOrDefault(dt => dt.Department.DepartmentID == thisTitleDepartmentID).Title.Equals(d.Title))
+                                        foreach (var d in Model.DepartmentTitles)
                                         {
                                             <tr>
                                                 <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@d.Department.DepartmentID">@d.Department.DepartmentName</a></td>
                                                 <td>@d.Department.DepartmentCode</td>
-                                                <td>
-                                                    @foreach (var item in Model.DepartmentTitles.Select(dt => dt).Where(dt => dt.Department.DepartmentID == thisTitleDepartmentID))
-                                                    {
-                                                        @item.Title <br>
-                                                    }
-                                                </td>
+                                                <td>@d.Title</td>
                                                 <td>@d.Department.DepartmentTasks.Count</td>
                                                 <td>@d.Description</td>
                                                 <td>
@@ -272,162 +356,419 @@
                                             </tr>
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td>Không có</td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div> @*Phòng ban*@
-
-            <div class="card">
-                <div class="header">
-                    <h4 class="title col-lg-6">Công việc</h4>
-                </div>
-                <div class="card-content table-responsive">
-                    <table class="table-striped table-hover" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th>Phòng</th>
-                                <th>Mã phòng</th>
-                                <th>Tên việc</th>
-                                <th>Mô tả</th>
-                                <th>Giờ công</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{  if (Model.DepartmentTasks != null)
-                                {
-                                    foreach (var d in Model.DepartmentTasks)
+                                    else
                                     {
                                         <tr>
-                                            <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@d.Department.DepartmentID">@d.Department.DepartmentName</a></td>
-                                            <td>@d.Department.DepartmentCode</td>
-                                            <td>@d.Title</td>
-                                            <td>@d.Description</td>
-                                            <td>@d.WorkHours</td>
-                                            <td>
-                                                <a class="fa fa-trash btn btn-alert" style="width:100%" href="#"></a>
-                                            </td>
+                                            <td>Không có</td>
                                         </tr>
                                     }
                                 }
-                                else
-                                {
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title col-lg-6">Chấm công</h4>
+                    </div>
+                    <div class="card-content table-responsive">
+                        <table class="table-striped table-hover" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>Phòng</th>
+                                    <th>Mã phòng</th>
+                                    <th>Tên việc</th>
+                                    <th>Mô tả</th>
+                                    <th>Giờ công</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{  if (Model.DepartmentTasks != null)
+                                    {
+                                        foreach (var d in Model.DepartmentTasks)
+                                        {
+                                            <tr>
+                                                <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@d.Department.DepartmentID">@d.Department.DepartmentName</a></td>
+                                                <td>@d.Department.DepartmentCode</td>
+                                                <td>@d.Title</td>
+                                                <td>@d.Description</td>
+                                                <td>@d.WorkHours</td>
+                                                <td>
+                                                    <a class="fa fa-trash btn btn-alert" style="width:100%" href="#"></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>Không có</td>
+                                        </tr>
+                                    }
+
                                     <tr>
-                                        <td>Không có</td>
+                                        <td><a class="fa fa-calculator btn btn-success" style="width:100%"></a></td>
                                     </tr>
                                 }
-
-                                <tr>
-                                    <td><a asp-controller="Salaries" asp-action="AddSalary" asp-route-employeeID="@Model.EmployeeID" class="fa fa-calculator btn btn-success" style="width:100%"></a></td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div> @*Công việc*@
-        </div>
-
-        <div class="col-lg-5">
-            <div class="card">
-                <div class="content">
-                    <div class="content">
-                        <input type="hidden" asp-for="EmployeeID" />
-                        <ul class="list-unstyled team-members">
-
-                            <li>
-                                <div class="row">
-                                    <div class="col-xs-4" style="padding-top: 0.5em">
-                                        <p class="pull-right">Mã số nhân viên</p>
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <input type="text" class="form-control border-input" disabled="" asp-for="EmployeeCode">
-                                        <br>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="row">
-                                    <div class="col-xs-4" style="padding-top: 0.5em">
-                                        <p class="pull-right">Phòng ban</p>
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <select class="form-control border-input" asp-for="DepartmentCode" asp-items="ViewBag.Departments">
-                                            <option value="">-- Chọn phòng ban --</option>
-                                        </select>
-                                        <br>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="row">
-                                    <div class="col-xs-4" style="padding-top: 0.5em">
-                                        <p class="pull-right">Chức danh</p>
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <select class="form-control border-input" asp-for="DepartmentTitle" asp-items="ViewBag.DepartmentTitles">
-                                            <option value="">-- Chọn chức danh --</option>
-                                        </select>
-                                        <br>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="row">
-                                    <div class="col-xs-4" style="padding-top: 0.5em">
-                                        <p class="pull-right">Loại hợp đồng</p>
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <select class="form-control border-input" asp-for="ContractID" asp-items="ViewBag.Contracts">
-                                            <option value="">-- Chọn hợp đồng --</option>
-                                        </select>
-                                        <span asp-validation-for="DepartmentTitle" class="text-danger"></span>
-                                        <br>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="row">
-                                    <div class="col-xs-4" style="padding-top: 0.5em">
-                                        <p class="pull-right">Ngày tham gia</p>
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <input type="date" class="form-control border-input" asp-for="DateOfJoining">
-                                        <br>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="row">
-                                    <div class="col-xs-4" style="padding-top: 0.5em">
-                                        <p class="pull-right">Ngày nghỉ</p>
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <input type="date" class="form-control border-input" disabled="" asp-for="ExitDate">
-                                        <br>
-                                    </div>
-                                </div>
-                            </li>
-
-                        </ul>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </div> @*Chức danh và phòng ban chính*@
+        </div>
+                                    }
+                                    else
+                                    {
 
-    </div>
+                                        <div class="row">
+                                            <div class="col-lg-7">
+
+                                                <div class="card card-user">
+                                                    <div class="image">
+                                                        <img src="~/images/wall.jpg" alt="...">
+                                                    </div>
+                                                    <div class="content">
+                                                        <div class="author">
+                                                            <img class="avatar border-white" src="~/images/13528872_930129437096013_535751867252842230_n.jpg" alt="...">
+                                                            <h4 class="title">
+                                                                <span>@Model.FullName</span>
+                                                                <br>
+                                                            </h4>
+                                                        </div>
+                                                        <hr />
+                                                        <div>
+                                                            <input type="hidden" asp-for="EmployeeID" />
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <label>Công ty</label>
+                                                                        <input type="text" class="form-control border-input" disabled="" placeholder="Company" value="TNHH Tứ thành viên Huy Nghĩa Thương Hậu">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="form-group">
+                                                                        <label>Họ & Tên</label>
+                                                                        <input type="text" asp-for="FullName" maxlength="100" class="form-control border-input" placeholder="Họ và Tên">
+                                                                        <span asp-validation-for="FullName" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Email</label>
+                                                                        <input type="email" maxlength="50" asp-for="Email" class="form-control border-input" placeholder="Email">
+                                                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Điện thoại</label>
+                                                                        <input type="tel" asp-for="PhoneNumber" maxlength="13" class="form-control border-input" placeholder="Số điện thoại">
+                                                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>CMND</label>
+                                                                        <input type="text" class="form-control border-input" maxlength="9" placeholder="Chứng minh nhân dân" asp-for="@Model.CitizenID">
+                                                                        <span asp-validation-for="CitizenID" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <div class="form-group">
+                                                                        <label>Tạm trú</label>
+                                                                        <input type="text" asp-for="TempAddress" maxlength="100" class="form-control border-input" placeholder="Địa chỉ tạm trú">
+                                                                        <span asp-validation-for="TempAddress" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Địa chỉ</label>
+                                                                        <input type="text" maxlength="100" class="form-control border-input" placeholder="Địa chỉ" asp-for="@Model.Address">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Quốc gia</label>
+                                                                        <input type="text" class="form-control border-input" value="Việt Nam" readonly>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Thành phố</label>
+                                                                        <input type="text" maxlength="50" class="form-control border-input" placeholder="Thành phố" asp-for="@Model.City">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Tỉnh</label>
+                                                                        <input type="text" maxlength="50" class="form-control border-input" asp-for="@Model.PlaceOfProvide" placeholder="Tỉnh" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="row">
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Quê quán</label>
+                                                                        <input type="text" class="form-control border-input" placeholder="Quê quán" asp-for="@Model.HomeTown">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-4 col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label>Giới tính</label>
+                                                                        @if (Model.Gender == "Nam")
+                                                                        {
+                                                                            <div>
+                                                                                <div class="btn-group" data-toggle="buttons">
+                                                                                    <label class="btn active col-lg-6" style="border: 0.5px solid #808080;">
+                                                                                        <input type="radio" value="Nam" id="nam" name="gender" checked><span><i class="fa fa-male"></i></span>
+                                                                                    </label>
+                                                                                    <label class="btn col-lg-6" style="border: 0.5px solid #808080">
+                                                                                        <input type="radio" value="Nữ" id="nu" name="gender"><span><i class="fa fa-female"></i></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div>
+                                                                                <div class="btn-group" data-toggle="buttons">
+                                                                                    <label class="btn col-lg-6" style="border: 0.5px solid #808080;">
+                                                                                        <input type="radio" value="Nam" id="nam" name="gender"><span><i class="fa fa-male"></i></span>
+                                                                                    </label>
+                                                                                    <label class="btn active col-lg-6" style="border: 0.5px solid #808080">
+                                                                                        <input type="radio" value="Nữ" id="nu" name="gender" checked><span><i class="fa fa-female"></i></span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <label>Ngày sinh</label>
+                                                                        <input type="date" class="form-control border-input" asp-for="@Model.DateOfBirth" />
+                                                                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="text-center">
+                                                                <button type="submit" class="btn btn-info btn-fill btn-wd">Lưu thay đổi</button>
+                                                            </div>
+                                                            <div class="clearfix"></div>
+
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+
+                                                </div>
+
+                                                <div class="card">
+                                                    <div class="header">
+                                                        <h4 class="title">Thân Nhân</h4>
+                                                    </div>
+                                                    <div class="card-content table-responsive">
+                                                        <table class="table-striped table-hover" style="width: 100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Họ và Tên</th>
+                                                                    <th>Ngày sinh</th>
+                                                                    <th>Nghề nghiệp</th>
+                                                                    <th>Quan hệ</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @if (Model.FamilyRelations != null)
+                                                                {
+                                                                    foreach (var p in Model.FamilyRelations)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@p.Name</td>
+                                                                            <td>@p.DateOfBirth</td>
+                                                                            <td>@p.Occupation</td>
+                                                                            <td>@p.Relation</td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <tr>
+                                                                        <td colspan="7">Không có thân nhân</td>
+                                                                    </tr>
+                                                                }
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-lg-5">
+
+                                                <div class="card">
+                                                    <div class="content">
+                                                        <div class="content">
+                                                            <input type="hidden" asp-for="EmployeeID" />
+                                                            <ul class="list-unstyled team-members">
+
+                                                                <li>
+                                                                    <div class="row">
+                                                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                                                            <p class="pull-right">Mã số nhân viên</p>
+                                                                        </div>
+                                                                        <div class="col-xs-8">
+                                                                            <input type="text" class="form-control border-input" disabled="" asp-for="EmployeeCode">
+                                                                            <br>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+
+                                                                <li>
+                                                                    <div class="row">
+                                                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                                                            <p class="pull-right">Phòng ban</p>
+                                                                        </div>
+                                                                        <div class="col-xs-8">
+                                                                            <select class="form-control border-input" disabled="" asp-for="DepartmentCode" asp-items="ViewBag.Departments">
+                                                                                <option value="">-- Chọn phòng ban --</option>
+                                                                            </select>
+                                                                            <br>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+
+                                                                <li>
+                                                                    <div class="row">
+                                                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                                                            <p class="pull-right">Chức danh</p>
+                                                                        </div>
+                                                                        <div class="col-xs-8">
+                                                                            <select class="form-control border-input" disabled="" asp-for="DepartmentTitle" asp-items="ViewBag.DepartmentTitles">
+                                                                                <option value="">-- Chọn chức danh --</option>
+                                                                            </select>
+                                                                            <br>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+
+                                                                <li>
+                                                                    <div class="row">
+                                                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                                                            <p class="pull-right">Ngày tham gia</p>
+                                                                        </div>
+                                                                        <div class="col-xs-8">
+                                                                            <input type="date" disabled="" class="form-control border-input" asp-for="DateOfJoining">
+                                                                            <br>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="row">
+                                                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                                                            <p class="pull-right">Tình trạng</p>
+                                                                        </div>
+                                                                        <div class="col-xs-8">
+                                                                            <label class="switch">
+                                                                                <input disabled="" class="form-control border-input" id="toggle-event" type="checkbox" data-toggle="toggle" asp-for="Active">
+                                                                                <span class="slider"></span>
+                                                                            </label>
+                                                                            <br>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                @if (Model.Active == false)
+                                                                {
+                                                                    <li class="exitDate">
+                                                                        <div class="row">
+                                                                            <div class="col-xs-4" style="padding-top: 0.5em">
+                                                                                <p class="pull-right">Ngày nghỉ</p>
+                                                                            </div>
+                                                                            <div class="col-xs-8">
+                                                                                <input type="date" class="form-control border-input" asp-for="ExitDate">
+                                                                                <br>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <li class="exitDate hidden">
+                                                                        <div class="row">
+                                                                            <div class="col-xs-4" style="padding-top: 0.5em">
+                                                                                <p class="pull-right">Ngày nghỉ</p>
+                                                                            </div>
+                                                                            <div class="col-xs-8">
+                                                                                <input type="date" class="form-control border-input" asp-for="ExitDate">
+                                                                                <br>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card">
+                                                    <div class="header">
+                                                        <h4 class="title">Phòng ban</h4>
+                                                    </div>
+                                                    <div class="card-content table-responsive">
+                                                        <table class="table-striped table-hover" style="width: 100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Phòng</th>
+                                                                    <th>Mã phòng</th>
+                                                                    <th>Chức danh</th>
+                                                                    <th>Số lượng việc</th>
+                                                                    <th>Mô tả</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @{
+                                                                    if (Model.DepartmentTitles != null)
+                                                                    {
+                                                                        foreach (var d in Model.DepartmentTitles)
+                                                                        {
+                                                                            <tr>
+                                                                                <td>@d.Department.DepartmentName</td>
+                                                                                <td>@d.Department.DepartmentCode</td>
+                                                                                <td>@d.Title</td>
+                                                                                <td>@d.Department.DepartmentTasks.Count</td>
+                                                                                <td>@d.Description</td>
+                                                                            </tr>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <tr>
+                                                                            <td>Không có</td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+              }
 </form>
 
 @*<div class="container-fluid">
@@ -565,3 +906,16 @@
         </div>
 
     </div>*@
+<script>
+    $(function () {
+        $('#toggle-event').change(function () {
+            if ($(this).prop('checked') == true) {
+                $("li.exitDate").addClass("hidden");
+            }
+            else {
+                $("li.exitDate").removeClass("hidden");
+            }
+            //$('#console-event').html('Toggle: ' + $(this).prop('checked'))
+        })
+    })
+</script>

@@ -1,58 +1,114 @@
-﻿@model RegisterViewModel
-
+﻿@model AppUser
 
 @{
-    ViewBag.Title = "Đăng kí";
+    ViewBag.Title = "Chỉnh sửa tài khoản";
 }
 
+<div class="col-lg-5 col-md-6 col-sm-6 col-xs-12">
+    <div class="card">
+        <div class="header">
+            <p class="title text-uppercase"><b>Chỉnh sửa tài khoản</b></p>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="content">
+            <form asp-action="EditAccount" method="post" asp-route-id="@Model.Id">
+                <div class="input-form">
+                    <div class="form-group">
+                        <label>Tên đăng nhập</label>
+                        <input type="text" class="form-control border-input" name="Email" value="@Model.UserName" readonly>
+                    </div>
+                </div>
+                <div class="input-form">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control border-input" name="Email" value="@Model.Email" placeholder="Mật khẩu" readonly>
+                    </div>
+                </div>
+                <div class="input-form">
+                    <div class="form-group">
+                        <label class="col-3 col-form-label">Mật Khẩu</label>
+                        <input type="password" id='test-input' name="password" class="form-control border-input" placeholder="Mật khẩu">
+                        <label class="switch col-2 offset-1" style="margin-top: 1em">
+                            <input type="checkbox" id='check'>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
 
-
-<div class="row">
-    <div class="col-12" style="text-align: center; margin-top: 2em;">
-        <h1><strong>Chỉnh sửa tài khoản</strong></h1>
+                <button role="button" type="submit" class="btn btn-primary">Lưu</button>
+                <a role="button" asp-action="Index" class="btn btn-default">Hủy</a>
+            </form>
+        </div>
     </div>
 </div>
 
-<div class="accountBody">
-    <form asp-controller="Account" asp-action="Edit" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-        <hr />
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="AccountID" class="control-label"></label>
-            <div>
-                <input asp-for="AccountID" class="form-control" />
-                <span asp-validation-for="AccountID" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Email" class="control-label"></label>
-            <div>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Password" class="control-label">Mật khẩu</label>
-            <div>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="ConfirmPassword" class="control-label">Xác nhận mật khẩu</label>
-            <div>
-                <input asp-for="ConfirmPassword" class="form-control" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <button type="submit" class="btn btn-primary">Đăng ký</button>
-            </div>
-        </div>
-    </form>
-</div>
+@*<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
 
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}
+        /* Hide default HTML checkbox */
+        .switch input {
+            display: none;
+        }
+
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+</style>*@
+<script>
+    $('#check').click(function () {
+        if (document.getElementById('check').checked) {
+            $('#test-input').get(0).type = 'text';
+        } else {
+            $('#test-input').get(0).type = 'password';
+        }
+    });
+</script>

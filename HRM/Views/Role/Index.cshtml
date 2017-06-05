@@ -1,37 +1,42 @@
 ﻿@model IEnumerable<IdentityRole>
 
-<div style="margin: 2em 0 0 4em;">
-    <div class=""><h2>ROLES</h2></div>
-    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+@{ 
+    ViewBag.Title = "Quản lý quyền";
+}
 
-    <table class="table table-bordered" style="max-width: 60em;">
-        <tr><th style="text-align: center; width: 45em;">Role</th><th></th></tr>
-        @if (Model.Count() == 0)
-        {
-            <tr><td colspan="4" class="text-center">There is no role!</td></tr>
-        }
-        else
-        {
-            foreach (var role in Model)
-            {
-                <tr>
-                    <td>@role.Name</td>
-                    <td>
+<div class="col-lg-6">
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+    <div class="card">
+        <div class="header">
+            <h4 class="title">Quyền</h4>
+        </div>
+        <div class="content">
+            <input type="hidden" id="EmployeeID" name="EmployeeID" value="">
+            <ul class="list-unstyled team-members">
+
+                @foreach (var role in Model)
+                {
+                    <li>
                         <div class="row">
-                            <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="col-xs-8" style="padding-top: 0.5em">
+                                <p>@role.Name</p>
+                            </div>
+                            <div class="col-xs-4">
                                 <form asp-action="Delete" asp-route-id="@role.Id" method="post">
                                     <a class="btn btn-primary" asp-action="Edit"
-                                       asp-route-id="@role.Id">Edit</a>
-                                    <div class="col-md-6 col-sm-12 col-xs-12" style="float: right;">
-                                        <button role="button" class="btn btn-danger" id="myBtn">Xóa</button>
-                                    </div>
+                                       asp-route-id="@role.Id">Sửa</a>
+                                    <button role="button" class="btn btn-danger" id="myBtn">Xóa</button>
                                 </form>
+                                <br>
                             </div>
                         </div>
-                    </td>
-                </tr>
-            }
-        }
-    </table>
-    <a class="btn btn-success" asp-action="Create">Tạo quyền</a>
+                    </li>
+                }
+            </ul>
+            <div style="margin: auto 0; width: 10%">
+                <a class="btn btn-success" asp-action="Create">Tạo quyền</a>
+            </div>
+        </div>
+
+    </div>
 </div>

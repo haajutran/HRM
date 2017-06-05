@@ -1,12 +1,23 @@
 ﻿@model string
 
-<div class=""><h4>ADD ROLE</h4></div>
+
 <div asp-validation-summary="All" class="text-danger"></div>
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label for="name"></label>
-        <input name="name" class="form-control" style="width: 20em;"/>
+<div class="col-lg-5 col-md-6 col-sm-6 col-xs-12">
+    <div class="card">
+        <div class="header">
+            <p class="title text-uppercase"><b>Thêm quyền</b></p>
+        </div>
+        <div class="content">
+            <form asp-action="Create" method="post">
+                <div class="input-form">
+                    <div class="form-group">
+                        <label for="name"></label>
+                        <input name="name" class="form-control border-input" placeholder="Nhập quyền" style="width: 20em;" />
+                    </div>
+                </div>
+                <button type="submit" role="button" class="btn btn-primary">Lưu</button>
+                <a asp-action="Index" class="btn btn-default">Hủy</a>
+            </form>
+        </div>
     </div>
-    <button type="submit" role="button" class="btn btn-primary">Create</button>
-    <a asp-action="Index" class="btn btn-default">Cancel</a>
-</form>
+</div>

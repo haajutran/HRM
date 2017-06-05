@@ -1,48 +1,85 @@
 ﻿@model RoleEditModel
 
-<div class="bg-primary panel-body"><h4>Edit Role</h4></div>
-<div asp-validation-summary="All" class="text-danger"></div>
-<form asp-action="Edit" method="post">
-    <input type="hidden" name="roleName" value="@Model.Role.Name" />
-    <input type="hidden" name="roleId" value="@Model.Role.Id" />
-    <h6 class="bg-info panel-body">Add To @Model.Role.Name</h6>
-    <table class="table table-bordered table-condensed">
-        @if (Model.NonMembers.Count() == 0)
-        {
-            <tr><td colspan="2">All Users Are Members</td></tr>
-        }
-        else
-        {
-            @foreach (AppUser user in Model.NonMembers)
-            {
-                <tr>
-                    <td>@user.UserName</td>
-                    <td>
-                        <input type="checkbox" name="IdsToAdd" value="@user.Id">
-                    </td>
-                </tr>
-            }
-        }
-    </table>
-    <h6 class="bg-info panel-body">Remove From @Model.Role.Name</h6>
-    <table class="table table-bordered table-condensed">
-        @if (Model.Members.Count() == 0)
-        {
-            <tr><td colspan="2">No Users Are Members</td></tr>
-        }
-        else
-        {
-            @foreach (AppUser user in Model.Members)
-            {
-                <tr>
-                    <td>@user.UserName</td>
-                    <td>
-                        <input type="checkbox" name="IdsToDelete" value="@user.Id">
-                    </td>
-                </tr>
-            }
-        }
-    </table>
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-default">Cancel</a>
-</form>
+@{
+    ViewBag.Title = "Chỉnh sửa quyền";
+}
+
+<div class="col-md-6">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" name="roleName" value="@Model.Role.Name" />
+        <input type="hidden" name="roleId" value="@Model.Role.Id" />
+        <div class="card">
+            <div class="header">
+                <h4 class="title"><b>CHỈNH SỬA QUYỀN</b></h4>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="text-uppercase text-success">THÊM VÀO QUYỀN @Model.Role.Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.NonMembers.Count() == 0)
+                        {
+                            <tr><td colspan="2">All Users Are Members</td></tr>
+                        }
+                        else
+                        {
+                            @foreach (AppUser user in Model.NonMembers)
+                            {
+                                <tr>
+                                    <td>@user.UserName</td>
+                                    <td>
+                                        <div class="cb">
+                                            <div class="checkbox">
+                                                <input id="check" type="checkbox" name="IdsToAdd" value="@user.Id">
+                                                <label for="check"></label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="text-uppercase text-warning">XÓA KHỎI QUYỀN @Model.Role.Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Members.Count() == 0)
+                        {
+                            <tr><td colspan="2" class="text-danger">Không có tài khoản nào!</td></tr>
+                        }
+                        else
+                        {
+                            @foreach (AppUser user in Model.Members)
+                            {
+                                <tr>
+                                    <td>@user.UserName</td>
+                                    <td class="cb">
+                                        <div class="checkbox">
+                                            <input id="check" type="checkbox" name="IdsToDelete" value="@user.Id">
+                                            <label for="check"></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div style="width: 30%; margin: auto">
+                    <button type="submit" class="btn btn-success">Lưu</button>
+                    <a asp-action="Index" class="btn btn-default">Hủy</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

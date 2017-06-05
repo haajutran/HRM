@@ -1,0 +1,52 @@
+﻿
+.cb .centre {
+    position: absolute;
+}
+
+.cb .wrap {
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) scale(2,2);
+}
+
+.cb input {
+    display: none;
+}
+
+.cb label {
+    font-size: 24px;
+    color: #bfbfbf;
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+.cb label:before {
+    content: '';
+    display: inline-block;
+    background: #55D8C6;
+    position: absolute;
+    left: 0;
+    top: 5px;
+    height: 20px;
+    width: 20px;
+    margin-right: 10px;
+    border-radius: 80%;
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, .2);
+    border: 10px solid #908b8b;
+    transition: border .3s ease;
+}
+
+.cb input:checked + label:before {
+    border-color: #fff;
+    border-width: 3px;
+}
+
+.cb input + label {
+    transition: color .7s ease;
+}
+
+.cb input:checked + label {
+    color: #5D5D5D;
+}
