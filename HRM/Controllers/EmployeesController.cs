@@ -25,10 +25,12 @@ namespace HRM.Controllers
         private readonly UserManager<AppUser> _userManager;
         private ApplicationDbContext _context;
         private IEmployeeRepository _employeeRepository;
+        private IDepartmentRepository _departmentRepository;
         private IHostingEnvironment _environment;
         string url = "EditEmployee?employeeID=";
-        public EmployeesController(UserManager<AppUser> userManager, IEmployeeRepository repo, ApplicationDbContext context, IHostingEnvironment environment)
+        public EmployeesController(IDepartmentRepository departmentRepository, UserManager<AppUser> userManager, IEmployeeRepository repo, ApplicationDbContext context, IHostingEnvironment environment)
         {
+            _departmentRepository = departmentRepository;
             _userManager = userManager;
             _employeeRepository = repo;
             _context = context;
@@ -302,6 +304,8 @@ namespace HRM.Controllers
             var employeeToUpdate = await _context.Employees
                 .Include(f => f.FamilyRelations)
                 .Include(d => d.Departments)
+                .Include(da => da.DepartmentAssignments)
+                    .ThenInclude(d => d.Department)
                 .SingleOrDefaultAsync(e => e.EmployeeID == employeeID);
 
 
@@ -415,30 +419,48 @@ namespace HRM.Controllers
                     }
                     
                     employeeToUpdate.Gender = gender;
+
+                    //var dT = await _context.Employees.;
+                    //dT.
+                    var ddt = _context.Employees
+                        .Select(d => d.DepartmentTitles);
+
                     await _context.SaveChangesAsync();
 
                     var roles = await _userManager.GetRolesAsync(user);
                     await _userManager.RemoveFromRolesAsync(user, roles.ToArray());
 
-                    foreach(var item in employeeToUpdate.Departments)
+                    foreach(var item in employeeToUpdate.DepartmentTitles)
                     {
-                        foreach(var item2 in item.DepartmentTitles)
+                        if(item.Title == "Trưởng phòng")
                         {
-                            if(item2.Title == "Trưởng phòng")
-                            {
-                                await _userManager.AddToRoleAsync(user, item.DepartmentName + "Manager");
-                            }
-                            if (item2.Title == "Phó phòng")
-                            {
-                                await _userManager.AddToRoleAsync(user, item.DepartmentName + "Deputy");
-                            }
-                            else
-                            {
-                                await _userManager.AddToRoleAsync(user, item.DepartmentName);
-                            }
+                            await _userManager.AddToRoleAsync(user, item.Department.Role + "Manager");
                         }
+                        else if (item.Title == "Phó phòng")
+                        {
+                            await _userManager.AddToRoleAsync(user, item.Department.Role + "Deputy");
+                        }
+                        else
+                        {
+                            await _userManager.AddToRoleAsync(user, item.Department.Role);
+                        }
+                        //foreach (var item2 in item.Department.DepartmentTitles)
+                        //{
+                        //    if(item2.Title == "Trưởng phòng")
+                        //    {
+                        //        await _userManager.AddToRoleAsync(user, item.Department.Role + "Manager");
+                        //    }
+                        //    if (item2.Title == "Phó phòng")
+                        //    {
+                        //        await _userManager.AddToRoleAsync(user, item.Department.Role + "Deputy");
+                        //    }
+                        //    else
+                        //    {
+                        //        await _userManager.AddToRoleAsync(user, item.Department.Role);
+                        //    }
+                        //}
                     }
-                    await _context.SaveChangesAsync();
+                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateException /* ex */)
                 {            //Log the error (uncomment ex variable name and write a log.)          
