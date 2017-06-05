@@ -413,8 +413,31 @@ namespace HRM.Controllers
                         }
 
                     }
-
+                    
                     employeeToUpdate.Gender = gender;
+                    await _context.SaveChangesAsync();
+
+                    var roles = await _userManager.GetRolesAsync(user);
+                    await _userManager.RemoveFromRolesAsync(user, roles.ToArray());
+
+                    foreach(var item in employeeToUpdate.Departments)
+                    {
+                        foreach(var item2 in item.DepartmentTitles)
+                        {
+                            if(item2.Title == "Trưởng phòng")
+                            {
+                                await _userManager.AddToRoleAsync(user, item.DepartmentName + "Manager");
+                            }
+                            if (item2.Title == "Phó phòng")
+                            {
+                                await _userManager.AddToRoleAsync(user, item.DepartmentName + "Deputy");
+                            }
+                            else
+                            {
+                                await _userManager.AddToRoleAsync(user, item.DepartmentName);
+                            }
+                        }
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateException /* ex */)
@@ -425,6 +448,7 @@ namespace HRM.Controllers
                 }
                 return Redirect("Index");
             }
+
             ContractsDropDownList();
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();

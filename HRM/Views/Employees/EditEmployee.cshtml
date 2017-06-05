@@ -6,12 +6,16 @@
 <h4 class="text-danger">@ViewData["ErrorMessage"]</h4>
 
 @{
-    var limited = @ViewData["Limited"].ToString();
+    var limited = false;
+    if(@ViewData["Limited"] != null)
+    {
+        limited = true;
+    }
 }
 
 <form asp-action="EditEmployee" asp-route-employeeID="@Model.EmployeeID" method="post">
 
-    @if (limited != "true")
+    @if (limited != true)
     {
         <div class="row">
             <div class="col-lg-7">
