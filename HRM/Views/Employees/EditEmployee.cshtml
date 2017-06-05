@@ -5,10 +5,13 @@
 }
 <h4 class="text-danger">@ViewData["ErrorMessage"]</h4>
 
+@{
+    var limited = @ViewData["Limited"].ToString();
+}
 
 <form asp-action="EditEmployee" asp-route-employeeID="@Model.EmployeeID" method="post">
 
-    @if (Model.Limited == false)
+    @if (limited != "true")
     {
         <div class="row">
             <div class="col-lg-7">
@@ -261,6 +264,22 @@
                                         </div>
                                     </div>
                                 </li>
+
+                                <li>
+                                    <div class="row">
+                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                            <p class="pull-right">Loại hợp đồng</p>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <select class="form-control border-input" asp-for="ContractID" asp-items="ViewBag.Contracts">
+                                                <option value="">-- Chọn hợp đồng --</option>
+                                            </select>
+                                            <span asp-validation-for="DepartmentTitle" class="text-danger"></span>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </li>
+
                                 <li>
                                     <div class="row">
                                         <div class="col-xs-4" style="padding-top: 0.5em">
@@ -385,7 +404,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @{  if (Model.DepartmentTasks != null)
+                                @{ if (Model.DepartmentTasks != null)
                                     {
                                         foreach (var d in Model.DepartmentTasks)
                                         {
@@ -678,6 +697,22 @@
                                                                         </div>
                                                                     </div>
                                                                 </li>
+
+                                                                <li>
+                                                                    <div class="row">
+                                                                        <div class="col-xs-4" style="padding-top: 0.5em">
+                                                                            <p class="pull-right">Loại hợp đồng</p>
+                                                                        </div>
+                                                                        <div class="col-xs-8">
+                                                                            <select class="form-control border-input" disabled="" asp-for="ContractID" asp-items="ViewBag.Contracts">
+                                                                                <option value="">-- Chọn hợp đồng --</option>
+                                                                            </select>
+                                                                            <span asp-validation-for="DepartmentTitle" class="text-danger"></span>
+                                                                            <br>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+
                                                                 <li>
                                                                     <div class="row">
                                                                         <div class="col-xs-4" style="padding-top: 0.5em">
@@ -768,7 +803,8 @@
                                                 </div>
                                             </div>
                                         </div>
-              }
+
+                                                                    }
 </form>
 
 @*<div class="container-fluid">

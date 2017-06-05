@@ -84,7 +84,7 @@ namespace HRM.Controllers
         [Authorize(Roles = "Master, HRDepartmentManager, ITDepartmentManager, FinanceDepartmentManager, HRDepartment, HRDepartmentDeputy")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEmployee([Bind("FullName, Address, DateOfBirth, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, DepartmentCode, DateOfJoining, DepartmentTitle")] Employee employee, string gender)
+        public async Task<IActionResult> AddEmployee([Bind("FullName, ContractID, Address, DateOfBirth, PhoneNumber, Email, HomeTown, City, CitizenID, PlaceOfProvide, TempAddress, DepartmentCode, DateOfJoining, DepartmentTitle")] Employee employee, string gender)
         {
 
             if (ModelState.IsValid)
@@ -92,6 +92,7 @@ namespace HRM.Controllers
                 if (EmailExist(employee))
                 {
                     ViewData["ErrorMessage"] = "Email đã bị trùng.";
+                    ContractsDropDownList();
                     DepartmentsDropDownList();
                     DepartmentTitlesDropDownList();
                     return View(employee);
@@ -121,6 +122,7 @@ namespace HRM.Controllers
                     if (departmentManagerCount >= 1)
                     {
                         ViewData["ErrorMessage"] = "Số lượng chức vụ trưởng phòng trong một phòng ban không thể lớn hơn 2.";
+                        ContractsDropDownList();
                         DepartmentsDropDownList();
                         DepartmentTitlesDropDownList();
                         return View(employee);
@@ -211,6 +213,7 @@ namespace HRM.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Employees");
             }
+            ContractsDropDownList();
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();
 
@@ -224,13 +227,15 @@ namespace HRM.Controllers
         #region Edit Employee
 
         #region Edit Employee View
-        [Authorize(Roles = "Master, HRDepartmentManager, ITDepartmentManager, FinanceDepartmentManager")]
+        [Authorize]
         public async Task<IActionResult> EditEmployee(int? employeeID)
         {
             if (employeeID == null)
             {
                 return NotFound();
             }
+
+            ContractsDropDownList();
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();
 
@@ -249,7 +254,6 @@ namespace HRM.Controllers
                 {
                     return RedirectToAction("AccessDenied", "Account");
                 }
-
 
             }
 
@@ -273,7 +277,7 @@ namespace HRM.Controllers
                     }
                     else
                     {
-                        employee.Limited = true;
+                        ViewData["Limited"] = "true";
                     }
                 }
               
@@ -288,7 +292,7 @@ namespace HRM.Controllers
         #endregion
 
         [HttpPost]
-        [Authorize(Roles = "Master, HRDepartmentManager, ITDepartmentManager, FinanceDepartmentManager")]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditEmployee(int? employeeID, string gender, string email)
         {
@@ -318,6 +322,7 @@ namespace HRM.Controllers
                     if (EmailExistEdit(employeeToUpdate))
                     {
                         ViewData["ErrorMessage"] = "Email đã bị trùng.";
+                        ContractsDropDownList();
                         DepartmentsDropDownList();
                         DepartmentTitlesDropDownList();
                         return View(employeeToUpdate);
@@ -388,6 +393,7 @@ namespace HRM.Controllers
                         if (employeeToUpdate.ExitDate < employeeToUpdate.DateOfJoining)
                         {
                             ViewData["ErrorMessage"] = "Ngày nghỉ không thể truớc Ngày tham gia.";
+                            ContractsDropDownList();
                             DepartmentsDropDownList();
                             DepartmentTitlesDropDownList();
                             return View(employeeToUpdate);
@@ -419,6 +425,7 @@ namespace HRM.Controllers
                 }
                 return Redirect("Index");
             }
+            ContractsDropDownList();
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();
             return View(employeeToUpdate);
