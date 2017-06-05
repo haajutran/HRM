@@ -8,9 +8,9 @@ namespace HRM.Model
 {
     public static class IdentitySeedData
     {   
-        private const string adminUser = "admin";
-        private const string adminEmail = "admin@gmail.com";
-        private const string adminPassword = "Eiu@123";
+        private const string adminUser = "master";
+        private const string adminEmail = "master@gmail.com";
+        private const string adminPassword = "Master@123";
         public static async void EnsurePopulated(IApplicationBuilder app)
         {
             UserManager<AppUser> userManager = app.ApplicationServices.GetRequiredService<UserManager<AppUser>>();
@@ -19,7 +19,7 @@ namespace HRM.Model
             {
                 user = new AppUser { UserName = adminUser, Email = adminEmail };
                 await userManager.CreateAsync(user, adminPassword);
-                await userManager.AddToRoleAsync(user, "Manager");
+                await userManager.AddToRoleAsync(user, "Master");
             }
         }
     }

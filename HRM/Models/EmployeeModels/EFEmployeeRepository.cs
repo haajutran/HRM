@@ -23,24 +23,28 @@ namespace HRM.Models
                     .ThenInclude(d => d.DepartmentTasks)
                 .Include(d => d.Departments)
                     .ThenInclude(d => d.DepartmentTitles)
-                .Include(f => f.FamilyRelations);
+                .Include(f => f.FamilyRelations)
+                .Include(da => da.DepartmentAssignments)
+                    .ThenInclude(d => d.Department);
 
             return await employees.ToListAsync();
         }
 
         public async Task<IEnumerable<Employee>> EmployeesAsync(int departmentCode)
         {
-            IQueryable<Employee> employees = context.Employees.Where(e => e.DepartmentCode == departmentCode);          
+            IQueryable<Employee> employees = context.Employees.Where(e => e.DepartmentCode == departmentCode);
             return await employees.ToListAsync();
         }
 
         public async Task<Employee> SearchAsync(int employeeID)
         {
             var employee = context.Employees
-                .Include(d => d.DepartmentTitles)
-                    .ThenInclude(dt => dt.Department)
-                .Include(d => d.DepartmentTitles)
-                    .ThenInclude(dt => dt.Employee)
+                .Include(da => da.DepartmentAssignments)
+                    .ThenInclude(d => d.Department)
+                //.Include(d => d.DepartmentTitles)
+                //    .ThenInclude(dt => dt.Department)
+                //.Include(d => d.DepartmentTitles)
+                //    .ThenInclude(dt => dt.Employees)
                 .Include(d => d.DepartmentTasks)
                     .ThenInclude(dt => dt.Department)
                 .Include(d => d.DepartmentTasks)
@@ -54,9 +58,14 @@ namespace HRM.Models
         public async Task<Employee> SearchAsync(int? employeeID)
         {
             var employee = context.Employees
-                .Include(d => d.DepartmentTitles)
-                    .ThenInclude(dt => dt.Department)
-                        .ThenInclude(dk => dk.DepartmentTasks)
+                 //.Include(da => da.DepartmentAssignments)
+                 //   .ThenInclude(d => d.Department)
+                 //.Include(d => d.DepartmentTitles)
+                 .Include(d => d.Departments)
+                    .ThenInclude(d => d.DepartmentTitles)
+                //.Include(d => d.DepartmentTitles)
+                //    .ThenInclude(dt => dt.Department)
+                //        .ThenInclude(dk => dk.DepartmentTasks)
                 .Include(d => d.DepartmentTasks)
                     .ThenInclude(dt => dt.Department)
                 .Include(d => d.DepartmentTasks)

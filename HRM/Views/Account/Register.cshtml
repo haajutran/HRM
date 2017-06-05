@@ -9,39 +9,85 @@
 
 <div class="row">
     <div class="col-12" style="text-align: center; margin-top: 2em;">
-        <h1><strong>ĐĂNG KÝ</strong></h1>
+        <h1><strong>TẠO TÀI KHOẢN</strong></h1>
     </div>
 </div>
 
-<div class="accountBody">
+<div class="col-lg-5 col-md-6 col-sm-6 col-xs-12">
+    <div class="card">
+        <div class="header">
+            <p class="title text-uppercase"><b>TẠO TÀI KHOẢN</b></p>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="content">
+            <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="input-form">
+                    <label class="control-label">Tên đăng nhập</label>
+                    <div>
+                        <input asp-for="AccountID" class="form-control border-input" />
+                        <span asp-validation-for="AccountID" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="input-form">
+                    <label asp-for="Email" class="control-label"></label>
+                    <div>
+                        <input asp-for="Email" class="form-control border-input" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="input-form">
+                    <label asp-for="Password" class="control-label">Mật khẩu</label>
+                    <div>
+                        <input asp-for="Password" class="form-control border-input" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="input-form">
+                    <label asp-for="ConfirmPassword" class="control-label">Xác nhận mật khẩu</label>
+                    <div>
+                        <input asp-for="ConfirmPassword" class="form-control border-input" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+                <div style="margin-top: 1em">
+                    <button role="button" type="submit" class="btn btn-primary">Lưu</button>
+                    <a role="button" asp-action="Index" class="btn btn-default">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-6">
     <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
         <hr />
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
             <label class="control-label">Tên đăng nhập</label>
             <div>
-                <input asp-for="AccountID" class="form-control" />
+                <input asp-for="AccountID" class="form-control border-input" />
                 <span asp-validation-for="AccountID" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Email" class="control-label"></label>
             <div>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" class="form-control border-input" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="Password" class="control-label">Mật khẩu</label>
             <div>
-                <input asp-for="Password" class="form-control" />
+                <input asp-for="Password" class="form-control border-input" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="ConfirmPassword" class="control-label">Xác nhận mật khẩu</label>
             <div>
-                <input asp-for="ConfirmPassword" class="form-control" />
+                <input asp-for="ConfirmPassword" class="form-control border-input" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
         </div>

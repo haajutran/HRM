@@ -1,4 +1,4 @@
-﻿@model HRM.Models.DepartmentTitle
+﻿@model DepartmentTitle
 
 @{  
     var a = Model;
@@ -6,8 +6,8 @@
 }
 
 <h2>Thêm chức danh</h2>
-
-<form asp-action="AddTitle" method="post">
+@Model.Employee.EmployeeID
+<form asp-action="AddTitle" method="post" asp-route-employeeID="@Model.Employee.EmployeeID">
     <div class="form-horizontal">
         <h4>Chức danh</h4>
         <hr />
@@ -40,7 +40,7 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Thêm chức danh" class="btn btn-default" />
+                <button type="submit" class="btn btn-default">Lưu</button>
             </div>
         </div>
     </div>

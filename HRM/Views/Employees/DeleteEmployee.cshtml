@@ -5,7 +5,7 @@
         Bạn có chắc muốn xóa nhân viên @Model.FullName!
     </h2>
     <div>
-        <form asp-action="DeleteConfirmed" asp-route-employeeID="@Model.EmployeeID">
+        <form asp-action="DeleteConfirmed" asp-route-employeeID="@Model.EmployeeID" asp-route-userId="@Model.UserId">
             <button type="submit" role="button" class="btn btn-danger">Xóa</button>
         </form>
     </div>

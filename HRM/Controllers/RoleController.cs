@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -9,8 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HRM.Controllers
 {
-    [Authorize(Roles = "Manager")]
-
+    [Authorize(Roles = "Master, HRDepartmentManager")]
     public class RoleController : Controller
     {
         #region Requires
@@ -27,7 +27,7 @@ namespace HRM.Controllers
 
         #region Actions
         public ViewResult Index() {
-            return View(roleManager.Roles);
+            return View(roleManager.Roles.OrderBy(r => r.Name));
         }
         public IActionResult Create() => View();
         [HttpPost]
@@ -70,14 +70,14 @@ namespace HRM.Controllers
             }
             return View("Index", roleManager.Roles);
         }
-
+        [Authorize(Roles = "Master, HRDepartmentManager")]
         public async Task<IActionResult> Edit(string id)
         {
             IdentityRole role = await roleManager.FindByIdAsync(id);
             List<AppUser> members = new List<AppUser>();
             List<AppUser> nonMembers = new List<AppUser>();
             foreach (AppUser user in userManager.Users)
-            {
+            {                
                 var list = await userManager.IsInRoleAsync(user, role.Name)
                 ? members : nonMembers;
                 list.Add(user);
@@ -89,7 +89,9 @@ namespace HRM.Controllers
                 NonMembers = nonMembers
             });
         }
+
         [HttpPost]
+        [Authorize(Roles = "Master, HRDepartmentManager")]
         public async Task<IActionResult> Edit(RoleModificationModel model)
         {
             IdentityResult result;
@@ -101,6 +103,32 @@ namespace HRM.Controllers
 
                     if (user != null)
                     {
+                        var roles = await userManager.GetRolesAsync(user);
+                        foreach(var role in roles)
+                        {
+                            if(role == "Master")
+                            {
+                                var currentUser = await GetCurrentUserAsync();
+                                var count = 0;
+                                var currentUserRoles = await userManager.GetRolesAsync(currentUser);
+                                foreach(var currentUserRole in currentUserRoles)
+                                {
+                                    if(currentUserRole == "Master")
+                                    {
+                                        count++;
+                                        if(count == 1)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(count == 0)
+                                {
+                                    TempData["ErrorMessage"] = "Bạn không có quyền chỉnh sửa user Master.";
+                                    return Redirect("Error");
+                                }
+                            }
+                        }
                         result = await userManager.AddToRoleAsync(user,
                         model.RoleName);
                         if (!result.Succeeded)
@@ -133,6 +161,11 @@ namespace HRM.Controllers
             }
         }
 
+        public IActionResult Error()
+        {
+            return View();
+        }
+
         #endregion
 
         #region Methods
@@ -142,6 +175,11 @@ namespace HRM.Controllers
             {
                 ModelState.AddModelError("", error.Description);
             }
+        }
+
+        private Task<AppUser> GetCurrentUserAsync()
+        {
+            return userManager.GetUserAsync(HttpContext.User);
         }
         #endregion
     }

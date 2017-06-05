@@ -15,7 +15,9 @@ namespace HRM.Models
         [Required(ErrorMessage = "Không để trống tên phòng ban.")]
         public string DepartmentName { get; set; }
         public string Description { get; set; }
+        public string Role { get; set; }
         public ICollection<DepartmentTask> DepartmentTasks { get; set; }
         public ICollection<DepartmentTitle> DepartmentTitles { get; set; }
+        public ICollection<DepartmentAssignment> DepartmentAssignments { get; set; }
     }
 }

@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HRM.Controllers
 {
-    [Authorize(Roles = "Manager, Staff")]
+    [Authorize(Roles = "Master")]
     public class DepartmentsController : Controller
     {
 
@@ -67,7 +66,7 @@ namespace HRM.Controllers
             if (ModelState.IsValid)
             {
                 var departmentTest = _context.Departments.SingleOrDefault(d => d.DepartmentCode == department.DepartmentCode);
-                if(departmentTest != null)
+                if (departmentTest != null)
                 {
                     return Redirect("DepartmentCodeError");
                 }
@@ -94,33 +93,50 @@ namespace HRM.Controllers
             {
                 Employee = new Employee()
             };
-            departmentTitle.Employee.EmployeeCode = employeeID;
+            departmentTitle.Employee.EmployeeID = employeeID;
             return View(departmentTitle);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTitle([Bind("Title, Description, Department, Employee")] DepartmentTitle departmentTitle)
+        public async Task<IActionResult> AddTitle([Bind("Title, Description, Department, Employee")] DepartmentTitle departmentTitle, int employeeID)
         {
-
-            if (ModelState.IsValid)
-            {
-                var dT = new DepartmentTitle()
-                {
-                    Title = departmentTitle.Title,
-                    Description = departmentTitle.Description,
-                    Employee = await _employeeRepository.SearchAsync(departmentTitle.Employee.EmployeeCode),
-                    Department = await _departmentRepository.SearchAsync(departmentTitle.Department.DepartmentCode)
-                };
-
-                _context.Add(dT);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Departments");
-            }
             ListOfDepartments();
             ListOfTitles();
 
-            return View(departmentTitle);
+            Employee employee = _context.Employees
+                .Include(d => d.Departments)
+                    .ThenInclude(dt => dt.DepartmentTitles)
+                .Include(dt => dt.DepartmentTitles)
+                .SingleOrDefault(e => e.EmployeeID == employeeID);
+
+            var dT = new DepartmentTitle()
+            {
+                Title = departmentTitle.Title,
+                Description = departmentTitle.Description,
+                Employee = await _employeeRepository.SearchAsync(departmentTitle.Employee.EmployeeCode),
+                Department = await _departmentRepository.SearchAsync(departmentTitle.Department.DepartmentCode)
+            };
+            var department = departmentTitle.Department;
+
+            var depart = employee.Departments.SingleOrDefault(de => de.DepartmentCode == department.DepartmentCode);
+            if (depart != null)
+            {
+                depart.DepartmentTitles.Add(departmentTitle);
+            }
+
+            else
+            {
+                employee.Departments.Add(department);
+                var de = employee.Departments.SingleOrDefault(dep => dep.DepartmentCode == department.DepartmentCode);
+                de.DepartmentTitles.Add(departmentTitle);
+            }
+            _context.Add(dT);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Departments");
+
+
+            //return View(departmentTitle);
         }
         #endregion
 
