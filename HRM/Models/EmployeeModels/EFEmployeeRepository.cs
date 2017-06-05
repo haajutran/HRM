@@ -46,12 +46,8 @@ namespace HRM.Models
             var employee = context.Employees
                 .Include(da => da.DepartmentAssignments)
                     .ThenInclude(d => d.Department)
-                //.Include(d => d.DepartmentTitles)
-                //    .ThenInclude(dt => dt.Department)
-                //.Include(d => d.DepartmentTitles)
-                //    .ThenInclude(dt => dt.Employees)
-                .Include(d => d.DepartmentTasks)
-                    .ThenInclude(dt => dt.Department)
+                .Include(d => d.DepartmentTitles)
+                    .ThenInclude(dt => dt.Employee)
                 .Include(d => d.DepartmentTasks)
                     .ThenInclude(dt => dt.Employee)
                 .Include(f => f.FamilyRelations)
@@ -66,12 +62,13 @@ namespace HRM.Models
             var employee = context.Employees
                  //.Include(da => da.DepartmentAssignments)
                  //   .ThenInclude(d => d.Department)
-                 //.Include(d => d.DepartmentTitles)
+                 .Include(d => d.DepartmentTitles)
+                    .ThenInclude(d => d.Department)
+                        .ThenInclude(d => d.DepartmentTasks)
+                 .Include(d => d.DepartmentTitles)
+                    .ThenInclude(d => d.Employee)
                  .Include(d => d.Departments)
                     .ThenInclude(d => d.DepartmentTitles)
-                //.Include(d => d.DepartmentTitles)
-                //    .ThenInclude(dt => dt.Department)
-                //        .ThenInclude(dk => dk.DepartmentTasks)
                 .Include(d => d.DepartmentTasks)
                     .ThenInclude(dt => dt.Department)
                 .Include(d => d.DepartmentTasks)
@@ -99,5 +96,6 @@ namespace HRM.Models
 
             return await employee;
         }
+
     }
 }

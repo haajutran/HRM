@@ -6,12 +6,21 @@
 <h4 class="text-danger">@ViewData["ErrorMessage"]</h4>
 
 @{
-    var limited = @ViewData["Limited"].ToString();
+    var limited = false;
+    if (ViewData["Limited"] == null)
+    {
+        limited = false;
+    }
+    else
+    {
+        limited = true;
+    }
+
 }
 
 <form asp-action="EditEmployee" asp-route-employeeID="@Model.EmployeeID" method="post">
 
-    @if (limited != "true")
+    @if (limited != true)
     {
         <div class="row">
             <div class="col-lg-7">
@@ -358,21 +367,29 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @{
-                                    if (Model.DepartmentTitles != null)
+                                @{  if (Model.DepartmentTitles != null)
                                     {
                                         foreach (var d in Model.DepartmentTitles)
                                         {
-                                            <tr>
-                                                <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@d.Department.DepartmentID">@d.Department.DepartmentName</a></td>
-                                                <td>@d.Department.DepartmentCode</td>
-                                                <td>@d.Title</td>
-                                                <td>@d.Department.DepartmentTasks.Count</td>
-                                                <td>@d.Description</td>
-                                                <td>
-                                                    <a class="fa fa-trash btn btn-alert" style="width:100%" asp-controller="Departments" asp-action="DeleteTitle"></a>
-                                                </td>
-                                            </tr>
+                                            var thisTitleDepartmentID = d.Department.DepartmentID;
+                                            if (Model.DepartmentTitles.FirstOrDefault(dt => dt.Department.DepartmentID == thisTitleDepartmentID).Title.Equals(d.Title))
+                                            {
+                                                <tr>
+                                                    <td><a asp-controller="Departments" asp-action="DepartmentDetail" asp-route-departmentID="@d.Department.DepartmentID">@d.Department.DepartmentName</a></td>
+                                                    <td>@d.Department.DepartmentCode</td>
+                                                    <td>
+                                                        @foreach (var item in Model.DepartmentTitles.Select(dt => dt).Where(dt => dt.Department.DepartmentID == thisTitleDepartmentID))
+                                                        {
+                                                            @item.Title <br>
+                                                        }
+                                                    </td>
+                                                    <td>@d.Department.DepartmentTasks.Count</td>
+                                                    <td>@d.Description</td>
+                                                    <td>
+                                                        <a class="fa fa-trash btn btn-alert" style="width:100%" asp-controller="Departments" asp-action="DeleteTitle"></a>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
                                     }
                                     else
