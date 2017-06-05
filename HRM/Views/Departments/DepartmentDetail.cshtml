@@ -19,7 +19,7 @@
                 </div>
             </div>
         }
-        
+
         <div class="card">
             <div asp-validation-summary="All" class="text-danger"></div>
             <div class="header">
@@ -46,38 +46,29 @@
                     <tbody>
                         @foreach (var departmentTitle in Model.DepartmentTitles)
                         {
-                            var thisTitleEmployeeID = departmentTitle.Employee.EmployeeID;
-                            if (Model.DepartmentTitles.FirstOrDefault(dt => dt.Employee.EmployeeID == thisTitleEmployeeID).Title.Equals(departmentTitle.Title))
-                            {
-                                <tr>
-                                    <td><a asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@departmentTitle.Employee.EmployeeID">@departmentTitle.Employee.EmployeeCode</a></td>
-                                    <td>@departmentTitle.Employee.FullName</td>
-                                    <td>
-                                        @foreach (var item in Model.DepartmentTitles.Select(dt => dt).Where(dt => dt.Employee.EmployeeID == thisTitleEmployeeID))
-                                        {
-                                            @item.Title <br>
-                                        }
-                                    </td>
-                                    <td>
-                                        @Model.DepartmentTasks.Select(a => a).Where(a => a.Employee.EmployeeID == departmentTitle.Employee.EmployeeID).ToList().Count
-                                    </td>
-                                    <td>@departmentTitle.Description</td>
-                                    <td>
-                                        <form>
-                                            <a asp-action="EditTitle"
-                                               asp-route-titleID="@departmentTitle.DepartmentTitleID"
-                                               class="btn btn-sm btn-success">
-                                                <i style="font-size: 20px" class="fa fa-pencil"></i>
-                                            </a>
-                                            <a asp-action="DeleteTitle"
-                                               asp-route-titleID="@departmentTitle.DepartmentTitleID"
-                                               class="btn btn-sm btn-danger">
-                                                <i style="font-size: 20px" class="fa fa-trash"></i>
-                                            </a>
-                                        </form>
-                                    </td>
-                                </tr>
-                            }
+                            <tr>
+                                <td><a asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@departmentTitle.Employee.EmployeeID">@departmentTitle.Employee.EmployeeCode</a></td>
+                                <td>@departmentTitle.Employee.FullName</td>
+                                <td>@departmentTitle.Title</td>
+                                <td>
+                                    @Model.DepartmentTasks.Select(a => a).Where(a => a.Employee.EmployeeID == departmentTitle.Employee.EmployeeID).ToList().Count
+                                </td>
+                                <td>@departmentTitle.Description</td>
+                                <td>
+                                    <form>
+                                        <a asp-action="EditTitle"
+                                           asp-route-titleID="@departmentTitle.DepartmentTitleID"
+                                           class="btn btn-sm btn-success">
+                                            <i style="font-size: 20px" class="fa fa-pencil"></i>
+                                        </a>
+                                        <a asp-action="DeleteTitle"
+                                           asp-route-titleID="@departmentTitle.DepartmentTitleID"
+                                           class="btn btn-sm btn-danger">
+                                            <i style="font-size: 20px" class="fa fa-trash"></i>
+                                        </a>
+                                    </form>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>

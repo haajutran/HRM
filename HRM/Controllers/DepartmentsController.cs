@@ -284,26 +284,23 @@ namespace HRM.Controllers
 
         #region Edit Title
 
-        public async Task<IActionResult> EditTitle(int? titleID)
+        public async Task<IActionResult> EditTitle(int titleID)
         {
-            if (titleID == null)
-            {
-                return NotFound();
-            }
 
-            var departmentTitle = await _departmentRepository.SearchByIDAsync(titleID);
+            var departmentTitle = await _departmentRepository.SearchTitleAsync(titleID);
             if (departmentTitle == null)
             {
                 return NotFound();
             }
             ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentName", departmentTitle.DepartmentID);
+            ListOfTitles();
             return View(departmentTitle);
         }
 
         // POST: DepartmentTitles/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost, ActionName("EditTitle")]
+        [HttpPost, ActionName("EditTitleConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditTitleConfirmed(int titleID, [Bind("DepartmentTitleID,Title,Description,DepartmentID")] DepartmentTitle departmentTitle)
         {
@@ -338,6 +335,7 @@ namespace HRM.Controllers
                 return RedirectToAction("Index");
             }
             ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentName", departmentTitle.DepartmentID);
+            ListOfTitles();
             return View(departmentTitle);
         }
 

@@ -70,6 +70,7 @@ namespace HRM.Models
             return await context.DepartmentTitles
                 .Include(d => d.Employee)
                 .Include(d => d.Department)
+                .AsNoTracking()
                 .SingleOrDefaultAsync(t => t.DepartmentTitleID == departmentTitleID);
         }
     }

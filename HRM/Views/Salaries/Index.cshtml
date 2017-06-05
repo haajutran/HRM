@@ -1,14 +1,51 @@
 ﻿@model IEnumerable<HRM.Models.Salary>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bảng Lương";
 }
 
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Tạo tính lương</a>
 </p>
+
+<div class="container-fluid">
+    <div style="margin: auto;">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <a class="btn btn-primary" asp-action="Create" style="margin-bottom: 2em;">Tạo tính lương</a>
+
+        <div class="card">
+            <div class="header">
+                <h4 class="title">DANH SÁCH NHÂN VIÊN</h4>
+                <p class="category">Danh sách các nhân viên trong công ty</p>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>@Model.ElementAt(0).Comment</th>
+                            <th>@Model.ElementAt(0).Earned</th>
+                            <th>@Model.ElementAt(0).Employee</th>
+                            <th>@Model.ElementAt(0).PayPerHour</th>
+                            <th>@Model.ElementAt(0).RecordDate</th>
+                            <th style="width: 9em"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
 <table class="table">
     <thead>
         <tr>
