@@ -46,14 +46,15 @@ namespace HRM.Models
         public DateTime DateOfJoining { get; set; }
         [DataType(DataType.Date)]       
         public DateTime ExitDate { get; set; }
+        public int? ContractID { get; set; }
         public ICollection<Salary> SalaryRecords { get; set; }
         public ICollection<DepartmentTitle> DepartmentTitles { get; set; }
         public ICollection<DepartmentTask> DepartmentTasks { get; set; }
         public ICollection<FamilyRelation> FamilyRelations { get; set; }
         public ICollection<Department> Departments { get; set; }
-
+        public Contract Contract { get; set; }
         public ICollection<DepartmentAssignment> DepartmentAssignments { get; set; }
-
+  
         public static implicit operator Employee(int v)
         {
             throw new NotImplementedException();
