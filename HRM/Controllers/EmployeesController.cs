@@ -40,10 +40,7 @@ namespace HRM.Controllers
         #region Index
         public async Task<ViewResult> Index()
         {
-            return View(new EmployeesListViewModel
-            {
-                Employees = await _employeeRepository.EmployeesAsync()
-            });
+            return View(await _employeeRepository.EmployeesAsync());
         }
         #endregion
 
@@ -80,6 +77,7 @@ namespace HRM.Controllers
 
             DepartmentsDropDownList();
             DepartmentTitlesDropDownList();
+            ContractsDropDownList();
             return View();
         }
 
@@ -683,6 +681,18 @@ namespace HRM.Controllers
                               select d.Title;
 
             ViewData["DepartmentTitles"] = new SelectList(titlesQuery.Distinct().AsNoTracking());
+
+        }
+        #endregion
+
+        #region Contracts Drop Down List
+        private void ContractsDropDownList()
+        {
+            var contractsQuery = from d in _context.Contracts
+                                 orderby d.Title
+                                 select d;
+
+            ViewData["Contracts"] = new SelectList(contractsQuery.Distinct().AsNoTracking(), "ContractID", "Title");
 
         }
         #endregion
