@@ -10,8 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using System;
 using Microsoft.AspNetCore.Identity;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace HRM.Controllers
 {
     [Authorize]
@@ -136,7 +134,7 @@ namespace HRM.Controllers
             };
             var employeeCode = (await _employeeRepository.SearchAsync(employeeID)).EmployeeCode;
             departmentTitle.EmployeeCode = employeeCode;
-            
+
             return View(departmentTitle);
         }
 
@@ -295,6 +293,7 @@ namespace HRM.Controllers
             {
                 return NotFound();
             }
+            if(departmentTitle.Title == "")
             ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentName", departmentTitle.DepartmentID);
             ListOfTitles();
             return View(departmentTitle);
@@ -312,17 +311,80 @@ namespace HRM.Controllers
                 return NotFound();
             }
 
-            var dT = await _departmentRepository.SearchTitleAsync(titleID);
-            dT.DepartmentID = departmentTitle.DepartmentID;
-            dT.Description = departmentTitle.Description;
-            dT.Title = departmentTitle.Title;
-
+   
             if (ModelState.IsValid)
             {
                 try
                 {
+                    _context.Update(departmentTitle);
+                    var dT = await _departmentRepository.SearchTitleAsync(titleID);
+                    dT.DepartmentID = departmentTitle.DepartmentID;
+                    dT.Description = departmentTitle.Description;
+                    dT.Title = departmentTitle.Title;
+
                     var employee = dT.Employee;
                     var userID = employee.UserId;
+                    var department = _context.Departments.Include(d => d.DepartmentTitles).SingleOrDefault(d => d.DepartmentCode == employee.DepartmentCode);
+                    var currentUser = await GetCurrentUserAsync();
+                    var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
+
+                   
+                    if (departmentTitle.Title.Equals("Trưởng phòng"))
+                    {
+                        var departmentManagerCount = 0;
+                        foreach (var dpm in department.DepartmentTitles)
+                        {
+                            if (dpm.Title == "Trưởng phòng")
+                            {
+                                departmentManagerCount++;
+                            }
+                        }
+                        if (departmentManagerCount >= 2)
+                        {
+                            TempData["ErrorMessage"] = "Số lượng chức vụ trưởng phòng trong một phòng ban không thể lớn hơn 1.";
+                            return Redirect("Error");
+                        }
+                    }
+
+                    else if (departmentTitle.Title.Equals("Phó phòng"))
+                    {
+                        if (!currentUserRoles.Contains("HRDepartmentManager")
+                            && !currentUserRoles.Contains("Master"))
+                        {
+                            var employeeUser = _context.Employees
+                              .Include(d => d.DepartmentAssignments)
+                              .SingleOrDefault(u => u.UserId == currentUser.Id);
+                            var hasDepartment = false;
+                            foreach (var dad in employeeUser.DepartmentAssignments)
+                            {
+                                if (dad.Department == department)
+                                {
+                                    hasDepartment = true;
+                                    break;
+                                }
+                            }
+                            if (hasDepartment == false)
+                            {
+                                TempData["ErrorMessage"] = "Bạn không có quyền thêm chức vụ Phó Phòng.";
+                                return Redirect("Error");
+                            }
+                        }
+                        var departmentManagerCount = 0;
+                        foreach (var dpm in department.DepartmentTitles)
+                        {
+                            if (dpm.Title == "Phó phòng")
+                            {
+                                departmentManagerCount++;
+                            }
+                        }
+                        if (departmentManagerCount >= 3)
+                        {
+                            TempData["ErrorMessage"] = "Số lượng chức vụ phó phòng trong một phòng ban không thể lớn hơn 2.";
+                            return Redirect("Error");
+                        }
+                    }
+
+
                     var user = await _userManager.FindByIdAsync(userID);
                     var roles = await _userManager.GetRolesAsync(user);
                     await _userManager.RemoveFromRolesAsync(user, roles.ToArray());
@@ -343,7 +405,7 @@ namespace HRM.Controllers
                             await _userManager.AddToRoleAsync(user, item.Department.Role);
                         }
                     }
-                    _context.Update(departmentTitle);
+                    
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -545,5 +607,11 @@ namespace HRM.Controllers
 
         #endregion
 
+        #region Get Current User
+        private Task<AppUser> GetCurrentUserAsync()
+        {
+            return _userManager.GetUserAsync(HttpContext.User);
+        }
+        #endregion
     }
 }

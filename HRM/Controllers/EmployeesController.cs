@@ -259,7 +259,6 @@ namespace HRM.Controllers
 
             }
 
-            //else if()
             if (!currentUserRoles.Contains("Master") && !currentUserRoles.Contains("HRDepartmentManager"))
             {
                 bool tf = false;
@@ -284,11 +283,7 @@ namespace HRM.Controllers
                 }
               
             }
-
-
-
-
-
+            
             return View(employee);
         }
         #endregion
@@ -318,6 +313,7 @@ namespace HRM.Controllers
 
                     var userId = employeeToUpdate.UserId;
                     AppUser user = await _userManager.FindByIdAsync(userId);
+
                     foreach (var dep in employeeToUpdate.Departments)
                     {
                         await _userManager.RemoveFromRoleAsync(user, dep.Role);
@@ -332,65 +328,10 @@ namespace HRM.Controllers
                         return View(employeeToUpdate);
                     }
 
-                    var ed = employeeToUpdate.DepartmentTitle.Trim();
-                    var department = _context.Departments.Include(d => d.DepartmentTitles).SingleOrDefault(d => d.DepartmentCode == employeeToUpdate.DepartmentCode);
-                    var currentUser = await GetCurrentUserAsync();
-                    var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
-
-                    if (ed.Equals("Trưởng phòng"))
-                    {
-                        var departmentManagerCount = 0;
-                        foreach (var dpm in de.DepartmentTitles)
-                        {
-                            if (dpm.Title == "Trưởng phòng")
-                            {
-                                departmentManagerCount++;
-                            }
-                        }
-                        if (departmentManagerCount >= 1)
-                        {
-                            TempData["ErrorMessage"] = "Số lượng chức vụ trưởng phòng trong một phòng ban không thể lớn hơn 2.";
-                            return Redirect("Error");
-                        }
-                    }
-
-                    else if (ed.Equals("Phó phòng"))
-                    {
-                        if (!currentUserRoles.Contains("HRDepartmentManager")
-                            && !currentUserRoles.Contains("Master"))
-                        {
-                            var employeeUser = _context.Employees
-                              .Include(d => d.DepartmentAssignments)
-                              .SingleOrDefault(u => u.UserId == currentUser.Id);
-                            var hasDepartment = false;
-                            foreach (var dad in employeeUser.DepartmentAssignments)
-                            {
-                                if (dad.Department == department)
-                                {
-                                    hasDepartment = true;
-                                    break;
-                                }
-                            }
-                            if (hasDepartment == false)
-                            {
-                                TempData["ErrorMessage"] = "Bạn không có quyền thêm chức vụ Phó Phòng.";
-                                return Redirect("Error");
-                            }
-                        }
-                        var departmentManagerCount = 0;
-                        foreach (var dpm in de.DepartmentTitles)
-                        {
-                            if (dpm.Title == "Phó phòng")
-                            {
-                                departmentManagerCount++;
-                            }
-                        }
-                        if (departmentManagerCount >= 2)
-                        {
-                            TempData["ErrorMessage"] = "Số lượng chức vụ phó phòng trong một phòng ban không thể lớn hơn 3.";
-                            return Redirect("Error");
-                        }
-                    }
+                    //var ed = employeeToUpdate.DepartmentTitle.Trim();
+                    //var department = _context.Departments.Include(d => d.DepartmentTitles).SingleOrDefault(d => d.DepartmentCode == employeeToUpdate.DepartmentCode);
+                    //var currentUser = await GetCurrentUserAsync();
+                    //var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
 
                     if (employeeToUpdate.Active == false)
                     {
