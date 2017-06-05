@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace HRM.Data.Migrations
 {
-    public partial class _2ndOfJune2017 : Migration
+    public partial class HRM_June52017 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,6 +45,7 @@ namespace HRM.Data.Migrations
                     FullName = table.Column<string>(nullable: false),
                     Gender = table.Column<string>(nullable: true),
                     HomeTown = table.Column<string>(nullable: true),
+                    Limited = table.Column<bool>(nullable: false),
                     PhoneNumber = table.Column<string>(maxLength: 13, nullable: true),
                     PlaceOfBirth = table.Column<string>(nullable: true),
                     PlaceOfProvide = table.Column<string>(nullable: true),
@@ -72,7 +73,8 @@ namespace HRM.Data.Migrations
                     DepartmentCode = table.Column<int>(nullable: false),
                     DepartmentName = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    EmployeeID = table.Column<int>(nullable: true)
+                    EmployeeID = table.Column<int>(nullable: true),
+                    Role = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -136,6 +138,32 @@ namespace HRM.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DepartmentAssignment",
+                columns: table => new
+                {
+                    DepartmentAssignmentID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    DepartmentID = table.Column<int>(nullable: false),
+                    EmployeeID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DepartmentAssignment", x => x.DepartmentAssignmentID);
+                    table.ForeignKey(
+                        name: "FK_DepartmentAssignment_Department_DepartmentID",
+                        column: x => x.DepartmentID,
+                        principalTable: "Department",
+                        principalColumn: "DepartmentID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DepartmentAssignment_Employee_EmployeeID",
+                        column: x => x.EmployeeID,
+                        principalTable: "Employee",
+                        principalColumn: "EmployeeID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DepartmentTask",
                 columns: table => new
                 {
@@ -172,7 +200,6 @@ namespace HRM.Data.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     DepartmentID = table.Column<int>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    EmployeeCode = table.Column<int>(nullable: true),
                     EmployeeID = table.Column<int>(nullable: true),
                     Title = table.Column<string>(nullable: false)
                 },
@@ -196,6 +223,16 @@ namespace HRM.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Department_EmployeeID",
                 table: "Department",
+                column: "EmployeeID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DepartmentAssignment_DepartmentID",
+                table: "DepartmentAssignment",
+                column: "DepartmentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DepartmentAssignment_EmployeeID",
+                table: "DepartmentAssignment",
                 column: "EmployeeID");
 
             migrationBuilder.CreateIndex(
@@ -236,6 +273,9 @@ namespace HRM.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "DepartmentAssignment");
+
             migrationBuilder.DropTable(
                 name: "DepartmentTask");
 

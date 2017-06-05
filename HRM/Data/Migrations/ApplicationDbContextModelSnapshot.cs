@@ -93,11 +93,31 @@ namespace HRM.Data.Migrations
 
                     b.Property<int?>("EmployeeID");
 
+                    b.Property<string>("Role");
+
                     b.HasKey("DepartmentID");
 
                     b.HasIndex("EmployeeID");
 
                     b.ToTable("Department");
+                });
+
+            modelBuilder.Entity("HRM.Models.DepartmentAssignment", b =>
+                {
+                    b.Property<int>("DepartmentAssignmentID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("DepartmentID");
+
+                    b.Property<int>("EmployeeID");
+
+                    b.HasKey("DepartmentAssignmentID");
+
+                    b.HasIndex("DepartmentID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.ToTable("DepartmentAssignment");
                 });
 
             modelBuilder.Entity("HRM.Models.DepartmentTask", b =>
@@ -133,8 +153,6 @@ namespace HRM.Data.Migrations
                     b.Property<int?>("DepartmentID");
 
                     b.Property<string>("Description");
-
-                    b.Property<int?>("EmployeeCode");
 
                     b.Property<int?>("EmployeeID");
 
@@ -191,6 +209,8 @@ namespace HRM.Data.Migrations
                     b.Property<string>("Gender");
 
                     b.Property<string>("HomeTown");
+
+                    b.Property<bool>("Limited");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(13);
@@ -378,6 +398,19 @@ namespace HRM.Data.Migrations
                     b.HasOne("HRM.Models.Employee")
                         .WithMany("Departments")
                         .HasForeignKey("EmployeeID");
+                });
+
+            modelBuilder.Entity("HRM.Models.DepartmentAssignment", b =>
+                {
+                    b.HasOne("HRM.Models.Department", "Department")
+                        .WithMany("DepartmentAssignments")
+                        .HasForeignKey("DepartmentID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HRM.Models.Employee", "Employee")
+                        .WithMany("DepartmentAssignments")
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HRM.Models.DepartmentTask", b =>

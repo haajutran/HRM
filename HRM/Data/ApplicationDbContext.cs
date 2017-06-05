@@ -25,6 +25,7 @@ namespace HRM.Data
             builder.Entity<DepartmentTitle>().ToTable("DepartmentTitle");
             builder.Entity<Salary>().ToTable("Salary");
             builder.Entity<Contract>().ToTable("Contract");
+            builder.Entity<DepartmentAssignment>().ToTable("DepartmentAssignment");
         }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
@@ -33,6 +34,7 @@ namespace HRM.Data
         public DbSet<DepartmentTitle> DepartmentTitles { get; set; }
         public DbSet<Salary> SalaryRecords { get; set; }
         public DbSet<Contract> Contracts { get; set; }
+        public DbSet<DepartmentAssignment> DepartmentAssignments { get; set; }
 
     }
 }
