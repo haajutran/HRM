@@ -295,6 +295,8 @@
                                         </div>
                                     </div>
                                 </li>
+                                @if (User.IsInRole("Master") || User.IsInRole("HRDepartmentManager"))
+                                {
                                 <li>
                                     <div class="row">
                                         <div class="col-xs-4" style="padding-top: 0.5em">
@@ -309,6 +311,7 @@
                                         </div>
                                     </div>
                                 </li>
+                                }
                                 @if (Model.Active == false)
                                 {
                                     <li class="exitDate">
@@ -378,7 +381,7 @@
                                                             @item.Title <br>
                                                         }
                                                     </td>
-                                                    <td>@d.Department.DepartmentTasks.Count</td>
+                                                    <td>@d.Department.DepartmentTasks.Select(t => t).Where(t => t.Employee.EmployeeID == d.Employee.EmployeeID).Count()</td>
                                                     <td>@d.Description</td>
                                                     <td>
                                                         <a class="fa fa-trash btn btn-alert" style="width:100%" asp-controller="Departments" asp-action="DeleteTitle"></a>

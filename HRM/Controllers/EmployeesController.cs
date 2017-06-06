@@ -273,6 +273,10 @@ namespace HRM.Controllers
             //var titles = employee.DepartmentTitles();
             var userId = employee.UserId;
             AppUser user = await _userManager.FindByIdAsync(userId);
+
+
+
+
             var userRoles = await _userManager.GetRolesAsync(user);
             var currentUser = await GetCurrentUserAsync();
             var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
@@ -298,20 +302,91 @@ namespace HRM.Controllers
                         isManager = true;
                         break;
                     }
-                }
-                if (tf == false)
-                {
-                    if (!currentUser.UserName.Equals(employee.EmployeeCode.ToString()))
+                    else if (item.Contains("Deputy"))
                     {
-                        return RedirectToAction("AccessDenied", "Account");
+                        isDeputy = true;
+                    }
+                }
+                if (isManager == false)
+                {
+                    if (isDeputy == false)
+                    {
+                        if (!IsItself(currentUser, employee))
+                        {
+                            return RedirectToAction("AccessDenied", "Account");
+                        }
+                        else
+                        {
+                            ViewData["Limited"] = "true";
+                        }
                     }
                     else
+                    {
+
+                        foreach (var userRole in userRoles)
+                        {
+                            if (userRole.Contains("Manager"))
+                            {
+                                return RedirectToAction("AccessDenied", "Account");
+                            }
+                            else if (userRole.Contains("Deputy"))
+                            {
+                                if (!IsItself(currentUser, employee))
+                                {
+                                    return RedirectToAction("AccessDenied", "Account");
+                                }
+                                else
+                                {
+                                    ViewData["Limited"] = "true";
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+
+            }
+
+            else if (currentUserRoles.Contains("HRDepartmentDeputy")
+                && !currentUserRoles.Contains("HRDepartmentManager"))
+            {
+                if (userRoles.Contains("HRDepartmentManager"))
+                {
+                    return RedirectToAction("AccessDenied", "Account");
+                }
+            }
+
+            else if (currentUserRoles.Contains("HRDepartment")
+                && !currentUserRoles.Contains("HRDepartmentDeputy")
+                && !currentUserRoles.Contains("HRDepartmentManager"))
+            {
+                if (userRoles.Contains("HRDepartmentManager") || userRoles.Contains("HRDepartmentDeputy"))
+                {
+                    return RedirectToAction("AccessDenied", "Account");
+                }
+                else if (userRoles.Contains("HRDepartment"))
+                {
+                    if (IsItself(currentUser, employee))
                     {
                         ViewData["Limited"] = "true";
                     }
                 }
-              
+                else
+                {
+                    foreach (var userRole in userRoles)
+                    {
+                        if (userRole.Contains("Manager") || userRole.Contains("Deputy"))
+                        {
+                            return RedirectToAction("AccessDenied", "Account");
+                        }
+                    }
+                }
             }
+
+
+
+
 
             return View(employee);
         }
@@ -375,6 +450,15 @@ namespace HRM.Controllers
                     //var currentUser = await GetCurrentUserAsync();
                     //var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
 
+                  
+
+                    employeeToUpdate.Gender = gender;
+
+                    //var dT = await _context.Employees.;
+                    //dT.
+                    var ddt = _context.Employees
+                        .Select(d => d.DepartmentTitles);
+
                     if (employeeToUpdate.Active == false)
                     {
                         if (employeeToUpdate.ExitDate < employeeToUpdate.DateOfJoining)
@@ -388,8 +472,11 @@ namespace HRM.Controllers
 
                         foreach (var department2 in employeeToUpdate.Departments)
                         {
-                            await _userManager.RemoveFromRoleAsync(user, department2.Role);
+                            employeeToUpdate.Departments.Remove(department2);
                         }
+                        var role1s = await _userManager.GetRolesAsync(user);
+                        await _userManager.RemoveFromRolesAsync(user, role1s.ToArray());
+
                     }
 
                     else
@@ -400,14 +487,6 @@ namespace HRM.Controllers
                         }
 
                     }
-
-                    employeeToUpdate.Gender = gender;
-
-                    //var dT = await _context.Employees.;
-                    //dT.
-                    var ddt = _context.Employees
-                        .Select(d => d.DepartmentTitles);
-
                     await _context.SaveChangesAsync();
 
                     var roles = await _userManager.GetRolesAsync(user);

@@ -182,19 +182,23 @@ namespace HRM.Controllers
 
                 if (departmentTitle.Title.Equals("Trưởng phòng"))
                 {
-                    var departmentManagerCount = 0;
-                    foreach (var dpm in department.DepartmentTitles)
+                    if (department != null)
                     {
-                        if (dpm.Title == "Trưởng phòng")
+                        var departmentManagerCount = 0;
+                        foreach (var dpm in department.DepartmentTitles)
                         {
-                            departmentManagerCount++;
+                            if (dpm.Title == "Trưởng phòng")
+                            {
+                                departmentManagerCount++;
+                            }
+                        }
+                        if (departmentManagerCount >= 2)
+                        {
+                            TempData["ErrorMessage"] = "Số lượng chức vụ trưởng phòng trong một phòng ban không thể lớn hơn 1.";
+                            return Redirect("Error");
                         }
                     }
-                    if (departmentManagerCount >= 2)
-                    {
-                        TempData["ErrorMessage"] = "Số lượng chức vụ trưởng phòng trong một phòng ban không thể lớn hơn 1.";
-                        return Redirect("Error");
-                    }
+
                 }
 
                 else if (departmentTitle.Title.Equals("Phó phòng"))
@@ -220,19 +224,24 @@ namespace HRM.Controllers
                             return Redirect("Error");
                         }
                     }
-                    var departmentManagerCount = 0;
-                    foreach (var dpm in department.DepartmentTitles)
+                    if (department != null)
                     {
-                        if (dpm.Title == "Phó phòng")
+                        var departmentManagerCount = 0;
+                        foreach (var dpm in department.DepartmentTitles)
                         {
-                            departmentManagerCount++;
+
+                            if (dpm.Title == "Phó phòng")
+                            {
+                                departmentManagerCount++;
+                            }
+                        }
+                        if (departmentManagerCount >= 3)
+                        {
+                            TempData["ErrorMessage"] = "Số lượng chức vụ phó phòng trong một phòng ban không thể lớn hơn 2.";
+                            return Redirect("Error");
                         }
                     }
-                    if (departmentManagerCount >= 3)
-                    {
-                        TempData["ErrorMessage"] = "Số lượng chức vụ phó phòng trong một phòng ban không thể lớn hơn 2.";
-                        return Redirect("Error");
-                    }
+                  
                 }
 
                 var user = await _userManager.FindByIdAsync(userID);
@@ -382,8 +391,8 @@ namespace HRM.Controllers
             {
                 return NotFound();
             }
-            if(departmentTitle.Title == "")
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentName", departmentTitle.DepartmentID);
+            if (departmentTitle.Title == "")
+                ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentName", departmentTitle.DepartmentID);
             ListOfTitles();
             return View(departmentTitle);
         }
@@ -400,7 +409,7 @@ namespace HRM.Controllers
                 return NotFound();
             }
 
-   
+
             if (ModelState.IsValid)
             {
                 try
@@ -417,7 +426,7 @@ namespace HRM.Controllers
                     var currentUser = await GetCurrentUserAsync();
                     var currentUserRoles = await _userManager.GetRolesAsync(currentUser);
 
-                   
+
                     if (departmentTitle.Title.Equals("Trưởng phòng"))
                     {
                         var departmentManagerCount = 0;
@@ -494,7 +503,7 @@ namespace HRM.Controllers
                             await _userManager.AddToRoleAsync(user, item.Department.Role);
                         }
                     }
-                    
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

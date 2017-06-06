@@ -1,0 +1,18 @@
+﻿@model int
+@{
+    ViewData["Title"] = "Tạo tính lương";
+}
+
+<h2>Tạo tính lương</h2>
+<div class="alert alert-dismissable">
+    <form asp-action="ChooseToAddSalary" method="post">
+        <div class="col-lg-4">
+            <input type="submit" class="fa fa-calculator btn btn-success" style="width:100%" value="Chọn nhân viên này"/>
+        </div>
+        <div class="col-lg-4">
+            <label>MSNV</label>
+            <input type="number" min="6" maxlength="6" asp-for="@Model" class="form-control border-input" placeholder="MSNV">
+        </div>
+    </form>
+</div>
+

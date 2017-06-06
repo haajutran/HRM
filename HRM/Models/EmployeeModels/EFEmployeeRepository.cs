@@ -65,6 +65,7 @@ namespace HRM.Models
                  .Include(d => d.DepartmentTitles)
                     .ThenInclude(d => d.Department)
                         .ThenInclude(d => d.DepartmentTasks)
+                            .ThenInclude(d => d.Employee)
                  .Include(d => d.DepartmentTitles)
                     .ThenInclude(d => d.Employee)
                  .Include(d => d.Departments)

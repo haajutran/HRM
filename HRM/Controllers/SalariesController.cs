@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HRM.Data;
 using HRM.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HRM.Controllers
-{
+{   
+    [Authorize(Roles= "FinanceDepartment, FinanceDepartmentDeputy, FinanceDepartmentManager, Master")]
     public class SalariesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -28,6 +30,8 @@ namespace HRM.Controllers
             return View(await _context.SalaryRecords
                 .Include(s => s.Employee)
                     .ThenInclude(s => s.DepartmentTitles)
+                .Include(s => s.Employee)
+                    .ThenInclude(s => s.Contract)
                 .ToListAsync());
         }
 
@@ -40,6 +44,10 @@ namespace HRM.Controllers
             }
 
             var salary = await _context.SalaryRecords
+                .Include(s => s.Employee)
+                    .ThenInclude(s => s.DepartmentTitles)
+                .Include(s => s.Employee)
+                    .ThenInclude(s => s.Contract)
                 .SingleOrDefaultAsync(m => m.SalaryID == id);
             if (salary == null)
             {
@@ -49,8 +57,28 @@ namespace HRM.Controllers
             return View(salary);
         }
 
+        #region Add Salary
+        public IActionResult ChooseToAddSalary()
+        {
+            int? employeeID = null;
+            return View(employeeID);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChooseToAddSalaryAsync(int employeeID)
+        {
+            var e = await _employeeRepository.SearchAsync(employeeID);
+            if (e == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("AddSalary", new { employeeID = employeeID });
+        }
+
         // GET: Salaries/Create
-        public async Task<IActionResult> AddSalary(int employeeID)
+        public async Task<IActionResult> AddSalary(int? employeeID)
         {
             Salary salary = new Salary();
             salary.EmployeeID = employeeID;
@@ -65,7 +93,7 @@ namespace HRM.Controllers
                 workHoursSum += t.WorkHours;
             }
 
-            salary.Earned = workHoursSum*emp.Contract.PayPerHour;
+            salary.Earned = workHoursSum * emp.Contract.PayPerHour;
             ViewData["Contract"] = emp.Contract.Title;
 
             return View(salary);
@@ -90,6 +118,7 @@ namespace HRM.Controllers
             return View(salary);
         }
 
+        #endregion
         // GET: Salaries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -98,7 +127,18 @@ namespace HRM.Controllers
                 return NotFound();
             }
 
-            var salary = await _context.SalaryRecords.SingleOrDefaultAsync(m => m.SalaryID == id);
+            var salary = await _context.SalaryRecords
+                .Include(s => s.Employee)
+                    .ThenInclude(s => s.DepartmentTitles)
+                .Include(s => s.Employee)
+                    .ThenInclude(s => s.Contract)
+                .SingleOrDefaultAsync(m => m.SalaryID == id);
+
+            var emp = await _employeeRepository.SearchAsync(salary.EmployeeID);
+
+            salary.PayPerHour = emp.Contract.PayPerHour;
+            ViewData["Contract"] = emp.Contract.Title;
+
             if (salary == null)
             {
                 return NotFound();
@@ -109,21 +149,28 @@ namespace HRM.Controllers
         // POST: Salaries/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SalaryID,RecordDate,Earned")] Salary salary)
+        public async Task<IActionResult> EditConfirmed(int id, [Bind("SalaryID,RecordDate,Earned,PayPerHour")] Salary salary)
         {
-            if (id != salary.SalaryID)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(salary);
+                    var sal = await _context.SalaryRecords
+                    .Include(s => s.Employee)
+                        .ThenInclude(s => s.DepartmentTitles)
+                    .Include(s => s.Employee)
+                        .ThenInclude(s => s.Contract)
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(m => m.SalaryID == salary.SalaryID);
+
+                    sal.RecordDate = DateTime.Now.ToString();
+                    sal.Earned = salary.Earned;
+
+                    _context.Update(sal);
                     await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Salaries");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -136,7 +183,6 @@ namespace HRM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
             }
             return View(salary);
         }
@@ -150,7 +196,12 @@ namespace HRM.Controllers
             }
 
             var salary = await _context.SalaryRecords
-                .SingleOrDefaultAsync(m => m.SalaryID == id);
+                    .Include(s => s.Employee)
+                        .ThenInclude(s => s.DepartmentTitles)
+                    .Include(s => s.Employee)
+                        .ThenInclude(s => s.Contract)
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(m => m.SalaryID == id);
             if (salary == null)
             {
                 return NotFound();
@@ -164,8 +215,14 @@ namespace HRM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var salary = await _context.SalaryRecords.SingleOrDefaultAsync(m => m.SalaryID == id);
-            _context.SalaryRecords.Remove(salary);
+            var salary = await _context.SalaryRecords
+                    .Include(s => s.Employee)
+                        .ThenInclude(s => s.DepartmentTitles)
+                    .Include(s => s.Employee)
+                        .ThenInclude(s => s.Contract)
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(m => m.SalaryID == id);
+            _context.Remove(salary);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }

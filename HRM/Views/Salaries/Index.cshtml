@@ -4,78 +4,54 @@
     ViewData["Title"] = "Bảng Lương";
 }
 
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create">Tạo tính lương</a>
-</p>
-
 <div class="container-fluid">
     <div style="margin: auto;">
         <div asp-validation-summary="All" class="text-danger"></div>
-        <a class="btn btn-primary" asp-action="Create" style="margin-bottom: 2em;">Tạo tính lương</a>
-
         <div class="card">
             <div class="header">
-                <h4 class="title">DANH SÁCH NHÂN VIÊN</h4>
-                <p class="category">Danh sách các nhân viên trong công ty</p>
+                <h4 class="title">DANH SÁCH LƯƠNG</h4>
+                <p class="category">Danh sách lương trong một tháng của các nhân viên trong công ty</p>
+                @*<div col-lg-2>
+                    <a class="btn btn-success pull-right" style="width: 5em" asp-action="ChooseToAddSalary"><i class="fa fa-plus"></i></a>
+                </div>*@
             </div>
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>@Model.ElementAt(0).Comment</th>
-                            <th>@Model.ElementAt(0).Earned</th>
-                            <th>@Model.ElementAt(0).Employee</th>
-                            <th>@Model.ElementAt(0).PayPerHour</th>
-                            <th>@Model.ElementAt(0).RecordDate</th>
-                            <th>@Model.ElementAt(0).Employee.Contract</th>
-                            <th>@Model.ElementAt(0).Employee.</th>
+                            <th>MSNV</th>
+                            <th>Tên nhân viên</th>
+                            <th>Loại hợp đồng</th>
+                            <th>Lương theo giờ</th>
+                            <th>Bình luận</th>
+                            <th>Hưởng</th>
+                            <th>Ngày lưu</th>
                             <th style="width: 9em"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-controller="Employees" asp-action="EditEmployee" asp-route-employeeID="@item.Employee.EmployeeID">@item.Employee.EmployeeCode</a>
+                                </td>
+                                <td>@item.Employee.FullName</td>
+                                <td>@item.Employee.Contract.Title</td>
+                                <td>@item.Employee.Contract.PayPerHour</td>
+                                <td>@item.Comment</td>
+                                <td>@item.Earned</td>
+                                <td>@item.RecordDate</td>
+                                <td>
+                                    <a class="fa fa-pencil btn btn-success" style="width:100%" asp-action="Edit" asp-route-id="@item.SalaryID"></a>
+                                    <a class="fa fa-trash btn btn-alert" style="width:100%" asp-action="Delete" asp-route-id="@item.SalaryID"></a>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
-
             </div>
         </div>
     </div>
 
 </div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Giờ lưu
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Earned)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RecordDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Earned)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.SalaryID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.SalaryID">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.SalaryID">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
